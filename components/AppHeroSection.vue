@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-</script>
-
 <template>
   <div
     id="home"
@@ -25,7 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
             <div
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
-              <FontAwesomeIcon
+              <font-awesome-icon
                   :icon="['fas', 'bolt']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -55,7 +51,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
             <div
               class="flex rotate-45 items-center justify-center self-center border-white md:h-8 md:w-8 md:border xl:h-12 xl:w-12"
             >
-              <FontAwesomeIcon
+              <font-awesome-icon
                   :icon="['fas', 'eye']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -84,7 +80,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
             <div
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
-              <FontAwesomeIcon
+              <font-awesome-icon
                   :icon="['fas', 'headphones']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -114,7 +110,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
             <div
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
-              <FontAwesomeIcon
+              <font-awesome-icon
                   :icon="['fas', 'graduation-cap']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -144,7 +140,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
             <div
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
-              <FontAwesomeIcon
+              <font-awesome-icon
                   :icon="['fas', 'person-hiking']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -175,7 +171,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
             <div
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
-              <FontAwesomeIcon
+              <font-awesome-icon
                   :icon="['fas', 'hand-peace']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -220,7 +216,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
               <div
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
-                <FontAwesomeIcon
+                <font-awesome-icon
                   :icon="['fas', 'hand-peace']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -246,7 +242,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
               <div
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
-                <FontAwesomeIcon
+                <font-awesome-icon
                   :icon="['fas', 'eye']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -272,7 +268,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
               <div
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
-                <FontAwesomeIcon
+                <font-awesome-icon
                   :icon="['fas', 'graduation-cap']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -300,7 +296,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
               <div
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
-                <FontAwesomeIcon
+                <font-awesome-icon
                   :icon="['fas', 'bolt']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -327,7 +323,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
               <div
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
-                <FontAwesomeIcon
+                <font-awesome-icon
                   :icon="['fas', 'headphones']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -354,7 +350,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
               <div
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
-                <FontAwesomeIcon
+                <font-awesome-icon
                   :icon="['fas', 'person-hiking']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
