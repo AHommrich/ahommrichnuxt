@@ -1,7 +1,17 @@
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+
+const isClient = ref(false);
+
+onMounted(() => {
+  isClient.value = import.meta.client; // Setze auf true, wenn im Client
+});
+</script>
+
 <template>
   <div
     id="home"
-    class="mx-auto w-full max-w-full overflow-hidden sm:pb-52 sm:pt-[200px] md:pb-[300px] md:pt-[230px] lg:pt-[270px] xl:pt-[320px]"
+    class="mx-auto w-full max-w-full overflow-hidden sm:pb-52 pb-24 sm:pt-[200px] md:pb-[300px] md:pt-[230px] lg:pt-[270px] xl:pt-[320px]"
   >
     <div
       class="relative mx-auto hidden h-36 w-36 max-w-full rotate-45 sm:block sm:h-[600px] sm:w-[600px] md:h-[750px] md:w-[750px] lg:h-[960px] lg:w-[960px] xl:h-[1200px] xl:w-[1200px]"
@@ -22,9 +32,10 @@
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
-                  :icon="['fas', 'bolt']"
-                  class="h-12 w-12 text-white rotate-[-45deg]"
-                />
+                v-if="isClient"
+                :icon="['fas', 'bolt']"
+                class="h-12 w-12 text-white rotate-[-45deg]"
+              />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
@@ -52,9 +63,10 @@
               class="flex rotate-45 items-center justify-center self-center border-white md:h-8 md:w-8 md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
-                  :icon="['fas', 'eye']"
-                  class="h-12 w-12 text-white rotate-[-45deg]"
-                />
+                v-if="isClient"
+                :icon="['fas', 'eye']"
+                class="h-12 w-12 text-white rotate-[-45deg]"
+              />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
@@ -81,9 +93,10 @@
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
-                  :icon="['fas', 'headphones']"
-                  class="h-12 w-12 text-white rotate-[-45deg]"
-                />
+                v-if="isClient"
+                :icon="['fas', 'headphones']"
+                class="h-12 w-12 text-white rotate-[-45deg]"
+              />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
@@ -111,9 +124,10 @@
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
-                  :icon="['fas', 'graduation-cap']"
-                  class="h-12 w-12 text-white rotate-[-45deg]"
-                />
+                v-if="isClient"
+                :icon="['fas', 'graduation-cap']"
+                class="h-12 w-12 text-white rotate-[-45deg]"
+              />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
@@ -141,9 +155,10 @@
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
-                  :icon="['fas', 'person-hiking']"
-                  class="h-12 w-12 text-white rotate-[-45deg]"
-                />
+                v-if="isClient"
+                :icon="['fas', 'person-hiking']"
+                class="h-12 w-12 text-white rotate-[-45deg]"
+              />
             </div>
             <div class="pt-2 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
@@ -172,9 +187,10 @@
               class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
-                  :icon="['fas', 'hand-peace']"
-                  class="h-12 w-12 text-white rotate-[-45deg]"
-                />
+                v-if="isClient"
+                :icon="['fas', 'hand-peace']"
+                class="h-12 w-12 text-white rotate-[-45deg]"
+              />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-sm lg:text-base xl:text-2xl">Hallo</p>
@@ -217,6 +233,7 @@
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
                 <font-awesome-icon
+                  v-if="isClient"
                   :icon="['fas', 'hand-peace']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -243,6 +260,7 @@
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
                 <font-awesome-icon
+                  v-if="isClient"
                   :icon="['fas', 'eye']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -269,6 +287,7 @@
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
                 <font-awesome-icon
+                  v-if="isClient"
                   :icon="['fas', 'graduation-cap']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -297,6 +316,7 @@
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
                 <font-awesome-icon
+                  v-if="isClient"
                   :icon="['fas', 'bolt']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -324,6 +344,7 @@
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
                 <font-awesome-icon
+                  v-if="isClient"
                   :icon="['fas', 'headphones']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
@@ -351,6 +372,7 @@
                 class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
               >
                 <font-awesome-icon
+                  v-if="isClient"
                   :icon="['fas', 'person-hiking']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
