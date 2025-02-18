@@ -1,3 +1,5 @@
-<template><div>
-    <h1 >Impressum</h1>
-</div></template>
+<template>
+  <div>
+    <h1>Impressum</h1>
+  </div>
+</template>

@@ -2,12 +2,21 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-02-18',
+  compatibilityDate: "2025-02-18",
   devtools: { enabled: true },
-  css: ['~/assets/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
+  css: [
+    "@fortawesome/fontawesome-svg-core/styles.css",
+    "~/assets/css/main.css",
+  ],
+  modules: ["@nuxt/eslint"],
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: [
+        "@fortawesome/free-solid-svg-icons",
+        "@fortawesome/fontawesome-svg-core",
+        "@fortawesome/vue-fontawesome",
+      ],
+    },
   },
-})
+});

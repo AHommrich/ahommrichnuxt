@@ -1,7 +1,5 @@
 <template>
-
-<div>
-
-</div>
-
+  <AppHeroSection />
 </template>
+
+<script></script>
