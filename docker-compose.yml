@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  nuxt:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NITRO_PRESET=node-server
+    restart: always
