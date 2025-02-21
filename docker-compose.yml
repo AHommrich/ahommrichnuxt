@@ -1,9 +1,37 @@
 version: "3.8"
+
 services:
   nuxt:
+    image: your-nuxt-app-image
+    container_name: nuxt-app
     build: .
     ports:
       - "3000:3000"
     environment:
-      - NITRO_PRESET=node-server
-    restart: always
+      - VIRTUAL_HOST=your-domain.com
+      - VIRTUAL_PORT=3000
+    networks:
+      - web
+
+  caddy:
+    image: caddy:alpine
+    container_name: caddy
+    environment:
+      - ACME_AGREE=true  # Akzeptiere Let's Encrypt TOS automatisch
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  caddy_data:
+  caddy_config:
