@@ -1,3 +1,18 @@
+<script lang="ts" setup>
+
+function getCurrentAge() {
+  const today = new Date();
+  const birthday = new Date(1997, 2, 25);
+  let age = today.getFullYear() - birthday.getFullYear();
+  const m = today.getMonth() - birthday.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+</script>
+
 <template>
   <div id="ueber-mich" class="relative mx-auto mb-36 w-full max-w-7xl">
     <div
@@ -20,7 +35,7 @@
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Mein Name ist André Hommrich. Ich bin 28 Jahre alt und stamme aus
+            Mein Name ist André Hommrich. Ich bin {{ getCurrentAge()}} Jahre alt und stamme aus
             dem wunderschönen Westerwald. Menschen beschreiben mich als
             freundlich, hilfsbereit und leidenschaftlich darin, mein Wissen und
             meine Begeisterung für Technik mit anderen zu teilen.
@@ -39,7 +54,7 @@
             src="/img/andre-arbeit-3.jpg"
             class="block h-auto max-h-64 py-3 w-full rounded-xl object-cover shadow-lg md:object-[center_45%] lg:hidden"
             alt="André bei der Arbeit"
-          />
+          >
           <p
             class="text-left text-xs pt-3 text-gray-200 sm:text-sm md:text-base lg:text-xl"
           >
@@ -61,7 +76,7 @@
           src="/img/andre-arbeit-3.jpg"
           class="h-auto max-h-[550px] w-full rounded-xl object-contain shadow-lg"
           alt="André bei der Arbeit"
-        />
+        >
       </div>
     </div>
   </div>
