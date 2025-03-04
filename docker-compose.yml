@@ -17,7 +17,7 @@ services:
     image: caddy:alpine
     container_name: caddy
     environment:
-      - ACME_AGREE=true  # Akzeptiere Let's Encrypt TOS automatisch
+      - ACME_AGREE=true # Akzeptiere Let's Encrypt TOS automatisch
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
