@@ -75,7 +75,7 @@ onMounted(async () => {
       <!-- Logo links -->
       <div class="text-lg font-bold">
         <NuxtLink to="/" class="text-lg font-bold">
-          <img src="@/assets/logo-white.svg" alt="Logo" class="h-10 w-auto" >
+          <img src="@/assets/logo-white.svg" alt="Logo" class="h-10 w-auto" />
         </NuxtLink>
       </div>
 

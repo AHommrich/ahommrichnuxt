@@ -1,0 +1,4 @@
+ahommrich.de {
+    reverse_proxy nuxt-app:3000
+    tls andre-hommrich@web.de  # Deine E-Mail-Adresse für Let's Encrypt
+}
