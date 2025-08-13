@@ -1,39 +1,47 @@
+<script lang="ts" setup>
+
+function getCurrentAge() {
+  const today = new Date();
+  const birthday = new Date(1997, 2, 25);
+  let age = today.getFullYear() - birthday.getFullYear();
+  const m = today.getMonth() - birthday.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+</script>
+
 <template>
   <div id="ueber-mich" class="relative mx-auto mb-36 w-full max-w-7xl">
-    <!-- Wrapper für den Inhalt -->
     <div
       class="relative z-10 flex w-full flex-col items-center sm:flex-row sm:px-9 sm:py-9"
     >
-      <!-- Hintergrundboxen nur für das w-2/3 div -->
       <div class="relative w-[95%] lg:w-2/3">
-        <!-- Graue Box (Hintergrund) nur für w-2/3 -->
         <div
           class="absolute inset-0 w-full translate-x-1.5 translate-y-1.5 rounded-xl border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
         />
-        <!-- Rote Box (Hintergrund) nur für w-2/3 -->
         <div
           class="absolute inset-0 w-full -translate-x-1.5 -translate-y-1.5 rounded-xl border border-[#3b4245] bg-[#8D1D29] opacity-80 dark:border-white"
         />
 
-        <!-- Textbereich (Inhalt von w-2/3) -->
-        <div
-          class="relative z-10 flex flex-col space-y-6 p-6 sm:justify-center"
-        >
+        <div class="relative z-10 flex flex-col p-6 sm:justify-center">
           <h3
-            class="self-center text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
+            class="self-center text-center pb-3 text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
           >
             Wer bin ich?
           </h3>
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Mein Name ist André Hommrich. Ich bin 28 Jahre alt und stamme aus
+            Mein Name ist André Hommrich. Ich bin {{ getCurrentAge()}} Jahre alt und stamme aus
             dem wunderschönen Westerwald. Menschen beschreiben mich als
             freundlich, hilfsbereit und leidenschaftlich darin, mein Wissen und
             meine Begeisterung für Technik mit anderen zu teilen.
           </p>
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
             Besonders spannend finde ich es, mich in technische
             Herausforderungen zu vertiefen und diese mit einem Hang zur
@@ -44,11 +52,11 @@
           </p>
           <img
             src="/img/andre-arbeit-3.jpg"
-            class="block h-auto max-h-64 w-full rounded-xl object-cover shadow-lg md:object-[center_45%] lg:hidden"
+            class="block h-auto max-h-64 py-3 w-full rounded-xl object-cover shadow-lg md:object-[center_45%] lg:hidden"
             alt="André bei der Arbeit"
           >
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs pt-3 text-gray-200 sm:text-sm md:text-base lg:text-xl"
           >
             Ich habe eine Ausbildung zum Elektroniker für Energie- und
             Gebäudetechnik absolviert, was mir die Grundlagen der Technik und
@@ -63,7 +71,6 @@
         </div>
       </div>
 
-      <!-- Bildbereich (1/3) mit margin-left für Abstand -->
       <div class="ml-8 hidden w-1/3 items-center justify-center lg:flex">
         <img
           src="/img/andre-arbeit-3.jpg"
