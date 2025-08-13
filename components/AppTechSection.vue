@@ -13,23 +13,21 @@
         <div
           class="absolute inset-0 w-full -translate-x-1.5 -translate-y-1.5 rounded-xl border border-[#3b4245] bg-[#8D1D29] opacity-80 dark:border-white"
         />
-        <div
-          class="relative z-10 flex flex-col space-y-6 p-6 sm:justify-center"
-        >
+        <div class="relative z-10 flex flex-col p-6 sm:justify-center">
           <h3
-            class="self-center text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
+            class="self-center text-center pb-3 text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
           >
             Was ich aktuell mache?
           </h3>
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
             Seit 2022 mache ich meine zweite Ausbildung zum Fachinformatiker für
             Anwendungsentwicklung. In dieser Zeit konnte ich mein technisches
             Wissen und mein logisches Denken auf ein neues Level bringen.
           </p>
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
             Im Frontend habe ich viel mit Vue.js und React gearbeitet und möchte
             bald auch Angular lernen. Es macht mir Spaß, kreative
@@ -43,13 +41,13 @@
           </p>
           <div
             ref="container"
-            class="relative m-8 flex min-h-64 items-center justify-center overflow-hidden lg:min-h-56"
+            class="relative m-8 hidden sm:flex min-h-32 items-center py-3 justify-center overflow-hidden lg:min-h-56"
           >
             <div
               v-for="(element, index) in elements"
               :key="index"
               :ref="(el) => ((animatedElements as any)[index] = el)"
-              class="absolute-anime flex h-12 w-12 items-center justify-center rounded-full bg-[#8D1D29] text-white dark:bg-transparent"
+              class="absolute-anime flex h-12 w-12 items-center justify-center text-white dark:bg-transparent"
             >
               <font-awesome-icon
                 v-if="isClient"
@@ -58,8 +56,17 @@
               />
             </div>
           </div>
+          <div class="flex flex-wrap sm:hidden justify-center gap-4 py-3">
+            <div v-for="(element, index) in elements" :key="index" class="flex">
+              <font-awesome-icon
+                v-if="isClient"
+                :icon="['fab', element.icon]"
+                class="h-8 w-8 text-2xl text-white"
+              />
+            </div>
+          </div>
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
             Durch die Arbeit an meinen Projekten habe ich wertvolle Erfahrungen
             mit HTML und CSS gesammelt, insbesondere durch den Einsatz des
@@ -73,7 +80,7 @@
             Bereichen lernen.
           </p>
           <p
-            class="text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
             In meiner Zeit als Softwareentwickler habe ich meine Leidenschaft
             für diesen Beruf voll entdeckt. Für mich vereint er perfekt meine
