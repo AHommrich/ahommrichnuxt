@@ -22,27 +22,26 @@
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Als ausgebildeter Fachinformatiker für Anwendungsentwicklung arbeite
-            ich täglich an realen Projekten – von der Planung über die Umsetzung
-            bis hin zur Wartung. In meiner Ausbildungszeit und darüber hinaus
-            habe ich ein breites technisches Fundament aufgebaut, das ich
-            seitdem kontinuierlich erweitere.
+            Als Fachinformatiker für Anwendungsentwicklung arbeite ich täglich
+            an realen Projekten – von der Planung über die Umsetzung bis hin zur
+            Wartung. In meiner Ausbildungszeit und darüber hinaus habe ich ein
+            breites technisches Fundament aufgebaut, das ich seitdem
+            kontinuierlich erweitere.
           </p>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Mein Schwerpunkt liegt in der Backend-Entwicklung – beruflich
+            Mein Schwerpunkt liegt in der PHP Backend-Entwicklung – beruflich
             hauptsächlich mit Symfony, privat mit Laravel. Im Frontend setze ich
             primär auf Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie
             Tailwind CSS und Bootstrap. Für mobile Anwendungen bringe ich zudem
             Erfahrung mit React Native mit. Diese Kombination ermöglicht es mir,
             Projekte ganzheitlich zu denken und als Fullstack-Entwickler
-            umzusetzen.
+            umzusetzen. KI-Tools wie Claude Code setze ich dabei bewusst als
+            Kooperationspartner ein – nicht als Ersatz für eigenes Denken,
+            sondern um effizienter und zielgerichteter zu arbeiten.
           </p>
-          <div
-            ref="container"
-            class="relative my-6 overflow-hidden"
-          >
+          <div ref="container" class="relative my-6 overflow-hidden">
             <div
               v-for="(name, index) in iconNames"
               :key="name"
@@ -54,22 +53,46 @@
                 :alt="iconLabels[name]"
                 class="h-8 w-8 shrink-0 icon-white"
               />
-              <span v-show="infoMode" class="icon-label-inline">{{ iconLabels[name] }}</span>
+              <span v-show="infoMode" class="icon-label-inline">{{
+                iconLabels[name]
+              }}</span>
             </div>
             <div class="info-bar">
               <button
                 class="info-btn"
-                :class="{ active: infoMode }"
-                :aria-label="infoMode ? 'Animation fortsetzen' : 'Technologien anzeigen'"
+                :class="{
+                  active: infoMode,
+                  'pulse-hint': pulseHint && !infoMode,
+                }"
+                :aria-label="
+                  infoMode ? 'Animation fortsetzen' : 'Technologien anzeigen'
+                "
                 @click="toggleInfoMode"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="flex-shrink: 0"
+                >
                   <circle cx="12" cy="12" r="10" />
                   <line x1="12" y1="8" x2="12" y2="8.5" />
                   <line x1="12" y1="12" x2="12" y2="16" />
                 </svg>
+                <span class="info-btn-label">{{
+                  infoMode ? "Animation" : "Technologien"
+                }}</span>
               </button>
-              <span v-show="infoMode" class="info-disclaimer">Eine Auswahl der Tools &amp; Technologien, die ich regelmäßig einsetze.</span>
+              <span v-show="infoMode" class="info-disclaimer"
+                >Eine Auswahl der Tools &amp; Technologien, die ich regelmäßig
+                einsetze.</span
+              >
             </div>
           </div>
           <p
@@ -169,6 +192,7 @@ interface IconState {
 const container = ref<HTMLElement | null>(null);
 const animatedElements = ref<HTMLElement[]>([]);
 const infoMode = ref(false);
+const pulseHint = ref(false);
 
 const MIN_CARD_W = 160; // minimum width — guarantees readable text
 const CARD_H = 40;
@@ -180,14 +204,24 @@ let gridCols = 2;
 let gridCardW = MIN_CARD_W;
 
 const computeGrid = () => {
-  gridCols = Math.max(2, Math.floor((containerW - CARD_PAD * 2 + CARD_GAP) / (MIN_CARD_W + CARD_GAP)));
-  gridCardW = Math.floor((containerW - CARD_PAD * 2 - (gridCols - 1) * CARD_GAP) / gridCols);
+  gridCols = Math.max(
+    2,
+    Math.floor(
+      (containerW - CARD_PAD * 2 + CARD_GAP) / (MIN_CARD_W + CARD_GAP),
+    ),
+  );
+  gridCardW = Math.floor(
+    (containerW - CARD_PAD * 2 - (gridCols - 1) * CARD_GAP) / gridCols,
+  );
 };
 
 const toggleInfoMode = () => {
   if (!infoMode.value) {
     // Stop animation
-    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
     resetPointer();
 
     computeGrid();
@@ -221,7 +255,9 @@ const toggleInfoMode = () => {
     });
 
     // 4. Show text labels in next frame (no DOM mutation during transition)
-    requestAnimationFrame(() => { infoMode.value = true; });
+    requestAnimationFrame(() => {
+      infoMode.value = true;
+    });
   } else {
     infoMode.value = false;
     nextTick(() => {
@@ -261,7 +297,8 @@ const applyContainerHeight = () => {
   if (!container.value) return;
   computeGrid();
   const rows = Math.ceil(iconNames.length / gridCols);
-  containerH = INFO_BAR_H + CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
+  containerH =
+    INFO_BAR_H + CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
   container.value.style.height = `${containerH}px`;
   // cache document-relative position (only here + on resize, never on scroll)
   const rect = container.value.getBoundingClientRect();
@@ -360,7 +397,8 @@ let touchInContainer = false;
 
 const handleTouchStart = (e: TouchEvent) => {
   touchInContainer = true;
-  if (e.touches.length > 0) getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
+  if (e.touches.length > 0)
+    getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
 };
 
 const handleTouchMove = (e: TouchEvent) => {
@@ -391,32 +429,58 @@ onMounted(async () => {
       containerW = entry.contentRect.width;
       applyContainerHeight();
       states.forEach((state) => {
-        state.x = Math.max(ICON_HALF, Math.min(containerW - ICON_HALF, state.x));
-        state.y = Math.max(ICON_HALF, Math.min(containerH - ICON_HALF, state.y));
+        state.x = Math.max(
+          ICON_HALF,
+          Math.min(containerW - ICON_HALF, state.x),
+        );
+        state.y = Math.max(
+          ICON_HALF,
+          Math.min(containerH - ICON_HALF, state.y),
+        );
       });
     }
   });
   resizeObserver.observe(container.value);
 
   // Pause rAF when section is not visible
-  intersectionObserver = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      isVisible = entry.isIntersecting;
-      if (isVisible && !infoMode.value && rafId === null) {
-        animatedElements.value.forEach((el) => (el as HTMLElement)?.classList.add("animating"));
-        rafId = requestAnimationFrame(tick);
-      } else if (!isVisible && rafId !== null) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
+  let hasPulsed = false;
+  intersectionObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !infoMode.value && rafId === null) {
+          animatedElements.value.forEach((el) =>
+            (el as HTMLElement)?.classList.add("animating"),
+          );
+          rafId = requestAnimationFrame(tick);
+        } else if (!isVisible && rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        // Pulse hint once when section first scrolls into view
+        if (isVisible && !hasPulsed) {
+          hasPulsed = true;
+          setTimeout(() => {
+            pulseHint.value = true;
+            setTimeout(() => {
+              pulseHint.value = false;
+            }, 2400);
+          }, 800);
+        }
       }
-    }
-  }, { threshold: 0 });
+    },
+    { threshold: 0 },
+  );
   intersectionObserver.observe(container.value);
 
   container.value.addEventListener("pointermove", handlePointerMove);
   container.value.addEventListener("pointerleave", resetPointer);
-  container.value.addEventListener("touchstart", handleTouchStart, { passive: true });
-  container.value.addEventListener("touchmove", handleTouchMove, { passive: true });
+  container.value.addEventListener("touchstart", handleTouchStart, {
+    passive: true,
+  });
+  container.value.addEventListener("touchmove", handleTouchMove, {
+    passive: true,
+  });
   container.value.addEventListener("touchend", handleTouchEnd);
   container.value.addEventListener("touchcancel", handleTouchEnd);
   window.addEventListener("scroll", handleScroll, { passive: true });
@@ -487,25 +551,54 @@ onBeforeUnmount(() => {
 
 .info-btn {
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  height: 34px;
+  padding: 0 12px 0 10px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+  gap: 6px;
+  border-radius: 17px;
   background: rgba(255, 255, 255, 0.15);
   color: white;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .info-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .info-btn.active {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.info-btn-label {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+@keyframes pulse-hint {
+  0%,
+  100% {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: none;
+  }
+  50% {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+  }
+}
+
+.info-btn.pulse-hint {
+  animation: pulse-hint 0.8s ease-in-out 3;
 }
 
 .info-disclaimer {
