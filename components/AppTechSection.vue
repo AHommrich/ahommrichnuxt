@@ -56,18 +56,21 @@
               />
               <span v-show="infoMode" class="icon-label-inline">{{ iconLabels[name] }}</span>
             </div>
-            <button
-              class="info-btn"
-              :class="{ active: infoMode }"
-              :aria-label="infoMode ? 'Animation fortsetzen' : 'Technologien anzeigen'"
-              @click="toggleInfoMode"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="8.5" />
-                <line x1="12" y1="12" x2="12" y2="16" />
-              </svg>
-            </button>
+            <div class="info-bar">
+              <button
+                class="info-btn"
+                :class="{ active: infoMode }"
+                :aria-label="infoMode ? 'Animation fortsetzen' : 'Technologien anzeigen'"
+                @click="toggleInfoMode"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="8.5" />
+                  <line x1="12" y1="12" x2="12" y2="16" />
+                </svg>
+              </button>
+              <span v-show="infoMode" class="info-disclaimer">Eine Auswahl der Tools &amp; Technologien, die ich regelmäßig einsetze.</span>
+            </div>
           </div>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
@@ -209,7 +212,7 @@ const toggleInfoMode = () => {
       const col = index % gridCols;
       const row = Math.floor(index / gridCols);
       const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
-      const ty = CARD_PAD + row * (CARD_H + CARD_GAP);
+      const ty = INFO_BAR_H + CARD_PAD + row * (CARD_H + CARD_GAP);
       el.style.transitionDelay = `${index * 20}ms`;
       el.style.transition = "transform 0.3s ease-out";
       el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
@@ -252,11 +255,13 @@ let containerDocTop = 0;
 let containerDocLeft = 0;
 let isVisible = false;
 
+const INFO_BAR_H = 52; // space reserved at the top for the info-bar (button + gap)
+
 const applyContainerHeight = () => {
   if (!container.value) return;
   computeGrid();
   const rows = Math.ceil(iconNames.length / gridCols);
-  containerH = CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
+  containerH = INFO_BAR_H + CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
   container.value.style.height = `${containerH}px`;
   // cache document-relative position (only here + on resize, never on scroll)
   const rect = container.value.getBoundingClientRect();
@@ -470,12 +475,20 @@ onBeforeUnmount(() => {
   filter: brightness(0) invert(1);
 }
 
-.info-btn {
+.info-bar {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+}
+
+.info-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -485,7 +498,6 @@ onBeforeUnmount(() => {
   border: none;
   cursor: pointer;
   transition: background 0.2s ease;
-  z-index: 10;
 }
 
 .info-btn:hover {
@@ -494,5 +506,12 @@ onBeforeUnmount(() => {
 
 .info-btn.active {
   background: rgba(255, 255, 255, 0.35);
+}
+
+.info-disclaimer {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  line-height: 1.3;
 }
 </style>
