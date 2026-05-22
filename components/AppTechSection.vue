@@ -24,22 +24,21 @@
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Als Fachinformatiker für Anwendungsentwicklung arbeite ich täglich
-            an realen Projekten – von der Planung über die Umsetzung bis hin zur
-            Wartung. In meiner Ausbildungszeit und darüber hinaus habe ich ein
-            breites technisches Fundament aufgebaut, das ich seitdem
-            kontinuierlich erweitere.
+            Als Webentwickler arbeite ich täglich an realen Projekten – von der
+            Planung über die Umsetzung bis hin zur Wartung. In meiner
+            Ausbildungszeit und darüber hinaus habe ich ein breites technisches
+            Fundament aufgebaut, das ich seitdem kontinuierlich erweitere.
           </p>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
             Mein Schwerpunkt liegt in der PHP Backend-Entwicklung – beruflich
-            hauptsächlich mit Symfony, privat mit Laravel. Im Frontend setze ich
-            primär auf Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie
-            Tailwind CSS und Bootstrap. Für mobile Anwendungen bringe ich zudem
-            Erfahrung mit React Native mit. Diese Kombination ermöglicht es mir,
-            Projekte ganzheitlich zu denken und als Fullstack-Entwickler
-            umzusetzen. KI-Tools wie Claude Code setze ich dabei bewusst als
+            mit Symfony, privat mit Laravel. Im Frontend setze ich primär auf
+            Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie Tailwind CSS
+            und Bootstrap. Für mobile Anwendungen bringe ich zudem Erfahrung mit
+            React Native mit. Diese Kombination ermöglicht es mir, Projekte
+            ganzheitlich zu denken und als Fullstack-Entwickler umzusetzen.
+            KI-Tools wie Claude Code setze ich dabei bewusst als
             Kooperationspartner ein – nicht als Ersatz für eigenes Denken,
             sondern um effizienter und zielgerichteter zu arbeiten.
           </p>

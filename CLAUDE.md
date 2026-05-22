@@ -124,6 +124,31 @@ Der `sm:hidden mobile-diamonds`-Wrapper ist bereits am mobilen Abschnitt gesetzt
 - Nuxt Server Preset: `node-server` (kein Static Export im Standard-Deploy)
 - Bei neuen Simple Icons: prüfen ob auf simpleicons.org verfügbar — manche Icons (openai, vscode) wurden entfernt und müssen von Alternativquellen geholt werden
 
+## ESLint + Prettier — bekannte Fallstricke
+
+### `npm run lintfix` schlägt fehl mit `structuredClone is not defined`
+
+Ursache: Node.js v16 wird verwendet — `structuredClone` existiert erst ab Node 17.  
+Fix: `nvm use` (Node 20 laut `.nvmrc`), dann erneut ausführen.  
+**Wichtig:** `nvm use` gilt nur für die interaktive Shell. In Claude Code Bash-Sessions muss Node 20 per absolutem Pfad aufgerufen werden:
+```bash
+~/.nvm/versions/node/v20.19.4/bin/node node_modules/.bin/eslint . --fix
+```
+
+### ESLint vs. Prettier Konflikt: `vue/html-self-closing`
+
+Prettier schreibt void-Elemente als `<img />`, ESLint (`vue/html-self-closing`) verbiet das standardmäßig. Lösung ist in `eslint.config.mjs` konfiguriert — `void: "always"` und `normal: "always"` damit beide Tools übereinstimmen:
+
+```js
+"vue/html-self-closing": ["error", {
+  html: { void: "always", normal: "always", component: "always" },
+  svg: "always",
+  math: "always",
+}]
+```
+
+Diesen Eintrag **nicht entfernen** — sonst entsteht ein dauerhafter ESLint/Prettier-Konflikt.
+
 ## Über André (Kontext für Texte)
 
 - Beruflich: Fachinformatiker für Anwendungsentwicklung in einer Agentur (CRM-Systeme)
