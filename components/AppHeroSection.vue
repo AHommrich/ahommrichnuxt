@@ -213,7 +213,7 @@ onMounted(() => {
       </div>
     </div>
     <!-- mobile design -->
-    <div class="sm:hidden">
+    <div class="sm:hidden mobile-diamonds">
       <div
         class="relative rotate-45"
         style="left: calc(47.5% - 340px); margin-bottom: -200px"
@@ -397,3 +397,12 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.mobile-diamonds > div > div {
+  outline: 1px solid transparent;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0) scale(1.005);
+}
+</style>
