@@ -41,7 +41,7 @@
           </p>
           <div
             ref="container"
-            class="relative mx-4 my-6"
+            class="relative my-6"
             :class="infoMode ? '' : 'overflow-hidden'"
           >
             <div
@@ -168,28 +168,37 @@ const container = ref<HTMLElement | null>(null);
 const animatedElements = ref<HTMLElement[]>([]);
 const infoMode = ref(false);
 
-const CARD_W = 110;
+const MIN_CARD_W = 160; // minimum width — guarantees readable text
 const CARD_H = 40;
-const CARD_GAP = 6;
-const CARD_PAD = 8;
+const CARD_GAP = 8;
+const CARD_PAD = 4;
+
+// computed at layout time, used by both applyContainerHeight and toggleInfoMode
+let gridCols = 2;
+let gridCardW = MIN_CARD_W;
+
+const computeGrid = () => {
+  gridCols = Math.max(2, Math.floor((containerW - CARD_PAD * 2 + CARD_GAP) / (MIN_CARD_W + CARD_GAP)));
+  gridCardW = Math.floor((containerW - CARD_PAD * 2 - (gridCols - 1) * CARD_GAP) / gridCols);
+};
 
 const toggleInfoMode = () => {
   if (!infoMode.value) {
-    // Enter info mode: stop animation, fly icons to grid positions
     infoMode.value = true;
     if (rafId !== null) {
       cancelAnimationFrame(rafId);
       rafId = null;
     }
 
-    const cols = Math.max(1, Math.floor((containerW - CARD_PAD * 2 + CARD_GAP) / (CARD_W + CARD_GAP)));
+    computeGrid();
+    container.value?.style.setProperty("--card-w", `${gridCardW}px`);
 
     iconNames.forEach((_, index) => {
       const el = animatedElements.value[index] as HTMLElement;
       if (!el) return;
-      const col = index % cols;
-      const row = Math.floor(index / cols);
-      const tx = CARD_PAD + col * (CARD_W + CARD_GAP);
+      const col = index % gridCols;
+      const row = Math.floor(index / gridCols);
+      const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
       const ty = CARD_PAD + row * (CARD_H + CARD_GAP);
       el.style.transitionDelay = `${index * 35}ms`;
       el.style.transition = "transform 0.4s ease";
@@ -198,14 +207,12 @@ const toggleInfoMode = () => {
       states[index].y = ty + ICON_HALF;
     });
   } else {
-    // Exit info mode: clear cards, restart animation
     infoMode.value = false;
     iconNames.forEach((_, index) => {
       const el = animatedElements.value[index] as HTMLElement;
       if (!el) return;
       el.style.transition = "none";
       el.style.transitionDelay = "";
-      // randomise fresh direction so icons don't all move the same way
       const angle = Math.random() * Math.PI * 2;
       states[index].vx = Math.cos(angle) * BASE_SPEED;
       states[index].vy = Math.sin(angle) * BASE_SPEED;
@@ -224,8 +231,8 @@ let resizeObserver: ResizeObserver | null = null;
 
 const applyContainerHeight = () => {
   if (!container.value) return;
-  const cols = Math.max(1, Math.floor((containerW - CARD_PAD * 2 + CARD_GAP) / (CARD_W + CARD_GAP)));
-  const rows = Math.ceil(iconNames.length / cols);
+  computeGrid();
+  const rows = Math.ceil(iconNames.length / gridCols);
   containerH = CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
   container.value.style.height = `${containerH}px`;
 };
@@ -379,12 +386,12 @@ onBeforeUnmount(() => {
 }
 
 .icon-wrapper.info-card {
-  width: 110px;
+  width: var(--card-w, 160px);
   height: 40px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 8px;
+  gap: 8px;
+  padding: 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.25);
