@@ -41,29 +41,35 @@
           </p>
           <div
             ref="container"
-            class="relative m-8 hidden sm:flex min-h-32 items-center py-3 justify-center overflow-hidden lg:min-h-56"
+            class="relative mx-4 my-6"
+            :class="infoMode ? '' : 'overflow-hidden'"
           >
             <div
-              v-for="(element, index) in elements"
-              :key="index"
+              v-for="(name, index) in iconNames"
+              :key="name"
               :ref="(el) => ((animatedElements as any)[index] = el)"
-              class="absolute-anime flex h-12 w-12 items-center justify-center"
+              class="icon-wrapper"
+              :class="{ 'info-card': infoMode }"
             >
               <img
-                :src="`/icons/${element.icon}.svg`"
-                :alt="element.icon"
-                class="h-8 w-8 icon-white"
+                :src="`/icons/${name}.svg`"
+                :alt="iconLabels[name]"
+                class="h-8 w-8 shrink-0 icon-white"
               />
+              <span v-if="infoMode" class="icon-label-inline">{{ iconLabels[name] }}</span>
             </div>
-          </div>
-          <div class="flex flex-wrap sm:hidden justify-center gap-4 py-3">
-            <div v-for="(element, index) in elements" :key="index" class="flex">
-              <img
-                :src="`/icons/${element.icon}.svg`"
-                :alt="element.icon"
-                class="h-8 w-8 icon-white"
-              />
-            </div>
+            <button
+              class="info-btn"
+              :class="{ active: infoMode }"
+              :aria-label="infoMode ? 'Animation fortsetzen' : 'Technologien anzeigen'"
+              @click="toggleInfoMode"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="8.5" />
+                <line x1="12" y1="12" x2="12" y2="16" />
+              </svg>
+            </button>
           </div>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
@@ -93,167 +99,334 @@
 </template>
 
 <script setup lang="ts">
-import { gsap } from "gsap";
-import { nextTick, onMounted, ref, onBeforeUnmount } from "vue";
+import { onBeforeUnmount, onMounted, nextTick, ref } from "vue";
 
-const globalSpeed = ref(5); // global animation speed
-const globalMaxCoalitions = ref(20); // global maximum number of coalitions
+const ICON_SIZE = 32;
+const ICON_HALF = ICON_SIZE / 2;
+const BASE_SPEED = 1.5;
+const FLEE_RADIUS = 120;
+const FLEE_FORCE = 5;
+const DAMPING = 0.92;
+const MIN_SPEED = 0.8;
 
 const iconNames = [
-  "vuedotjs",
-  "symfony",
-  "laravel",
-  "php",
-  "javascript",
+  "anthropic",
+  "apple",
   "bootstrap",
+  "css3",
   "docker",
   "git",
   "github",
   "gitlab",
+  "html5",
+  "javascript",
   "jetbrains",
-  "visualstudiocode",
+  "laravel",
+  "linux",
   "mysql",
-  "apple",
   "openai",
-  "anthropic",
+  "php",
+  "symfony",
+  "tailwindcss",
+  "typescript",
+  "visualstudiocode",
+  "vuedotjs",
 ];
 
-const elements = ref(
-  iconNames.map((icon) => ({
-    icon,
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  })),
-);
+const iconLabels: Record<string, string> = {
+  anthropic: "Anthropic (Claude)",
+  apple: "Apple Eco System",
+  bootstrap: "Bootstrap",
+  css3: "CSS3",
+  docker: "Docker",
+  git: "Git",
+  github: "GitHub",
+  gitlab: "GitLab",
+  html5: "HTML5",
+  javascript: "JavaScript",
+  jetbrains: "JetBrains",
+  laravel: "Laravel",
+  linux: "Linux",
+  mysql: "MySQL",
+  openai: "OpenAI",
+  php: "PHP",
+  symfony: "Symfony",
+  tailwindcss: "Tailwind CSS",
+  typescript: "TypeScript",
+  visualstudiocode: "VS Code",
+  vuedotjs: "Vue.js",
+};
 
-const container = ref(null);
-const animatedElements = ref([]);
+interface IconState {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
 
-onMounted(() => {
-  nextTick(() => {
-    elements.value.forEach((_, index) => {
-      moveElement(index);
+const container = ref<HTMLElement | null>(null);
+const animatedElements = ref<HTMLElement[]>([]);
+const infoMode = ref(false);
+
+const CARD_W = 110;
+const CARD_H = 40;
+const CARD_GAP = 6;
+const CARD_PAD = 8;
+
+const toggleInfoMode = () => {
+  if (!infoMode.value) {
+    // Enter info mode: stop animation, fly icons to grid positions
+    infoMode.value = true;
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    const cols = Math.max(1, Math.floor((containerW - CARD_PAD * 2 + CARD_GAP) / (CARD_W + CARD_GAP)));
+
+    iconNames.forEach((_, index) => {
+      const el = animatedElements.value[index] as HTMLElement;
+      if (!el) return;
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+      const tx = CARD_PAD + col * (CARD_W + CARD_GAP);
+      const ty = CARD_PAD + row * (CARD_H + CARD_GAP);
+      el.style.transitionDelay = `${index * 35}ms`;
+      el.style.transition = "transform 0.4s ease";
+      el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      states[index].x = tx + ICON_HALF;
+      states[index].y = ty + ICON_HALF;
     });
-    document.addEventListener("mousemove", handleMouseMove);
+  } else {
+    // Exit info mode: clear cards, restart animation
+    infoMode.value = false;
+    iconNames.forEach((_, index) => {
+      const el = animatedElements.value[index] as HTMLElement;
+      if (!el) return;
+      el.style.transition = "none";
+      el.style.transitionDelay = "";
+      // randomise fresh direction so icons don't all move the same way
+      const angle = Math.random() * Math.PI * 2;
+      states[index].vx = Math.cos(angle) * BASE_SPEED;
+      states[index].vy = Math.sin(angle) * BASE_SPEED;
+    });
+    rafId = requestAnimationFrame(tick);
+  }
+};
+
+let states: IconState[] = [];
+let containerW = 0;
+let containerH = 0;
+let pointerX = -1000;
+let pointerY = -1000;
+let rafId: number | null = null;
+let resizeObserver: ResizeObserver | null = null;
+
+const applyContainerHeight = () => {
+  if (!container.value) return;
+  const cols = Math.max(1, Math.floor((containerW - CARD_PAD * 2 + CARD_GAP) / (CARD_W + CARD_GAP)));
+  const rows = Math.ceil(iconNames.length / cols);
+  containerH = CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
+  container.value.style.height = `${containerH}px`;
+};
+
+const initStates = () => {
+  states = iconNames.map(() => {
+    const angle = Math.random() * Math.PI * 2;
+    return {
+      x: ICON_HALF + Math.random() * (containerW - ICON_SIZE),
+      y: ICON_HALF + Math.random() * (containerH - ICON_SIZE),
+      vx: Math.cos(angle) * BASE_SPEED,
+      vy: Math.sin(angle) * BASE_SPEED,
+    };
   });
+};
+
+const ensureMinSpeed = (state: IconState) => {
+  const speed = Math.sqrt(state.vx * state.vx + state.vy * state.vy);
+  if (speed < MIN_SPEED) {
+    if (speed === 0) {
+      const angle = Math.random() * Math.PI * 2;
+      state.vx = Math.cos(angle) * MIN_SPEED;
+      state.vy = Math.sin(angle) * MIN_SPEED;
+    } else {
+      const factor = MIN_SPEED / speed;
+      state.vx *= factor;
+      state.vy *= factor;
+    }
+  }
+};
+
+const tick = () => {
+  states.forEach((state, index) => {
+    const el = animatedElements.value[index];
+    if (!el) return;
+
+    const dx = state.x - pointerX;
+    const dy = state.y - pointerY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < FLEE_RADIUS && dist > 0) {
+      const force = (1 - dist / FLEE_RADIUS) * FLEE_FORCE;
+      state.vx += (dx / dist) * force;
+      state.vy += (dy / dist) * force;
+    }
+
+    state.x += state.vx;
+    state.y += state.vy;
+
+    if (state.x < ICON_HALF) {
+      state.x = ICON_HALF;
+      state.vx = Math.abs(state.vx);
+    } else if (state.x > containerW - ICON_HALF) {
+      state.x = containerW - ICON_HALF;
+      state.vx = -Math.abs(state.vx);
+    }
+    if (state.y < ICON_HALF) {
+      state.y = ICON_HALF;
+      state.vy = Math.abs(state.vy);
+    } else if (state.y > containerH - ICON_HALF) {
+      state.y = containerH - ICON_HALF;
+      state.vy = -Math.abs(state.vy);
+    }
+
+    state.vx *= DAMPING;
+    state.vy *= DAMPING;
+    ensureMinSpeed(state);
+
+    el.style.transform = `translate3d(${state.x - ICON_HALF}px, ${state.y - ICON_HALF}px, 0)`;
+  });
+
+  rafId = requestAnimationFrame(tick);
+};
+
+const getContainerPointerPos = (clientX: number, clientY: number) => {
+  if (!container.value) return;
+  const rect = container.value.getBoundingClientRect();
+  pointerX = clientX - rect.left;
+  pointerY = clientY - rect.top;
+};
+
+const handleMouseMove = (e: MouseEvent) => {
+  getContainerPointerPos(e.clientX, e.clientY);
+};
+
+const handleMouseLeave = () => {
+  pointerX = -1000;
+  pointerY = -1000;
+};
+
+const handleTouchMove = (e: TouchEvent) => {
+  if (e.touches.length === 0) return;
+  getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
+};
+
+const handleTouchEnd = () => {
+  pointerX = -1000;
+  pointerY = -1000;
+};
+
+onMounted(async () => {
+  if (!container.value) return;
+
+  await nextTick();
+  containerW = container.value.getBoundingClientRect().width;
+  applyContainerHeight();
+  initStates();
+
+  resizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      containerW = entry.contentRect.width;
+      applyContainerHeight();
+      states.forEach((state) => {
+        state.x = Math.max(ICON_HALF, Math.min(containerW - ICON_HALF, state.x));
+        state.y = Math.max(ICON_HALF, Math.min(containerH - ICON_HALF, state.y));
+      });
+    }
+  });
+  resizeObserver.observe(container.value);
+
+  rafId = requestAnimationFrame(tick);
+
+  container.value.addEventListener("mousemove", handleMouseMove);
+  container.value.addEventListener("mouseleave", handleMouseLeave);
+  container.value.addEventListener("touchmove", handleTouchMove, {
+    passive: true,
+  });
+  container.value.addEventListener("touchend", handleTouchEnd);
 });
 
 onBeforeUnmount(() => {
-  document.removeEventListener("mousemove", handleMouseMove);
+  if (rafId !== null) cancelAnimationFrame(rafId);
+  if (resizeObserver) resizeObserver.disconnect();
+  if (container.value) {
+    container.value.removeEventListener("mousemove", handleMouseMove);
+    container.value.removeEventListener("mouseleave", handleMouseLeave);
+    container.value.removeEventListener("touchmove", handleTouchMove);
+    container.value.removeEventListener("touchend", handleTouchEnd);
+  }
 });
-
-const collisionCounters = ref(
-  elements.value.map(() => ({
-    count: 0,
-    lastCollisionTime: Date.now(),
-  })),
-);
-
-const resetElementPosition = (index: number) => {
-  const el = animatedElements.value[index];
-  if (!el) return;
-
-  // set element position to (0, 0)
-  gsap.set(el, { x: 0, y: 0 });
-
-  // set random direction
-  elements.value[index].directionX = Math.random() * 2 - 1;
-  elements.value[index].directionY = Math.random() * 2 - 1;
-
-  // reset collision counter
-  collisionCounters.value[index].count = 0;
-};
-
-const moveElement = (index: number) => {
-  const containerEl = container.value;
-  const el = animatedElements.value[index];
-
-  if (!el || !containerEl) return;
-
-  const speed = globalSpeed.value;
-  const elRect = (el as HTMLElement).getBoundingClientRect();
-  const containerRect = (containerEl as HTMLElement).getBoundingClientRect();
-
-  const now = Date.now();
-  const collisionData = collisionCounters.value[index];
-
-  // coalition detection and direction reversal
-  let hasCollided = false;
-  if (
-    elRect.right >= containerRect.right ||
-    elRect.left <= containerRect.left
-  ) {
-    elements.value[index].directionX *= -1;
-    hasCollided = true;
-  }
-
-  if (
-    elRect.bottom >= containerRect.bottom ||
-    elRect.top <= containerRect.top
-  ) {
-    elements.value[index].directionY *= -1;
-    hasCollided = true;
-  }
-
-  // if element has collided with the container, increase the collision counter
-  if (hasCollided) {
-    if (now - collisionData.lastCollisionTime < 3000) {
-      collisionData.count++;
-    } else {
-      // reset counter after 3 seconds
-      collisionData.count = 1;
-    }
-    collisionData.lastCollisionTime = now;
-    // if more than the defined number of collisions, reset the element position
-    if (collisionData.count > globalMaxCoalitions.value) {
-      resetElementPosition(index);
-    }
-  }
-
-  // continuous movement without fixed duration
-  gsap.to(el, {
-    x: `+=${speed * elements.value[index].directionX}`,
-    y: `+=${speed * elements.value[index].directionY}`,
-    duration: 0.1,
-    onComplete: () => moveElement(index),
-    ease: "none",
-  });
-};
-
-const handleMouseMove = (event: MouseEvent) => {
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
-
-  elements.value.forEach((_, index) => {
-    const el = animatedElements.value[index] as HTMLElement;
-    const elRect = el.getBoundingClientRect();
-
-    // is mouse inside element?
-    if (
-      mouseX >= elRect.left &&
-      mouseX <= elRect.right &&
-      mouseY >= elRect.top &&
-      mouseY <= elRect.bottom
-    ) {
-      // set random direction
-      elements.value[index].directionX =
-        (Math.random() * 2 - 1) * globalSpeed.value;
-      elements.value[index].directionY =
-        (Math.random() * 2 - 1) * globalSpeed.value;
-    }
-  });
-};
 </script>
 
 <style scoped>
-.absolute-anime {
+.icon-wrapper {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  will-change: transform;
+}
+
+.icon-wrapper.info-card {
+  width: 110px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+.icon-label-inline {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: white;
+  pointer-events: none;
 }
 
 .icon-white {
   filter: brightness(0) invert(1);
+}
+
+.info-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  z-index: 10;
+}
+
+.info-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.info-btn.active {
+  background: rgba(255, 255, 255, 0.35);
 }
 </style>
