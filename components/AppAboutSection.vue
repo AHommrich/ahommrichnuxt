@@ -58,15 +58,16 @@ function getCurrentAge() {
           <p
             class="text-left text-xs pt-3 text-gray-200 sm:text-sm md:text-base lg:text-xl"
           >
-            Ich habe eine Ausbildung zum Elektroniker für Energie- und
-            Gebäudetechnik absolviert, was mir die Grundlagen der Technik und
-            des Handwerks vermittelt hat. Im Anschluss habe ich in verschiedenen
-            Branchen gearbeitet, darunter die Produktion von medizinischen
-            Versorgungseinheiten, die Elektrotechnik in der Industrie sowie die
-            deutschlandweite Montage von Rechenzentren. In diesen Bereichen
-            konnte ich umfassende Erfahrungen sammeln und mein technisches
-            Wissen kontinuierlich erweitern und festigen, insbesondere in der
-            Planung, Installation und Wartung komplexer Systeme.
+            Meine berufliche Laufbahn begann im Handwerk – als Elektroniker
+            konnte ich früh Projekterfahrung in der Praxis sammeln und verstehen,
+            wie moderne Arbeitsprozesse funktionieren. Heute arbeite ich
+            als Fachinformatiker für Anwendungsentwicklung aktiv an realen
+            Kundenprojekten und bewege mich dabei täglich mit modernen
+            Technologien und Konzepten. Entwicklung ist nicht nur mein Beruf,
+            sondern meine Leidenschaft – weshalb ich mich ständig privat
+            weiterbilde, eigene Projekte umsetze und KI-Tools wie Claude Code
+            bewusst als Kooperationspartner einsetze, um effizienter und
+            zielgerichteter zu arbeiten.
           </p>
         </div>
       </div>
