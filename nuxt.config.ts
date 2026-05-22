@@ -3,7 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-02-18",
-  devtools: { enabled: true },
+  // Automatically enabled in development, disabled in production builds
+  devtools: { enabled: process.env.NODE_ENV !== "production" },
   app: {
     head: {
       link: [{ rel: "icon", type: "image/png", href: "/favicon.ico" }],
