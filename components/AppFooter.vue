@@ -1,5 +1,7 @@
 <script setup lang="ts">
 defineProps<{
+  // When true, the footer is fixed to the bottom of the viewport.
+  // Used on short pages (e.g. Impressum) where the content doesn't fill the screen height.
   isFooterFixed?: boolean;
 }>();
 </script>
@@ -14,6 +16,7 @@ defineProps<{
     class="h-auto"
   >
     <div class="relative mx-auto h-full w-full max-w-7xl">
+      <!-- Semi-transparent burgundy background layer -->
       <div class="absolute inset-0 z-0 rounded-t-xl bg-[#8D1D29] opacity-80" />
 
       <div
