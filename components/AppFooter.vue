@@ -23,8 +23,9 @@ defineProps<{
         class="relative z-10 mx-auto flex w-full transform justify-between px-12 py-2 shadow-lg"
       >
         <img src="@/assets/logo-white.svg" alt="Logo" class="h-24 w-auto" />
-        <div class="flex items-center">
+        <div class="flex items-center gap-6">
           <NuxtLink :to="'impressum'"> Impressum </NuxtLink>
+          <NuxtLink :to="'datenschutz'"> Datenschutz </NuxtLink>
         </div>
       </div>
     </div>
