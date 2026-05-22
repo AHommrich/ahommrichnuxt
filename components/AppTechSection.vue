@@ -214,7 +214,7 @@ const toggleInfoMode = () => {
       infoMode.value = true;
     });
   } else {
-    // Hide labels first, then restart animation
+    // Hide labels, clear transitions, restart animation
     infoMode.value = false;
     nextTick(() => {
       iconNames.forEach((_, index) => {
@@ -227,7 +227,9 @@ const toggleInfoMode = () => {
         states[index].vx = Math.cos(angle) * BASE_SPEED;
         states[index].vy = Math.sin(angle) * BASE_SPEED;
       });
-      rafId = requestAnimationFrame(tick);
+      if (isVisible && rafId === null) {
+        rafId = requestAnimationFrame(tick);
+      }
     });
   }
 };
@@ -239,8 +241,11 @@ let pointerX = -1000;
 let pointerY = -1000;
 let rafId: number | null = null;
 let resizeObserver: ResizeObserver | null = null;
-let cachedContainerLeft = 0;
-let cachedContainerTop = 0;
+let intersectionObserver: IntersectionObserver | null = null;
+// document-relative position — no layout reads needed during scroll/pointermove
+let containerDocTop = 0;
+let containerDocLeft = 0;
+let isVisible = false;
 
 const applyContainerHeight = () => {
   if (!container.value) return;
@@ -248,10 +253,10 @@ const applyContainerHeight = () => {
   const rows = Math.ceil(iconNames.length / gridCols);
   containerH = CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
   container.value.style.height = `${containerH}px`;
-  // update cached position
+  // cache document-relative position (only here + on resize, never on scroll)
   const rect = container.value.getBoundingClientRect();
-  cachedContainerLeft = rect.left;
-  cachedContainerTop = rect.top;
+  containerDocTop = rect.top + window.scrollY;
+  containerDocLeft = rect.left + window.scrollX;
 };
 
 const initStates = () => {
@@ -325,48 +330,33 @@ const tick = () => {
   rafId = requestAnimationFrame(tick);
 };
 
+// Pure math — no layout reads during interaction
 const getContainerPointerPos = (clientX: number, clientY: number) => {
-  pointerX = clientX - cachedContainerLeft;
-  pointerY = clientY - cachedContainerTop;
+  pointerX = clientX - (containerDocLeft - window.scrollX);
+  pointerY = clientY - (containerDocTop - window.scrollY);
 };
 
-const handleMouseMove = (e: MouseEvent) => {
+const resetPointer = () => {
+  pointerX = -1000;
+  pointerY = -1000;
+};
+
+const handlePointerMove = (e: PointerEvent) => {
   getContainerPointerPos(e.clientX, e.clientY);
 };
 
-const handleMouseLeave = () => {
-  pointerX = -1000;
-  pointerY = -1000;
-};
-
-const handleTouchMove = (e: TouchEvent) => {
-  if (e.touches.length === 0) return;
-  getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
-};
-
-const handleTouchEnd = () => {
-  pointerX = -1000;
-  pointerY = -1000;
+const handleScroll = () => {
+  // reset flee during scroll so icons don't react to a stale pointer position
+  resetPointer();
 };
 
 onMounted(async () => {
   if (!container.value) return;
 
   await nextTick();
-  const rect = container.value.getBoundingClientRect();
-  containerW = rect.width;
-  cachedContainerLeft = rect.left;
-  cachedContainerTop = rect.top;
+  containerW = container.value.getBoundingClientRect().width;
   applyContainerHeight();
   initStates();
-
-  // keep cached position fresh on scroll
-  window.addEventListener("scroll", () => {
-    if (!container.value) return;
-    const r = container.value.getBoundingClientRect();
-    cachedContainerLeft = r.left;
-    cachedContainerTop = r.top;
-  }, { passive: true });
 
   resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
@@ -380,25 +370,33 @@ onMounted(async () => {
   });
   resizeObserver.observe(container.value);
 
-  rafId = requestAnimationFrame(tick);
+  // Pause rAF when section is not visible
+  intersectionObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !infoMode.value && rafId === null) {
+        animatedElements.value.forEach((el) => (el as HTMLElement)?.classList.add("animating"));
+        rafId = requestAnimationFrame(tick);
+      } else if (!isVisible && rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+  }, { threshold: 0 });
+  intersectionObserver.observe(container.value);
 
-  container.value.addEventListener("mousemove", handleMouseMove);
-  container.value.addEventListener("mouseleave", handleMouseLeave);
-  container.value.addEventListener("touchmove", handleTouchMove, {
-    passive: true,
-  });
-  container.value.addEventListener("touchend", handleTouchEnd);
+  container.value.addEventListener("pointermove", handlePointerMove);
+  container.value.addEventListener("pointerleave", resetPointer);
+  window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
 onBeforeUnmount(() => {
   if (rafId !== null) cancelAnimationFrame(rafId);
-  if (resizeObserver) resizeObserver.disconnect();
-  if (container.value) {
-    container.value.removeEventListener("mousemove", handleMouseMove);
-    container.value.removeEventListener("mouseleave", handleMouseLeave);
-    container.value.removeEventListener("touchmove", handleTouchMove);
-    container.value.removeEventListener("touchend", handleTouchEnd);
-  }
+  resizeObserver?.disconnect();
+  intersectionObserver?.disconnect();
+  container.value?.removeEventListener("pointermove", handlePointerMove);
+  container.value?.removeEventListener("pointerleave", resetPointer);
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
