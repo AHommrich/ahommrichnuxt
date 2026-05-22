@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 function getCurrentAge() {
   const today = new Date();
   const birthday = new Date(1997, 2, 25);
@@ -10,7 +9,6 @@ function getCurrentAge() {
   }
   return age;
 }
-
 </script>
 
 <template>
@@ -35,10 +33,11 @@ function getCurrentAge() {
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Mein Name ist André Hommrich. Ich bin {{ getCurrentAge()}} Jahre alt und stamme aus
-            dem wunderschönen Westerwald. Menschen beschreiben mich als
-            freundlich, hilfsbereit und leidenschaftlich darin, mein Wissen und
-            meine Begeisterung für Technik mit anderen zu teilen.
+            Mein Name ist André Hommrich. Ich bin {{ getCurrentAge() }} Jahre
+            alt und stamme aus dem wunderschönen Westerwald. Menschen
+            beschreiben mich als freundlich, hilfsbereit und leidenschaftlich
+            darin, mein Wissen und meine Begeisterung für Technik mit anderen zu
+            teilen.
           </p>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
@@ -54,20 +53,19 @@ function getCurrentAge() {
             src="/img/andre-arbeit-3.jpg"
             class="block h-auto max-h-64 py-3 w-full rounded-xl object-cover shadow-lg md:object-[center_45%] lg:hidden"
             alt="André bei der Arbeit"
-          >
+          />
           <p
             class="text-left text-xs pt-3 text-gray-200 sm:text-sm md:text-base lg:text-xl"
           >
-            Meine berufliche Laufbahn begann im Handwerk – als Elektroniker
-            konnte ich früh Projekterfahrung in der Praxis sammeln und verstehen,
-            wie moderne Arbeitsprozesse funktionieren. Heute arbeite ich
-            als Fachinformatiker für Anwendungsentwicklung aktiv an realen
+            Meine berufliche Laufbahn begann im Handwerk – als ausgebildeter
+            Elektroniker m.F. Energie u. Gebäudetechnik konnte ich früh
+            Projekterfahrung in der Praxis sammeln und verstehen, wie moderne
+            Arbeitsprozesse funktionieren. Heute arbeite ich als ausgebildeter
+            Fachinformatiker für Anwendungsentwicklung aktiv an realen
             Kundenprojekten und bewege mich dabei täglich mit modernen
             Technologien und Konzepten. Entwicklung ist nicht nur mein Beruf,
             sondern meine Leidenschaft – weshalb ich mich ständig privat
-            weiterbilde, eigene Projekte umsetze und KI-Tools wie Claude Code
-            bewusst als Kooperationspartner einsetze, um effizienter und
-            zielgerichteter zu arbeiten.
+            weiterbilde und eigene Projekte umsetze.
           </p>
         </div>
       </div>
@@ -77,7 +75,7 @@ function getCurrentAge() {
           src="/img/andre-arbeit-3.jpg"
           class="h-auto max-h-[550px] w-full rounded-xl object-contain shadow-lg"
           alt="André bei der Arbeit"
-        >
+        />
       </div>
     </div>
   </div>
