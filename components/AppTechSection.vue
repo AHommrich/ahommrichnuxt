@@ -41,8 +41,7 @@
           </p>
           <div
             ref="container"
-            class="relative my-6"
-            :class="infoMode ? '' : 'overflow-hidden'"
+            class="relative my-6 overflow-hidden"
           >
             <div
               v-for="(name, index) in iconNames"
@@ -56,7 +55,7 @@
                 :alt="iconLabels[name]"
                 class="h-8 w-8 shrink-0 icon-white"
               />
-              <span v-if="infoMode" class="icon-label-inline">{{ iconLabels[name] }}</span>
+              <span v-show="infoMode" class="icon-label-inline">{{ iconLabels[name] }}</span>
             </div>
             <button
               class="info-btn"
@@ -105,6 +104,7 @@ const ICON_SIZE = 32;
 const ICON_HALF = ICON_SIZE / 2;
 const BASE_SPEED = 1.5;
 const FLEE_RADIUS = 120;
+const FLEE_RADIUS_SQ = FLEE_RADIUS * FLEE_RADIUS;
 const FLEE_FORCE = 5;
 const DAMPING = 0.92;
 const MIN_SPEED = 0.8;
@@ -184,15 +184,17 @@ const computeGrid = () => {
 
 const toggleInfoMode = () => {
   if (!infoMode.value) {
-    infoMode.value = true;
+    // 1. Stop animation first
     if (rafId !== null) {
       cancelAnimationFrame(rafId);
       rafId = null;
     }
+    animatedElements.value.forEach((el) => (el as HTMLElement)?.classList.remove("animating"));
 
     computeGrid();
     container.value?.style.setProperty("--card-w", `${gridCardW}px`);
 
+    // 2. Write all transforms & transitions before Vue touches the DOM
     iconNames.forEach((_, index) => {
       const el = animatedElements.value[index] as HTMLElement;
       if (!el) return;
@@ -200,24 +202,33 @@ const toggleInfoMode = () => {
       const row = Math.floor(index / gridCols);
       const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
       const ty = CARD_PAD + row * (CARD_H + CARD_GAP);
-      el.style.transitionDelay = `${index * 35}ms`;
-      el.style.transition = "transform 0.4s ease";
+      el.style.transitionDelay = `${index * 25}ms`;
+      el.style.transition = "transform 0.35s ease";
       el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
       states[index].x = tx + ICON_HALF;
       states[index].y = ty + ICON_HALF;
     });
-  } else {
-    infoMode.value = false;
-    iconNames.forEach((_, index) => {
-      const el = animatedElements.value[index] as HTMLElement;
-      if (!el) return;
-      el.style.transition = "none";
-      el.style.transitionDelay = "";
-      const angle = Math.random() * Math.PI * 2;
-      states[index].vx = Math.cos(angle) * BASE_SPEED;
-      states[index].vy = Math.sin(angle) * BASE_SPEED;
+
+    // 3. Show labels after transforms are committed (next frame)
+    requestAnimationFrame(() => {
+      infoMode.value = true;
     });
-    rafId = requestAnimationFrame(tick);
+  } else {
+    // Hide labels first, then restart animation
+    infoMode.value = false;
+    nextTick(() => {
+      iconNames.forEach((_, index) => {
+        const el = animatedElements.value[index] as HTMLElement;
+        if (!el) return;
+        el.style.transition = "none";
+        el.style.transitionDelay = "";
+        el.classList.add("animating");
+        const angle = Math.random() * Math.PI * 2;
+        states[index].vx = Math.cos(angle) * BASE_SPEED;
+        states[index].vy = Math.sin(angle) * BASE_SPEED;
+      });
+      rafId = requestAnimationFrame(tick);
+    });
   }
 };
 
@@ -228,6 +239,8 @@ let pointerX = -1000;
 let pointerY = -1000;
 let rafId: number | null = null;
 let resizeObserver: ResizeObserver | null = null;
+let cachedContainerLeft = 0;
+let cachedContainerTop = 0;
 
 const applyContainerHeight = () => {
   if (!container.value) return;
@@ -235,6 +248,10 @@ const applyContainerHeight = () => {
   const rows = Math.ceil(iconNames.length / gridCols);
   containerH = CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
   container.value.style.height = `${containerH}px`;
+  // update cached position
+  const rect = container.value.getBoundingClientRect();
+  cachedContainerLeft = rect.left;
+  cachedContainerTop = rect.top;
 };
 
 const initStates = () => {
@@ -271,9 +288,10 @@ const tick = () => {
 
     const dx = state.x - pointerX;
     const dy = state.y - pointerY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
+    const distSq = dx * dx + dy * dy;
 
-    if (dist < FLEE_RADIUS && dist > 0) {
+    if (distSq < FLEE_RADIUS_SQ && distSq > 0) {
+      const dist = Math.sqrt(distSq);
       const force = (1 - dist / FLEE_RADIUS) * FLEE_FORCE;
       state.vx += (dx / dist) * force;
       state.vy += (dy / dist) * force;
@@ -308,10 +326,8 @@ const tick = () => {
 };
 
 const getContainerPointerPos = (clientX: number, clientY: number) => {
-  if (!container.value) return;
-  const rect = container.value.getBoundingClientRect();
-  pointerX = clientX - rect.left;
-  pointerY = clientY - rect.top;
+  pointerX = clientX - cachedContainerLeft;
+  pointerY = clientY - cachedContainerTop;
 };
 
 const handleMouseMove = (e: MouseEvent) => {
@@ -337,9 +353,20 @@ onMounted(async () => {
   if (!container.value) return;
 
   await nextTick();
-  containerW = container.value.getBoundingClientRect().width;
+  const rect = container.value.getBoundingClientRect();
+  containerW = rect.width;
+  cachedContainerLeft = rect.left;
+  cachedContainerTop = rect.top;
   applyContainerHeight();
   initStates();
+
+  // keep cached position fresh on scroll
+  window.addEventListener("scroll", () => {
+    if (!container.value) return;
+    const r = container.value.getBoundingClientRect();
+    cachedContainerLeft = r.left;
+    cachedContainerTop = r.top;
+  }, { passive: true });
 
   resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
@@ -382,6 +409,9 @@ onBeforeUnmount(() => {
   left: 0;
   width: 32px;
   height: 32px;
+}
+
+.icon-wrapper.animating {
   will-change: transform;
 }
 
