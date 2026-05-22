@@ -22,22 +22,22 @@
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Seit 2022 mache ich meine zweite Ausbildung zum Fachinformatiker für
-            Anwendungsentwicklung. In dieser Zeit konnte ich mein technisches
-            Wissen und mein logisches Denken auf ein neues Level bringen.
+            Als ausgebildeter Fachinformatiker für Anwendungsentwicklung arbeite
+            ich täglich an realen Projekten – von der Planung über die Umsetzung
+            bis hin zur Wartung. In meiner Ausbildungszeit und darüber hinaus
+            habe ich ein breites technisches Fundament aufgebaut, das ich
+            seitdem kontinuierlich erweitere.
           </p>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Im Frontend habe ich viel mit Vue.js und React gearbeitet und möchte
-            bald auch Angular lernen. Es macht mir Spaß, kreative
-            Benutzeroberflächen zu gestalten und interaktive Webanwendungen zu
-            entwickeln. Gleichzeitig fasziniert mich die Backend-Entwicklung mit
-            Laravel, da sie komplexe Lösungsansätze erfordert und mir
-            ermöglicht, die gesamte Logik einer Webanwendung zu optimieren.
-            Diese Kombination aus Frontend und Backend gibt mir die Möglichkeit,
-            Projekte ganzheitlich zu gestalten und als Fullstack-Entwickler
-            meine Leidenschaft voll auszuleben.
+            Mein Schwerpunkt liegt in der Backend-Entwicklung – beruflich
+            hauptsächlich mit Symfony, privat mit Laravel. Im Frontend setze ich
+            primär auf Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie
+            Tailwind CSS und Bootstrap. Für mobile Anwendungen bringe ich zudem
+            Erfahrung mit React Native mit. Diese Kombination ermöglicht es mir,
+            Projekte ganzheitlich zu denken und als Fullstack-Entwickler
+            umzusetzen.
           </p>
           <div
             ref="container"
@@ -47,37 +47,31 @@
               v-for="(element, index) in elements"
               :key="index"
               :ref="(el) => ((animatedElements as any)[index] = el)"
-              class="absolute-anime flex h-12 w-12 items-center justify-center text-white dark:bg-transparent"
+              class="absolute-anime flex h-12 w-12 items-center justify-center"
             >
-              <font-awesome-icon
-                v-if="isClient"
-                :icon="['fab', element.icon]"
-                class="h-8 w-8 text-2xl text-white"
+              <img
+                :src="`/icons/${element.icon}.svg`"
+                :alt="element.icon"
+                class="h-8 w-8 icon-white"
               />
             </div>
           </div>
           <div class="flex flex-wrap sm:hidden justify-center gap-4 py-3">
             <div v-for="(element, index) in elements" :key="index" class="flex">
-              <font-awesome-icon
-                v-if="isClient"
-                :icon="['fab', element.icon]"
-                class="h-8 w-8 text-2xl text-white"
+              <img
+                :src="`/icons/${element.icon}.svg`"
+                :alt="element.icon"
+                class="h-8 w-8 icon-white"
               />
             </div>
           </div>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
-            Durch die Arbeit an meinen Projekten habe ich wertvolle Erfahrungen
-            mit HTML und CSS gesammelt, insbesondere durch den Einsatz des
-            CSS-Frameworks Tailwind CSS. Im Rahmen meines Abschlussprojekts
-            konnte ich zudem fundierte Kenntnisse in der Containerisierung von
-            Webanwendungen mit Docker erwerben. Git nutze ich regelmäßig in
-            meinen Projekten und habe dabei umfassende Erfahrung mit GitLab und
-            GitHub entwickelt. In der Berufsschule habe ich zusätzlich mit
-            Python 3 und Django sowie mit Java gearbeitet, was mich sehr
-            interessiert. Gerne möchte ich in der Zukunft mehr in diesen
-            Bereichen lernen.
+            Containerisierung mit Docker, Versionskontrolle mit Git,
+            CI/CD-Pipelines und Datenbankarbeit mit MySQL gehören für mich zum
+            Alltag. Ich halte mich ständig auf dem neuesten Stand – ob neue
+            Frameworks, Deployment-Konzepte oder moderne Entwicklungsworkflows.
           </p>
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
@@ -99,101 +93,38 @@
 </template>
 
 <script setup lang="ts">
-import { library } from "@fortawesome/fontawesome-svg-core";
 import { gsap } from "gsap";
 import { nextTick, onMounted, ref, onBeforeUnmount } from "vue";
 
-import {
-  faCss3,
-  faDocker,
-  faGithub,
-  faGitlab,
-  faHtml5,
-  faJs,
-  faLaravel,
-  faPhp,
-  faPython,
-  faReact,
-  faVuejs,
-} from "@fortawesome/free-brands-svg-icons";
-
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-const isClient = ref(false);
-
-library.add(
-  faReact,
-  faVuejs,
-  faCss3,
-  faHtml5,
-  faDocker,
-  faGithub,
-  faJs,
-  faLaravel,
-  faGitlab,
-  faPhp,
-  faPython,
-);
-
 const globalSpeed = ref(5); // global animation speed
 const globalMaxCoalitions = ref(20); // global maximum number of coalitions
-const elements = ref([
-  {
-    icon: "react",
+
+const iconNames = [
+  "vuedotjs",
+  "symfony",
+  "laravel",
+  "php",
+  "javascript",
+  "bootstrap",
+  "docker",
+  "git",
+  "github",
+  "gitlab",
+  "jetbrains",
+  "visualstudiocode",
+  "mysql",
+  "apple",
+  "openai",
+  "anthropic",
+];
+
+const elements = ref(
+  iconNames.map((icon) => ({
+    icon,
     directionX: Math.random() * 2 - 1,
     directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "vuejs",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "css3",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "html5",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "docker",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "github",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "gitlab",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "js",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "laravel",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "php",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-  {
-    icon: "python",
-    directionX: Math.random() * 2 - 1,
-    directionY: Math.random() * 2 - 1,
-  },
-]);
+  })),
+);
 
 const container = ref(null);
 const animatedElements = ref([]);
@@ -204,7 +135,6 @@ onMounted(() => {
       moveElement(index);
     });
     document.addEventListener("mousemove", handleMouseMove);
-    isClient.value = import.meta.client; // Setze auf true, wenn im Client
   });
 });
 
@@ -321,6 +251,9 @@ const handleMouseMove = (event: MouseEvent) => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: black;
+}
+
+.icon-white {
+  filter: brightness(0) invert(1);
 }
 </style>
