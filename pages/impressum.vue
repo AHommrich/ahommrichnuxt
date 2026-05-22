@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useSeoMeta({
+  title: "Impressum — André Hommrich",
+  robots: "noindex, nofollow",
+});
+</script>
 
 <template>
   <div class="mx-auto w-full max-w-3xl px-4 pt-32 pb-24 sm:px-9 flex flex-col gap-12">

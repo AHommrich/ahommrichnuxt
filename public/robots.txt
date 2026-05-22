@@ -3,3 +3,5 @@ Allow: /
 
 Disallow: /.nuxt/
 Disallow: /node_modules/
+
+Sitemap: https://ahommrich.de/sitemap.xml
