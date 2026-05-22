@@ -1,1 +1,5 @@
+User-agent: *
+Allow: /
 
+Disallow: /.nuxt/
+Disallow: /node_modules/
