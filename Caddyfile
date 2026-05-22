@@ -1,4 +1,9 @@
 ahommrich.de {
     reverse_proxy nuxt-app:3000
-    tls andre-hommrich@web.de  # Deine E-Mail-Adresse für Let's Encrypt
+    tls andre-hommrich@web.de  # E-Mail-Adresse für Let's Encrypt
+
+    # Access logs are intentionally disabled — no persistent IP logging
+    log {
+        output discard
+    }
 }
