@@ -13,6 +13,7 @@ npm run lintfix      # ESLint + Prettier auto-fix
 ```
 
 ### Docker (Deployment)
+
 ```bash
 docker compose up -d          # Starten
 docker compose down           # Stoppen
@@ -68,6 +69,7 @@ public/
 ## AppTechSection — Animationssystem
 
 ### Überblick
+
 - **Kein GSAP** — ersetzt durch einen einzigen `requestAnimationFrame`-Loop
 - Physics-basiert: jedes Icon hat `x, y, vx, vy`-State
 - Icons fliehen vor Maus/Touch (`FLEE_RADIUS=120px`, `FLEE_FORCE=5`, `DAMPING=0.92`, `MIN_SPEED=0.8`)
@@ -77,11 +79,13 @@ public/
 - Scroll-Handler setzt Pointer-Position zurück (verhindert Flee beim Scrollen)
 
 ### Events
+
 - **Desktop:** `pointermove` (pointer.pointerType !== 'touch')
 - **Mobile:** `touchstart` / `touchmove` / `touchend` mit `touchInContainer`-Flag
 - Separate Behandlung wichtig — `pointermove` allein funktioniert auf Mobile nicht
 
 ### Info-Modus (Button unten rechts)
+
 - Klick → Icons ordnen sich als Karten an: Icon + Label, alphabetisch
 - Layout: dynamisch berechnete Grid-Breite (`gridCardW`), 2+ Spalten je nach Container-Breite
 - Transition-Reihenfolge: `.info-card`-Klasse + Breite setzen → Force Reflow → `transform`-Transition starten → `infoMode.value = true` im nächsten rAF-Frame
@@ -89,6 +93,7 @@ public/
 - Container-Höhe wird dynamisch per JS gesetzt (grid-basiert)
 
 ### Icons (21 Stück in `public/icons/`)
+
 alphabetisch: anthropic, apple, bootstrap, css3, docker, git, github, gitlab, html5, javascript, jetbrains, laravel, linux, mysql, openai, php, symfony, tailwindcss, typescript, visualstudiocode, vuedotjs
 
 - Darstellung: `<img>` mit `filter: brightness(0) invert(1)` (weiß im Dark Mode)

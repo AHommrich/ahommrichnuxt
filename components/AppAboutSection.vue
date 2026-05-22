@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+/**
+ * Calculates the current age based on the birthday (1997-03-25).
+ * Month is 0-indexed (2 = March). Subtracts 1 if the birthday hasn't occurred yet this year.
+ */
 function getCurrentAge() {
   const today = new Date();
   const birthday = new Date(1997, 2, 25);
@@ -12,11 +16,13 @@ function getCurrentAge() {
 </script>
 
 <template>
+  <!-- About section -->
   <div id="ueber-mich" class="relative mx-auto mb-36 w-full max-w-7xl">
     <div
       class="relative z-10 flex w-full flex-col items-center sm:flex-row sm:px-9 sm:py-9"
     >
       <div class="relative w-[95%] lg:w-2/3">
+        <!-- Decorative offset shadow layers (light/dark mode aware) -->
         <div
           class="absolute inset-0 w-full translate-x-1.5 translate-y-1.5 rounded-xl border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
         />
@@ -33,6 +39,7 @@ function getCurrentAge() {
           <p
             class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
           >
+            <!-- Age is computed at render time so it stays accurate without manual updates -->
             Mein Name ist André Hommrich. Ich bin {{ getCurrentAge() }} Jahre
             alt und stamme aus dem wunderschönen Westerwald. Menschen
             beschreiben mich als freundlich, hilfsbereit und leidenschaftlich
@@ -49,6 +56,7 @@ function getCurrentAge() {
             ideale Kombination für komplexe Projekte, die Genauigkeit und
             Kreativität verlangen.
           </p>
+          <!-- Inline photo shown only on mobile/tablet (hidden on lg and above) -->
           <img
             src="/img/andre-arbeit-3.jpg"
             class="block h-auto max-h-64 py-3 w-full rounded-xl object-cover shadow-lg md:object-[center_45%] lg:hidden"
@@ -70,6 +78,7 @@ function getCurrentAge() {
         </div>
       </div>
 
+      <!-- Side photo shown only on large screens (lg and above) -->
       <div class="ml-8 hidden w-1/3 items-center justify-center lg:flex">
         <img
           src="/img/andre-arbeit-3.jpg"
