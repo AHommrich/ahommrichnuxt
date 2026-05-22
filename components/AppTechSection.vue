@@ -90,7 +90,7 @@
                 }}</span>
               </button>
               <span v-show="infoMode" class="info-disclaimer"
-                >Eine Auswahl der Tools &amp; Technologien, die ich regelmäßig
+                >Eine Auswahl an Tools &amp; Technologien, die ich regelmäßig
                 einsetze.</span
               >
             </div>
@@ -148,13 +148,16 @@ const iconNames = [
   "jetbrains",
   "laravel",
   "linux",
+  "mariadb",
   "mysql",
+  "nuxtdotjs",
   "openai",
   "php",
   "symfony",
   "tailwindcss",
   "typescript",
   "visualstudiocode",
+  "vite",
   "vuedotjs",
 ];
 
@@ -172,13 +175,16 @@ const iconLabels: Record<string, string> = {
   jetbrains: "JetBrains",
   laravel: "Laravel",
   linux: "Linux",
+  mariadb: "MariaDB",
   mysql: "MySQL",
+  nuxtdotjs: "Nuxt.js",
   openai: "OpenAI",
   php: "PHP",
   symfony: "Symfony",
   tailwindcss: "Tailwind CSS",
   typescript: "TypeScript",
   visualstudiocode: "VS Code",
+  vite: "Vite",
   vuedotjs: "Vue.js",
 };
 
