@@ -28,7 +28,7 @@ onMounted(() => {
       >
         <AppHeader />
         <!-- Page content is injected here via Nuxt's layout slot -->
-        <slot />
+        <main><slot /></main>
         <AppFooter :is-footer-fixed="isFooterFixed" />
       </div>
     </div>

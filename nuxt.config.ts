@@ -7,6 +7,15 @@ export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV !== "production" },
   app: {
     head: {
+      htmlAttrs: { lang: "de" },
+      title: "André Hommrich — Fullstack-Entwickler",
+      meta: [
+        {
+          name: "description",
+          content:
+            "Portfolio von André Hommrich — Fullstack-Entwickler aus dem Westerwald. Symfony, Laravel, Vue.js, TypeScript und Docker.",
+        },
+      ],
       link: [{ rel: "icon", type: "image/png", href: "/favicon.ico" }],
     },
   },
