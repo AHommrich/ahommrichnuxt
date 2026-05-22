@@ -400,9 +400,10 @@ onMounted(() => {
 
 <style scoped>
 .mobile-diamonds > div > div {
-  outline: 1px solid transparent;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transform: translateZ(0) scale(1.005);
+  transform: translateZ(0) scale(1.01);
+  margin: -1px;
+  isolation: isolate;
 }
 </style>
