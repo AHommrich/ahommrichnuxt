@@ -115,6 +115,15 @@ Mobile Diamonds haben weiße Lücken zwischen den `overflow:hidden`-Elementen du
 
 Der `sm:hidden mobile-diamonds`-Wrapper ist bereits am mobilen Abschnitt gesetzt.
 
+## Checkliste vor jedem Commit
+
+- [ ] Neuer Code ist auf Englisch kommentiert (Funktionen, State-Variablen, nicht-offensichtliche Logik)
+- [ ] Keine externen Ressourcen eingebunden (kein CDN, keine Google Fonts, keine externen Scripts)
+- [ ] Kein neues Tracking, keine Cookies, keine localStorage-Nutzung
+- [ ] Neue externe Links haben `rel="noopener noreferrer"`
+- [ ] `npm run lintfix` ausgeführt und fehlerfrei
+- [ ] `devtools` wird nicht manuell auf `true` hartcodiert (läuft automatisch über `NODE_ENV`)
+
 ## Wichtige Konventionen
 
 - Tailwind v4: Kein `tailwind.config.js`, Konfiguration via CSS (`@theme`, `@layer`)
