@@ -1,4 +1,5 @@
 <template>
+  <!-- Tech section: animated icon physics playground + info card grid -->
   <div
     id="technologien"
     class="relative mx-auto mb-36 w-full max-w-7xl sm:w-11/12"
@@ -7,6 +8,7 @@
       class="relative z-10 flex w-full flex-col items-center px-4 py-6 sm:px-9 sm:py-9"
     >
       <div class="relative w-full">
+        <!-- Decorative offset shadow layers (light/dark mode aware) -->
         <div
           class="absolute inset-0 w-full translate-x-1.5 translate-y-1.5 rounded-xl border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
         />
@@ -41,22 +43,29 @@
             Kooperationspartner ein – nicht als Ersatz für eigenes Denken,
             sondern um effizienter und zielgerichteter zu arbeiten.
           </p>
+
+          <!-- Animated icon container — rAF loop positions icons inside this element -->
           <div ref="container" class="relative my-6 overflow-hidden">
+            <!-- One wrapper per icon; positioned absolutely via JS transform -->
             <div
               v-for="(name, index) in iconNames"
               :key="name"
               :ref="(el) => ((animatedElements as any)[index] = el)"
               class="icon-wrapper"
             >
+              <!-- SVG icon rendered as solid white via CSS filter -->
               <img
                 :src="`/icons/${name}.svg`"
                 :alt="iconLabels[name]"
                 class="h-8 w-8 shrink-0 icon-white"
               />
+              <!-- Label only visible in info mode (v-show keeps DOM stable during transition) -->
               <span v-show="infoMode" class="icon-label-inline">{{
                 iconLabels[name]
               }}</span>
             </div>
+
+            <!-- Info bar: toggle button + disclaimer text -->
             <div class="info-bar">
               <button
                 class="info-btn"
@@ -69,6 +78,7 @@
                 "
                 @click="toggleInfoMode"
               >
+                <!-- Inline info (ℹ) icon — SVG to avoid FontAwesome client-only constraint -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -125,15 +135,17 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, nextTick, ref } from "vue";
 
-const ICON_SIZE = 32;
+// --- Physics constants ---
+const ICON_SIZE = 32; // icon width/height in pixels
 const ICON_HALF = ICON_SIZE / 2;
-const BASE_SPEED = 1.5;
-const FLEE_RADIUS = 120;
-const FLEE_RADIUS_SQ = FLEE_RADIUS * FLEE_RADIUS;
-const FLEE_FORCE = 5;
-const DAMPING = 0.92;
-const MIN_SPEED = 0.8;
+const BASE_SPEED = 1.5; // initial velocity magnitude (px/frame)
+const FLEE_RADIUS = 120; // distance at which icons start fleeing the pointer (px)
+const FLEE_RADIUS_SQ = FLEE_RADIUS * FLEE_RADIUS; // squared to avoid Math.sqrt in the hot loop
+const FLEE_FORCE = 5; // acceleration applied when the pointer is inside FLEE_RADIUS
+const DAMPING = 0.92; // velocity multiplier per frame (< 1 simulates friction)
+const MIN_SPEED = 0.8; // prevents icons from coming to a complete stop
 
+// All technology icons (filenames without extension, matching /public/icons/)
 const iconNames = [
   "anthropic",
   "apple",
@@ -161,6 +173,7 @@ const iconNames = [
   "vuedotjs",
 ];
 
+// Human-readable display labels shown on info mode cards
 const iconLabels: Record<string, string> = {
   anthropic: "Anthropic (Claude)",
   apple: "Apple Eco System",
@@ -188,27 +201,34 @@ const iconLabels: Record<string, string> = {
   vuedotjs: "Vue.js",
 };
 
+/** Per-icon physics state — updated on every animation frame */
 interface IconState {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
+  x: number; // center X position within container (px)
+  y: number; // center Y position within container (px)
+  vx: number; // horizontal velocity (px/frame)
+  vy: number; // vertical velocity (px/frame)
 }
 
-const container = ref<HTMLElement | null>(null);
-const animatedElements = ref<HTMLElement[]>([]);
-const infoMode = ref(false);
-const pulseHint = ref(false);
+// --- Vue refs ---
+const container = ref<HTMLElement | null>(null); // the overflow:hidden animation canvas
+const animatedElements = ref<HTMLElement[]>([]); // one DOM element per icon (filled by v-for :ref)
+const infoMode = ref(false); // true = static grid layout, false = physics animation
+const pulseHint = ref(false); // triggers the one-time CSS pulse on the info button
 
-const MIN_CARD_W = 160; // minimum width — guarantees readable text
-const CARD_H = 40;
-const CARD_GAP = 8;
-const CARD_PAD = 4;
+// --- Info-mode grid layout constants ---
+const MIN_CARD_W = 160; // minimum card width — guarantees readable label text
+const CARD_H = 40; // fixed card height in info mode
+const CARD_GAP = 8; // gap between cards (both axes)
+const CARD_PAD = 4; // inner padding of the grid area
 
-// computed at layout time, used by both applyContainerHeight and toggleInfoMode
+// Computed once per layout pass, reused by applyContainerHeight and toggleInfoMode
 let gridCols = 2;
 let gridCardW = MIN_CARD_W;
 
+/**
+ * Recalculates the grid column count and card width based on the current container width.
+ * Uses as many columns as fit while respecting MIN_CARD_W, with a minimum of 2.
+ */
 const computeGrid = () => {
   gridCols = Math.max(
     2,
@@ -221,9 +241,21 @@ const computeGrid = () => {
   );
 };
 
+/**
+ * Switches between animation mode and info card grid mode.
+ *
+ * Entering info mode (4-step sequence to avoid layout conflicts during transition):
+ *   1. Apply .info-card class + set CSS --card-w variable (no transition yet)
+ *   2. Force a reflow so the width change is committed before transitions start
+ *   3. Begin staggered transform transitions to grid positions
+ *   4. Reveal text labels in the next rAF frame (avoids DOM mutation mid-transition)
+ *
+ * Exiting info mode:
+ *   - Hide labels, remove .info-card, restore .animating, scatter icons, restart rAF loop
+ */
 const toggleInfoMode = () => {
   if (!infoMode.value) {
-    // Stop animation
+    // Stop the rAF loop before modifying DOM positions
     if (rafId !== null) {
       cancelAnimationFrame(rafId);
       rafId = null;
@@ -233,7 +265,7 @@ const toggleInfoMode = () => {
     computeGrid();
     container.value?.style.setProperty("--card-w", `${gridCardW}px`);
 
-    // 1. Apply card class + width FIRST (no transition yet)
+    // Step 1: switch to card layout without triggering a transition
     animatedElements.value.forEach((el) => {
       const e = el as HTMLElement;
       e.classList.remove("animating");
@@ -242,10 +274,11 @@ const toggleInfoMode = () => {
       e.classList.add("info-card");
     });
 
-    // 2. Force reflow so width change is committed before transition starts
+    // Step 2: force reflow — without this the width change and transform animate simultaneously,
+    // causing icons to briefly appear at their old (wrong) size
     void container.value?.offsetHeight;
 
-    // 3. Now animate transforms (width is already set — no layout conflict)
+    // Step 3: animate each icon to its grid position with a staggered delay
     iconNames.forEach((_, index) => {
       const el = animatedElements.value[index] as HTMLElement;
       if (!el) return;
@@ -256,15 +289,17 @@ const toggleInfoMode = () => {
       el.style.transitionDelay = `${index * 20}ms`;
       el.style.transition = "transform 0.3s ease-out";
       el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      // Sync physics state so resuming animation starts from the correct positions
       states[index].x = tx + ICON_HALF;
       states[index].y = ty + ICON_HALF;
     });
 
-    // 4. Show text labels in next frame (no DOM mutation during transition)
+    // Step 4: show text labels after the current frame to avoid DOM mutation during transition
     requestAnimationFrame(() => {
       infoMode.value = true;
     });
   } else {
+    // Exit info mode: hide labels, remove card styles, re-enable physics
     infoMode.value = false;
     nextTick(() => {
       animatedElements.value.forEach((el) => {
@@ -274,6 +309,7 @@ const toggleInfoMode = () => {
         e.style.transitionDelay = "";
         e.classList.add("animating");
       });
+      // Randomise velocity directions so icons scatter from their grid positions
       iconNames.forEach((_, index) => {
         const angle = Math.random() * Math.PI * 2;
         states[index].vx = Math.cos(angle) * BASE_SPEED;
@@ -284,21 +320,27 @@ const toggleInfoMode = () => {
   }
 };
 
-let states: IconState[] = [];
-let containerW = 0;
-let containerH = 0;
-let pointerX = -1000;
-let pointerY = -1000;
-let rafId: number | null = null;
+// --- Mutable animation state (not reactive — updated every frame, no Vue reactivity overhead) ---
+let states: IconState[] = []; // physics state for every icon
+let containerW = 0; // container width in px (updated by ResizeObserver)
+let containerH = 0; // container height in px (computed from grid rows)
+let pointerX = -1000; // pointer X relative to container — starts far off-screen
+let pointerY = -1000; // pointer Y relative to container — starts far off-screen
+let rafId: number | null = null; // current requestAnimationFrame handle
 let resizeObserver: ResizeObserver | null = null;
 let intersectionObserver: IntersectionObserver | null = null;
-// document-relative position — no layout reads needed during scroll/pointermove
+// Document-relative container origin — cached so scroll/pointermove handlers need no layout reads
 let containerDocTop = 0;
 let containerDocLeft = 0;
-let isVisible = false;
+let isVisible = false; // tracks whether the section is in the viewport (IntersectionObserver)
 
-const INFO_BAR_H = 52; // space reserved at the top for the info-bar (button + gap)
+const INFO_BAR_H = 52; // vertical space reserved at the top of the container for the button bar
 
+/**
+ * Calculates and sets the container height to fit the info-mode grid.
+ * Also caches the container's document-relative position used by pointer coordinate conversion.
+ * Called on mount and on every resize.
+ */
 const applyContainerHeight = () => {
   if (!container.value) return;
   computeGrid();
@@ -306,12 +348,17 @@ const applyContainerHeight = () => {
   containerH =
     INFO_BAR_H + CARD_PAD * 2 + rows * CARD_H + (rows - 1) * CARD_GAP;
   container.value.style.height = `${containerH}px`;
-  // cache document-relative position (only here + on resize, never on scroll)
+  // Cache document-relative origin — getBoundingClientRect is expensive, so we only call it here
+  // and on resize; current scroll offsets are applied later in getContainerPointerPos
   const rect = container.value.getBoundingClientRect();
   containerDocTop = rect.top + window.scrollY;
   containerDocLeft = rect.left + window.scrollX;
 };
 
+/**
+ * Initialises a random physics state for every icon.
+ * Each icon starts at a random position with a random velocity direction at BASE_SPEED.
+ */
 const initStates = () => {
   states = iconNames.map(() => {
     const angle = Math.random() * Math.PI * 2;
@@ -324,6 +371,11 @@ const initStates = () => {
   });
 };
 
+/**
+ * Ensures an icon never fully stops moving.
+ * If speed drops below MIN_SPEED, velocity is scaled up (or a random direction is assigned
+ * if the icon is completely stationary).
+ */
 const ensureMinSpeed = (state: IconState) => {
   const speed = Math.sqrt(state.vx * state.vx + state.vy * state.vy);
   if (speed < MIN_SPEED) {
@@ -339,25 +391,39 @@ const ensureMinSpeed = (state: IconState) => {
   }
 };
 
+/**
+ * Main animation loop — called every frame via requestAnimationFrame.
+ * For each icon:
+ *   1. Apply flee force if pointer is within FLEE_RADIUS
+ *   2. Integrate velocity into position
+ *   3. Bounce off container walls (reverse the relevant velocity component)
+ *   4. Apply damping (friction)
+ *   5. Enforce minimum speed
+ *   6. Write the resulting transform directly to the DOM element
+ */
 const tick = () => {
   states.forEach((state, index) => {
     const el = animatedElements.value[index];
     if (!el) return;
 
+    // Flee: push icon away from pointer if it is within FLEE_RADIUS
     const dx = state.x - pointerX;
     const dy = state.y - pointerY;
     const distSq = dx * dx + dy * dy;
 
     if (distSq < FLEE_RADIUS_SQ && distSq > 0) {
       const dist = Math.sqrt(distSq);
+      // Force is proportional to proximity: strongest at distance 0, zero at FLEE_RADIUS
       const force = (1 - dist / FLEE_RADIUS) * FLEE_FORCE;
       state.vx += (dx / dist) * force;
       state.vy += (dy / dist) * force;
     }
 
+    // Integrate velocity
     state.x += state.vx;
     state.y += state.vy;
 
+    // Bounce off left/right walls
     if (state.x < ICON_HALF) {
       state.x = ICON_HALF;
       state.vx = Math.abs(state.vx);
@@ -365,6 +431,7 @@ const tick = () => {
       state.x = containerW - ICON_HALF;
       state.vx = -Math.abs(state.vx);
     }
+    // Bounce off top/bottom walls
     if (state.y < ICON_HALF) {
       state.y = ICON_HALF;
       state.vy = Math.abs(state.vy);
@@ -377,48 +444,62 @@ const tick = () => {
     state.vy *= DAMPING;
     ensureMinSpeed(state);
 
+    // Position is center-based — subtract ICON_HALF to get the top-left origin for CSS transform
     el.style.transform = `translate3d(${state.x - ICON_HALF}px, ${state.y - ICON_HALF}px, 0)`;
   });
 
   rafId = requestAnimationFrame(tick);
 };
 
-// Pure math — no layout reads during interaction
+/**
+ * Converts viewport-relative client coordinates to container-relative coordinates.
+ * Uses the cached document-relative container origin plus current scroll offset to avoid
+ * calling getBoundingClientRect() on every pointer/touch event.
+ */
 const getContainerPointerPos = (clientX: number, clientY: number) => {
   pointerX = clientX - (containerDocLeft - window.scrollX);
   pointerY = clientY - (containerDocTop - window.scrollY);
 };
 
+/** Moves the virtual pointer far off-screen so no flee force is applied */
 const resetPointer = () => {
   pointerX = -1000;
   pointerY = -1000;
 };
 
+/**
+ * Pointer move handler — mouse only.
+ * Touch events are handled separately because pointermove on mobile fires with
+ * pointerType 'touch' and has different propagation behaviour than real mouse events.
+ */
 const handlePointerMove = (e: PointerEvent) => {
-  // only handle mouse — touch is handled separately below
   if (e.pointerType === "mouse") getContainerPointerPos(e.clientX, e.clientY);
 };
 
+// Flag: true while a touch that started inside the container is still active
 let touchInContainer = false;
 
+/** Records touch start position and marks the touch as originating inside the container */
 const handleTouchStart = (e: TouchEvent) => {
   touchInContainer = true;
   if (e.touches.length > 0)
     getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
 };
 
+/** Tracks the first touch point as it moves — only while touch started inside the container */
 const handleTouchMove = (e: TouchEvent) => {
   if (!touchInContainer || e.touches.length === 0) return;
   getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
 };
 
+/** Resets pointer when touch ends or is cancelled */
 const handleTouchEnd = () => {
   touchInContainer = false;
   resetPointer();
 };
 
+/** Resets pointer on page scroll to prevent icons from fleeing while the user scrolls past */
 const handleScroll = () => {
-  // icons stay calm while user scrolls
   resetPointer();
 };
 
@@ -430,10 +511,12 @@ onMounted(async () => {
   applyContainerHeight();
   initStates();
 
+  // ResizeObserver: update container dimensions and clamp icon positions on layout changes
   resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
       containerW = entry.contentRect.width;
       applyContainerHeight();
+      // Clamp icon positions to the new bounds so nothing escapes the container after resize
       states.forEach((state) => {
         state.x = Math.max(
           ICON_HALF,
@@ -448,22 +531,25 @@ onMounted(async () => {
   });
   resizeObserver.observe(container.value);
 
-  // Pause rAF when section is not visible
+  // IntersectionObserver: pause the rAF loop while the section is off-screen
+  // to avoid wasting CPU on animation that nobody can see
   let hasPulsed = false;
   intersectionObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         isVisible = entry.isIntersecting;
         if (isVisible && !infoMode.value && rafId === null) {
+          // Section entered viewport — start animating
           animatedElements.value.forEach((el) =>
             (el as HTMLElement)?.classList.add("animating"),
           );
           rafId = requestAnimationFrame(tick);
         } else if (!isVisible && rafId !== null) {
+          // Section left viewport — stop animating
           cancelAnimationFrame(rafId);
           rafId = null;
         }
-        // Pulse hint once when section first scrolls into view
+        // Trigger the one-time button pulse hint when section first scrolls into view
         if (isVisible && !hasPulsed) {
           hasPulsed = true;
           setTimeout(() => {
@@ -479,6 +565,7 @@ onMounted(async () => {
   );
   intersectionObserver.observe(container.value);
 
+  // Attach pointer and touch event listeners to the container
   container.value.addEventListener("pointermove", handlePointerMove);
   container.value.addEventListener("pointerleave", resetPointer);
   container.value.addEventListener("touchstart", handleTouchStart, {
@@ -489,9 +576,11 @@ onMounted(async () => {
   });
   container.value.addEventListener("touchend", handleTouchEnd);
   container.value.addEventListener("touchcancel", handleTouchEnd);
+  // Global scroll listener to reset flee state while the user scrolls
   window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
+// Clean up all observers and event listeners to prevent memory leaks on unmount
 onBeforeUnmount(() => {
   if (rafId !== null) cancelAnimationFrame(rafId);
   resizeObserver?.disconnect();
@@ -507,6 +596,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* Base icon wrapper — absolutely positioned, sized to the icon */
 .icon-wrapper {
   position: absolute;
   top: 0;
@@ -515,12 +605,17 @@ onBeforeUnmount(() => {
   height: 32px;
 }
 
+/* Add will-change only while the rAF loop is running to avoid unnecessary compositing layers */
 .icon-wrapper.animating {
   will-change: transform;
 }
 
+/* Info card layout: fixed height flex row with icon + label text */
 .icon-wrapper.info-card {
-  width: var(--card-w, 160px);
+  width: var(
+    --card-w,
+    160px
+  ); /* --card-w is set dynamically from JS before the transition */
   height: 40px;
   display: flex;
   align-items: center;
@@ -541,10 +636,12 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
+/* Render all SVG icons as solid white regardless of their original fill color */
 .icon-white {
   filter: brightness(0) invert(1);
 }
 
+/* Absolutely positioned bar at the top of the container for the toggle button */
 .info-bar {
   position: absolute;
   top: 8px;
@@ -589,6 +686,7 @@ onBeforeUnmount(() => {
   letter-spacing: 0.01em;
 }
 
+/* One-time pulse animation to draw attention to the info button on first scroll into view */
 @keyframes pulse-hint {
   0%,
   100% {
