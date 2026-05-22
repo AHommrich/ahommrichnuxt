@@ -4,9 +4,9 @@
     class="relative mx-auto mb-36 w-full max-w-7xl sm:w-11/12"
   >
     <div
-      class="relative z-10 flex w-full flex-col items-center sm:flex-row sm:px-9 sm:py-9"
+      class="relative z-10 flex w-full flex-col items-center px-4 py-6 sm:px-9 sm:py-9"
     >
-      <div class="relative w-[95%]">
+      <div class="relative w-full">
         <div
           class="absolute inset-0 w-full translate-x-1.5 translate-y-1.5 rounded-xl border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
         />
@@ -48,7 +48,6 @@
               :key="name"
               :ref="(el) => ((animatedElements as any)[index] = el)"
               class="icon-wrapper"
-              :class="{ 'info-card': infoMode }"
             >
               <img
                 :src="`/icons/${name}.svg`"
@@ -184,17 +183,26 @@ const computeGrid = () => {
 
 const toggleInfoMode = () => {
   if (!infoMode.value) {
-    // 1. Stop animation first
-    if (rafId !== null) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-    animatedElements.value.forEach((el) => (el as HTMLElement)?.classList.remove("animating"));
+    // Stop animation
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    resetPointer();
 
     computeGrid();
     container.value?.style.setProperty("--card-w", `${gridCardW}px`);
 
-    // 2. Write all transforms & transitions before Vue touches the DOM
+    // 1. Apply card class + width FIRST (no transition yet)
+    animatedElements.value.forEach((el) => {
+      const e = el as HTMLElement;
+      e.classList.remove("animating");
+      e.style.transition = "none";
+      e.style.transitionDelay = "";
+      e.classList.add("info-card");
+    });
+
+    // 2. Force reflow so width change is committed before transition starts
+    void container.value?.offsetHeight;
+
+    // 3. Now animate transforms (width is already set — no layout conflict)
     iconNames.forEach((_, index) => {
       const el = animatedElements.value[index] as HTMLElement;
       if (!el) return;
@@ -202,34 +210,31 @@ const toggleInfoMode = () => {
       const row = Math.floor(index / gridCols);
       const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
       const ty = CARD_PAD + row * (CARD_H + CARD_GAP);
-      el.style.transitionDelay = `${index * 25}ms`;
-      el.style.transition = "transform 0.35s ease";
+      el.style.transitionDelay = `${index * 20}ms`;
+      el.style.transition = "transform 0.3s ease-out";
       el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
       states[index].x = tx + ICON_HALF;
       states[index].y = ty + ICON_HALF;
     });
 
-    // 3. Show labels after transforms are committed (next frame)
-    requestAnimationFrame(() => {
-      infoMode.value = true;
-    });
+    // 4. Show text labels in next frame (no DOM mutation during transition)
+    requestAnimationFrame(() => { infoMode.value = true; });
   } else {
-    // Hide labels, clear transitions, restart animation
     infoMode.value = false;
     nextTick(() => {
+      animatedElements.value.forEach((el) => {
+        const e = el as HTMLElement;
+        e.classList.remove("info-card");
+        e.style.transition = "none";
+        e.style.transitionDelay = "";
+        e.classList.add("animating");
+      });
       iconNames.forEach((_, index) => {
-        const el = animatedElements.value[index] as HTMLElement;
-        if (!el) return;
-        el.style.transition = "none";
-        el.style.transitionDelay = "";
-        el.classList.add("animating");
         const angle = Math.random() * Math.PI * 2;
         states[index].vx = Math.cos(angle) * BASE_SPEED;
         states[index].vy = Math.sin(angle) * BASE_SPEED;
       });
-      if (isVisible && rafId === null) {
-        rafId = requestAnimationFrame(tick);
-      }
+      if (isVisible && rafId === null) rafId = requestAnimationFrame(tick);
     });
   }
 };
@@ -342,11 +347,29 @@ const resetPointer = () => {
 };
 
 const handlePointerMove = (e: PointerEvent) => {
-  getContainerPointerPos(e.clientX, e.clientY);
+  // only handle mouse — touch is handled separately below
+  if (e.pointerType === "mouse") getContainerPointerPos(e.clientX, e.clientY);
+};
+
+let touchInContainer = false;
+
+const handleTouchStart = (e: TouchEvent) => {
+  touchInContainer = true;
+  if (e.touches.length > 0) getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
+};
+
+const handleTouchMove = (e: TouchEvent) => {
+  if (!touchInContainer || e.touches.length === 0) return;
+  getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
+};
+
+const handleTouchEnd = () => {
+  touchInContainer = false;
+  resetPointer();
 };
 
 const handleScroll = () => {
-  // reset flee during scroll so icons don't react to a stale pointer position
+  // icons stay calm while user scrolls
   resetPointer();
 };
 
@@ -387,6 +410,10 @@ onMounted(async () => {
 
   container.value.addEventListener("pointermove", handlePointerMove);
   container.value.addEventListener("pointerleave", resetPointer);
+  container.value.addEventListener("touchstart", handleTouchStart, { passive: true });
+  container.value.addEventListener("touchmove", handleTouchMove, { passive: true });
+  container.value.addEventListener("touchend", handleTouchEnd);
+  container.value.addEventListener("touchcancel", handleTouchEnd);
   window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
@@ -396,6 +423,10 @@ onBeforeUnmount(() => {
   intersectionObserver?.disconnect();
   container.value?.removeEventListener("pointermove", handlePointerMove);
   container.value?.removeEventListener("pointerleave", resetPointer);
+  container.value?.removeEventListener("touchstart", handleTouchStart);
+  container.value?.removeEventListener("touchmove", handleTouchMove);
+  container.value?.removeEventListener("touchend", handleTouchEnd);
+  container.value?.removeEventListener("touchcancel", handleTouchEnd);
   window.removeEventListener("scroll", handleScroll);
 });
 </script>
