@@ -53,6 +53,9 @@ useHead({
     <h1 class="sr-only">André Hommrich — Fullstack-Entwickler</h1>
     <AppHeroSection />
     <AppAboutSection />
+    <AppSectionDivider />
+    <AppCurrentlySection />
+    <AppSectionDivider />
     <AppTechSection />
   </div>
 </template>
