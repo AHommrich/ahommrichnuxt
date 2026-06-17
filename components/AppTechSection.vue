@@ -2,129 +2,145 @@
   <!-- Tech section: animated icon physics playground + info card grid -->
   <div
     id="technologien"
-    class="relative mx-auto mb-36 w-full max-w-7xl sm:w-11/12"
+    class="relative mx-auto mb-12 w-full max-w-7xl sm:w-11/12"
   >
     <div
       class="relative z-10 flex w-full flex-col items-center px-4 py-6 sm:px-9 sm:py-9"
     >
-      <div class="relative w-full">
-        <!-- Decorative offset shadow layers (light/dark mode aware) -->
+      <div
+        ref="cardEl"
+        :class="[
+          'card-group relative w-full',
+          { 'is-in-view': isCardInView },
+        ]"
+      >
+        <!--
+          Decorative offset shadow layers (light/dark mode aware) — sharp edges
+          echo the Hero diamond grid. They sit exactly on top of each other by
+          default and slide apart on hover (or when the card scrolls into view
+          on touch devices).
+        -->
         <div
-          class="absolute inset-0 w-full translate-x-1.5 translate-y-1.5 rounded-xl border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
+          class="card-layer card-layer-back absolute inset-0 w-full border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
         />
         <div
-          class="absolute inset-0 w-full -translate-x-1.5 -translate-y-1.5 rounded-xl border border-[#3b4245] bg-[#8D1D29] opacity-80 dark:border-white"
+          class="card-layer card-layer-front absolute inset-0 w-full border border-[#3b4245] bg-[#8D1D29] opacity-80 dark:border-white"
         />
-        <div class="relative z-10 flex flex-col p-6 sm:justify-center">
+        <div class="card-content relative z-10 flex flex-col p-6">
           <h3
-            class="self-center text-center pb-3 text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
+            class="self-center pb-3 text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
           >
-            Was ich aktuell mache?
+            Womit ich arbeite
           </h3>
-          <p
-            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
-          >
-            Als Webentwickler arbeite ich täglich an realen Projekten – von der
-            Planung über die Umsetzung bis hin zur Wartung. In meiner
-            Ausbildungszeit und darüber hinaus habe ich ein breites technisches
-            Fundament aufgebaut, das ich seitdem kontinuierlich erweitere.
-          </p>
-          <p
-            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
-          >
-            Mein Schwerpunkt liegt in der PHP Backend-Entwicklung – beruflich
-            mit Symfony, privat mit Laravel. Im Frontend setze ich primär auf
-            Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie Tailwind CSS
-            und Bootstrap. Für mobile Anwendungen bringe ich zudem Erfahrung mit
-            React Native mit. Diese Kombination ermöglicht es mir, Projekte
-            ganzheitlich zu denken und als Fullstack-Entwickler umzusetzen.
-            KI-Tools wie Claude Code setze ich dabei bewusst als
-            Kooperationspartner ein – nicht als Ersatz für eigenes Denken,
-            sondern um effizienter und zielgerichteter zu arbeiten.
-          </p>
 
-          <!-- Animated icon container — rAF loop positions icons inside this element -->
-          <div ref="container" class="relative my-6 overflow-hidden">
-            <!-- One wrapper per icon; positioned absolutely via JS transform -->
-            <div
-              v-for="(name, index) in iconNames"
-              :key="name"
-              :ref="(el) => ((animatedElements as any)[index] = el)"
-              class="icon-wrapper"
-            >
-              <!-- SVG icon rendered as solid white via CSS filter -->
-              <img
-                :src="`/icons/${name}.svg`"
-                :alt="iconLabels[name]"
-                class="h-8 w-8 shrink-0 icon-white"
-              />
-              <!-- Label only visible in info mode (v-show keeps DOM stable during transition) -->
-              <span v-show="infoMode" class="icon-label-inline">{{
-                iconLabels[name]
-              }}</span>
+          <!--
+            Two-column layout (md+): text left, animation right.
+            Default flex `items-stretch` lets the animation column match the
+            taller text column's height; the inner flex centres the fixed-height
+            animation container within that space.
+            Mobile: stacked — animation rendered first (order-1) so the
+            eye-catcher appears above the text in the reading flow.
+          -->
+          <div class="flex flex-col md:flex-row md:gap-8 lg:gap-12">
+            <!-- Text column — md+: left half -->
+            <div class="order-2 md:order-1 md:w-1/2">
+              <p
+                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+              >
+                Mein Schwerpunkt liegt in der PHP Backend-Entwicklung –
+                beruflich mit Symfony, privat mit Laravel. Im Frontend setze
+                ich primär auf Vue.js, ergänzt durch TypeScript und
+                CSS-Frameworks wie Tailwind CSS und Bootstrap. Für mobile
+                Anwendungen bringe ich zudem Erfahrung mit React Native mit.
+                Diese Kombination ermöglicht es mir, Projekte ganzheitlich zu
+                denken und als Fullstack-Entwickler umzusetzen. KI-Tools wie
+                Claude Code setze ich dabei bewusst als Kooperationspartner
+                ein – nicht als Ersatz für eigenes Denken, sondern um
+                effizienter und zielgerichteter zu arbeiten.
+              </p>
+              <p
+                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+              >
+                Containerisierung mit Docker, Versionskontrolle mit Git,
+                CI/CD-Pipelines und Datenbankarbeit mit MySQL gehören für mich
+                zum Alltag. Ich halte mich ständig auf dem neuesten Stand – ob
+                neue Frameworks, Deployment-Konzepte oder moderne
+                Entwicklungsworkflows.
+              </p>
             </div>
 
-            <!-- Info bar: toggle button + disclaimer text -->
-            <div class="info-bar">
-              <button
-                class="info-btn"
-                :class="{
-                  active: infoMode,
-                  'pulse-hint': pulseHint && !infoMode,
-                }"
-                :aria-label="
-                  infoMode ? 'Animation fortsetzen' : 'Technologien anzeigen'
-                "
-                @click="toggleInfoMode"
+            <!-- Animation column — md+: right half, stretches to text height -->
+            <div
+              class="order-1 flex items-center justify-center md:order-2 md:w-1/2"
+            >
+              <!-- Animated icon container — rAF loop positions icons inside this element -->
+              <div
+                ref="container"
+                class="relative my-6 w-full overflow-hidden"
               >
-                <!-- Inline info (ℹ) icon — SVG to avoid FontAwesome client-only constraint -->
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  style="flex-shrink: 0"
+                <!-- One wrapper per icon; positioned absolutely via JS transform -->
+                <div
+                  v-for="(name, index) in iconNames"
+                  :key="name"
+                  :ref="(el) => ((animatedElements as any)[index] = el)"
+                  class="icon-wrapper"
                 >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="8.5" />
-                  <line x1="12" y1="12" x2="12" y2="16" />
-                </svg>
-                <span class="info-btn-label">{{
-                  infoMode ? "Animation" : "Technologien"
-                }}</span>
-              </button>
-              <span v-show="infoMode" class="info-disclaimer"
-                >Eine Auswahl an Tools &amp; Technologien, die ich regelmäßig
-                einsetze.</span
-              >
+                  <!-- SVG icon rendered as solid white via CSS filter -->
+                  <img
+                    :src="`/icons/${name}.svg`"
+                    :alt="iconLabels[name]"
+                    class="h-8 w-8 shrink-0 icon-white"
+                  />
+                  <!-- Label only visible in info mode (v-show keeps DOM stable during transition) -->
+                  <span v-show="infoMode" class="icon-label-inline">{{
+                    iconLabels[name]
+                  }}</span>
+                </div>
+
+                <!-- Info bar: toggle button + disclaimer text -->
+                <div class="info-bar">
+                  <button
+                    class="info-btn"
+                    :class="{
+                      active: infoMode,
+                      'pulse-hint': pulseHint,
+                    }"
+                    :aria-label="
+                      infoMode
+                        ? 'Animation starten'
+                        : 'Technologien anzeigen'
+                    "
+                    @click="toggleInfoMode"
+                  >
+                    <!-- Inline info (ℹ) icon — SVG to avoid FontAwesome client-only constraint -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      style="flex-shrink: 0"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="8.5" />
+                      <line x1="12" y1="12" x2="12" y2="16" />
+                    </svg>
+                    <span class="info-btn-label">{{
+                      infoMode ? "Animation" : "Technologien"
+                    }}</span>
+                  </button>
+                  <span v-show="infoMode" class="info-disclaimer"
+                    >Eine Auswahl an Tools &amp; Technologien, die ich
+                    regelmäßig einsetze.</span
+                  >
+                </div>
+              </div>
             </div>
           </div>
-          <p
-            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
-          >
-            Containerisierung mit Docker, Versionskontrolle mit Git,
-            CI/CD-Pipelines und Datenbankarbeit mit MySQL gehören für mich zum
-            Alltag. Ich halte mich ständig auf dem neuesten Stand – ob neue
-            Frameworks, Deployment-Konzepte oder moderne Entwicklungsworkflows.
-          </p>
-          <p
-            class="text-left text-xs text-gray-200 py-3 sm:text-sm md:text-base lg:text-xl"
-          >
-            In meiner Zeit als Softwareentwickler habe ich meine Leidenschaft
-            für diesen Beruf voll entdeckt. Für mich vereint er perfekt meine
-            Neugier, mein logisches Denken und mein technisches Verständnis. Die
-            Möglichkeit, komplexe Probleme zu lösen, kreative Lösungen zu
-            entwickeln und dabei ständig dazuzulernen, erfüllt mich und macht
-            diesen Beruf zu meiner idealen Berufung. Hier kann ich meine
-            Wissbegierde ausleben und gleichzeitig mein technisches Know-how in
-            Projekten anwenden, die sowohl herausfordernd als auch bereichernd
-            sind.
-          </p>
         </div>
       </div>
     </div>
@@ -132,7 +148,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, nextTick, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, nextTick, ref } from "vue";
 
 // --- Physics constants ---
 const ICON_SIZE = 32; // icon width/height in pixels
@@ -211,8 +227,14 @@ interface IconState {
 // --- Vue refs ---
 const container = ref<HTMLElement | null>(null); // the overflow:hidden animation canvas
 const animatedElements = ref<HTMLElement[]>([]); // one DOM element per icon (filled by v-for :ref)
-const infoMode = ref(false); // true = static grid layout, false = physics animation
-const pulseHint = ref(false); // triggers the one-time CSS pulse on the info button
+// Default to info-list view so first-time visitors aren't dropped into a busy animation;
+// the pulsing button invites them to start the physics view.
+const infoMode = ref(true); // true = static grid layout, false = physics animation
+const isVisible = ref(false); // tracks viewport visibility (driven by IntersectionObserver below)
+// Continuous pulse on the toggle button while the list is shown and the section is in view.
+const pulseHint = computed(() => infoMode.value && isVisible.value);
+const cardEl = ref<HTMLElement | null>(null); // outer card wrapper used by the card-layer slide observer
+const isCardInView = ref(false); // toggled by the card observer; consumed by (hover: none) CSS branch
 
 // --- Info-mode grid layout constants ---
 const MIN_CARD_W = 160; // minimum card width — guarantees readable label text
@@ -238,6 +260,34 @@ const computeGrid = () => {
   gridCardW = Math.floor(
     (containerW - CARD_PAD * 2 - (gridCols - 1) * CARD_GAP) / gridCols,
   );
+};
+
+/**
+ * Places every icon directly into its grid cell with no transition — used at
+ * mount time when the default view is the info list. Avoids the staggered
+ * fly-in animation that the toggle handler runs.
+ */
+const applyInfoLayoutInstant = () => {
+  if (!container.value) return;
+  computeGrid();
+  container.value.style.setProperty("--card-w", `${gridCardW}px`);
+  animatedElements.value.forEach((el, index) => {
+    const e = el as HTMLElement;
+    if (!e) return;
+    e.classList.remove("animating");
+    e.classList.add("info-card");
+    e.style.transition = "none";
+    e.style.transitionDelay = "";
+    const col = index % gridCols;
+    const row = Math.floor(index / gridCols);
+    const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
+    const ty = INFO_BAR_H + CARD_PAD + row * (CARD_H + CARD_GAP);
+    e.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+    if (states[index]) {
+      states[index].x = tx + ICON_HALF;
+      states[index].y = ty + ICON_HALF;
+    }
+  });
 };
 
 /**
@@ -314,7 +364,7 @@ const toggleInfoMode = () => {
         states[index].vx = Math.cos(angle) * BASE_SPEED;
         states[index].vy = Math.sin(angle) * BASE_SPEED;
       });
-      if (isVisible && rafId === null) rafId = requestAnimationFrame(tick);
+      if (isVisible.value && rafId === null) rafId = requestAnimationFrame(tick);
     });
   }
 };
@@ -328,10 +378,10 @@ let pointerY = -1000; // pointer Y relative to container — starts far off-scre
 let rafId: number | null = null; // current requestAnimationFrame handle
 let resizeObserver: ResizeObserver | null = null;
 let intersectionObserver: IntersectionObserver | null = null;
+let cardObserver: IntersectionObserver | null = null;
 // Document-relative container origin — cached so scroll/pointermove handlers need no layout reads
 let containerDocTop = 0;
 let containerDocLeft = 0;
-let isVisible = false; // tracks whether the section is in the viewport (IntersectionObserver)
 
 const INFO_BAR_H = 52; // vertical space reserved at the top of the container for the button bar
 
@@ -509,6 +559,8 @@ onMounted(async () => {
   containerW = container.value.getBoundingClientRect().width;
   applyContainerHeight();
   initStates();
+  // Default view is the info list — set icons directly to grid positions without animation
+  if (infoMode.value) applyInfoLayoutInstant();
 
   // ResizeObserver: update container dimensions and clamp icon positions on layout changes
   resizeObserver = new ResizeObserver((entries) => {
@@ -532,37 +584,37 @@ onMounted(async () => {
 
   // IntersectionObserver: pause the rAF loop while the section is off-screen
   // to avoid wasting CPU on animation that nobody can see
-  let hasPulsed = false;
   intersectionObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        isVisible = entry.isIntersecting;
-        if (isVisible && !infoMode.value && rafId === null) {
+        isVisible.value = entry.isIntersecting;
+        if (isVisible.value && !infoMode.value && rafId === null) {
           // Section entered viewport — start animating
           animatedElements.value.forEach((el) =>
             (el as HTMLElement)?.classList.add("animating"),
           );
           rafId = requestAnimationFrame(tick);
-        } else if (!isVisible && rafId !== null) {
+        } else if (!isVisible.value && rafId !== null) {
           // Section left viewport — stop animating
           cancelAnimationFrame(rafId);
           rafId = null;
-        }
-        // Trigger the one-time button pulse hint when section first scrolls into view
-        if (isVisible && !hasPulsed) {
-          hasPulsed = true;
-          setTimeout(() => {
-            pulseHint.value = true;
-            setTimeout(() => {
-              pulseHint.value = false;
-            }, 2400);
-          }, 800);
         }
       }
     },
     { threshold: 0 },
   );
   intersectionObserver.observe(container.value);
+
+  // Separate observer on the card wrapper — drives the layer-slide animation on touch devices
+  if (cardEl.value) {
+    cardObserver = new IntersectionObserver(
+      ([entry]) => {
+        isCardInView.value = entry.isIntersecting;
+      },
+      { threshold: 0.25 },
+    );
+    cardObserver.observe(cardEl.value);
+  }
 
   // Attach pointer and touch event listeners to the container
   container.value.addEventListener("pointermove", handlePointerMove);
@@ -584,6 +636,7 @@ onBeforeUnmount(() => {
   if (rafId !== null) cancelAnimationFrame(rafId);
   resizeObserver?.disconnect();
   intersectionObserver?.disconnect();
+  cardObserver?.disconnect();
   container.value?.removeEventListener("pointermove", handlePointerMove);
   container.value?.removeEventListener("pointerleave", resetPointer);
   container.value?.removeEventListener("touchstart", handleTouchStart);
@@ -685,23 +738,26 @@ onBeforeUnmount(() => {
   letter-spacing: 0.01em;
 }
 
-/* One-time pulse animation to draw attention to the info button on first scroll into view */
+/* Continuous pulse that highlights the toggle button while the info list is shown */
 @keyframes pulse-hint {
   0%,
   100% {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: none;
+    transform: scale(1);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
   50% {
-    background: rgba(255, 255, 255, 0.35);
-    border-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.42);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.18);
   }
 }
 
 .info-btn.pulse-hint {
-  animation: pulse-hint 0.8s ease-in-out 3;
+  animation: pulse-hint 1.4s ease-in-out infinite;
+  transform-origin: center;
 }
 
 .info-disclaimer {
@@ -709,5 +765,36 @@ onBeforeUnmount(() => {
   color: rgba(255, 255, 255, 0.6);
   pointer-events: none;
   line-height: 1.3;
+}
+
+/*
+  Card layer animation — both shadow layers sit on top of each other by default
+  and slide apart on hover (desktop) or when the card enters the viewport (touch).
+  Distance matches Tailwind's translate-1.5 (= 0.375rem).
+*/
+.card-layer,
+.card-content {
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .card-group:hover .card-layer-back {
+    transform: translate(0.375rem, 0.375rem);
+  }
+  .card-group:hover .card-layer-front,
+  .card-group:hover .card-content {
+    transform: translate(-0.375rem, -0.375rem);
+  }
+}
+
+@media (hover: none) {
+  .card-group.is-in-view .card-layer-back {
+    transform: translate(0.375rem, 0.375rem);
+  }
+  .card-group.is-in-view .card-layer-front,
+  .card-group.is-in-view .card-content {
+    transform: translate(-0.375rem, -0.375rem);
+  }
 }
 </style>
