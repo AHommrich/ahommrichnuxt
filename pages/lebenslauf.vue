@@ -12,7 +12,7 @@ useSeoMeta({
 });
 
 useHead({
-  htmlAttrs: { lang: "de" },
+  htmlAttrs: { lang: "de", class: "cv-route" },
 });
 
 // Triggers the browser's native print dialog, used by the user to save as PDF.
@@ -163,7 +163,8 @@ const projects = [
 const skillset = [
   {
     label: "Frontend",
-    items: "Vue.js, Nuxt.js, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS, Bootstrap, Vite",
+    items:
+      "Vue.js, Nuxt.js, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS, Bootstrap, Vite",
   },
   {
     label: "Backend",
@@ -175,7 +176,8 @@ const skillset = [
   },
   {
     label: "DevOps & Tooling",
-    items: "Docker, Git, GitHub, GitLab, Linux, Apple Ecosystem, VS Code, JetBrains",
+    items:
+      "Docker, Git, GitHub, GitLab, Linux, Apple Ecosystem, VS Code, JetBrains",
   },
   {
     label: "KI-Werkzeuge",
@@ -194,7 +196,7 @@ const profileBullets = [
 
 <template>
   <div class="cv-root">
-    <!-- Tiled pattern background (screen only) -->
+    <!-- Tiled diamond pattern — same SVG asset used on the homepage -->
     <div class="cv-pattern" aria-hidden="true" />
 
     <!-- Action bar — screen only -->
@@ -228,72 +230,72 @@ const profileBullets = [
 
           <section class="cv-card">
             <div class="cv-card-inner">
-            <h2 class="cv-section-title">Kontakt</h2>
-            <ul class="cv-list cv-list--plain">
-              <li>André Hommrich</li>
-              <li>Dernbacher Str. 26</li>
-              <li>56410 Montabaur</li>
-              <li>
-                <a href="mailto:andre-hommrich@web.de"
-                  >andre-hommrich@web.de</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://hommri.ch"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >hommri.ch</a
-                >
-              </li>
-            </ul>
+              <h2 class="cv-section-title">Kontakt</h2>
+              <ul class="cv-list cv-list--plain">
+                <li>André Hommrich</li>
+                <li>Dernbacher Str. 26</li>
+                <li>56410 Montabaur</li>
+                <li>
+                  <a href="mailto:andre-hommrich@web.de"
+                    >andre-hommrich@web.de</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://hommri.ch"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >hommri.ch</a
+                  >
+                </li>
+              </ul>
             </div>
           </section>
 
           <section class="cv-card">
             <div class="cv-card-inner">
-            <h2 class="cv-section-title">Skillset</h2>
-            <ul class="cv-list cv-list--plain cv-skill-list">
-              <li v-for="group in skillset" :key="group.label">
-                <strong>{{ group.label }}</strong>
-                <span>{{ group.items }}</span>
-              </li>
-            </ul>
+              <h2 class="cv-section-title">Skillset</h2>
+              <ul class="cv-list cv-list--plain cv-skill-list">
+                <li v-for="group in skillset" :key="group.label">
+                  <strong>{{ group.label }}</strong>
+                  <span>{{ group.items }}</span>
+                </li>
+              </ul>
             </div>
           </section>
 
           <section class="cv-card">
             <div class="cv-card-inner">
-            <h2 class="cv-section-title">Sprachen</h2>
-            <ul class="cv-list cv-list--plain">
-              <li><strong>Deutsch</strong> — Muttersprache</li>
-              <li>
-                <strong>Englisch</strong> — sicher im Verständnis, täglich im
-                beruflichen Einsatz
-              </li>
-            </ul>
+              <h2 class="cv-section-title">Sprachen</h2>
+              <ul class="cv-list cv-list--plain">
+                <li><strong>Deutsch</strong> — Muttersprache</li>
+                <li>
+                  <strong>Englisch</strong> — sicher im Verständnis, täglich im
+                  beruflichen Einsatz
+                </li>
+              </ul>
             </div>
           </section>
 
           <section class="cv-card">
             <div class="cv-card-inner">
-            <h2 class="cv-section-title">Weiterbildung</h2>
-            <ul class="cv-list cv-list--plain">
-              <li>
-                <strong>2020</strong> — Elektrofachkraft mit erweiterten
-                Sicherheitskenntnissen
-              </li>
-            </ul>
+              <h2 class="cv-section-title">Weiterbildung</h2>
+              <ul class="cv-list cv-list--plain">
+                <li>
+                  <strong>2020</strong> — Elektrofachkraft mit erweiterten
+                  Sicherheitskenntnissen
+                </li>
+              </ul>
             </div>
           </section>
 
           <section class="cv-card">
             <div class="cv-card-inner">
-            <h2 class="cv-section-title">Führerschein</h2>
-            <ul class="cv-list">
-              <li>Klasse B</li>
-              <li>Staplerführerschein</li>
-            </ul>
+              <h2 class="cv-section-title">Führerschein</h2>
+              <ul class="cv-list">
+                <li>Klasse B</li>
+                <li>Staplerführerschein</li>
+              </ul>
             </div>
           </section>
         </aside>
@@ -354,11 +356,7 @@ const profileBullets = [
           <section class="cv-section">
             <h2 class="cv-main-title">Projekthistorie</h2>
             <div class="cv-stack">
-              <article
-                v-for="(p, i) in projects"
-                :key="i"
-                class="cv-entry"
-              >
+              <article v-for="(p, i) in projects" :key="i" class="cv-entry">
                 <div class="cv-entry-inner">
                   <div class="cv-entry-head">
                     <div class="cv-entry-headline">
@@ -505,15 +503,15 @@ const profileBullets = [
 }
 
 .cv-grid {
+  /*
+    Always keep the two-column PDF layout — including on mobile.
+    On small screens the whole sheet scales down via the font-size
+    reduction further below, so it reads like a shrunk PDF preview
+    instead of growing each card to full screen width.
+  */
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 1.25rem;
-}
-
-@media (min-width: 640px) {
-  .cv-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -541,12 +539,12 @@ const profileBullets = [
   opacity: 0.8;
 }
 .cv-hero-shadow-1 {
-  transform: translate(0.375rem, 0.375rem);
+  transform: translate(0.25rem, 0.25rem);
   background: var(--cv-hero-shadow-1-bg);
   border: 1px solid var(--cv-hero-shadow-1-border);
 }
 .cv-hero-shadow-2 {
-  transform: translate(-0.375rem, -0.375rem);
+  transform: translate(-0.25rem, -0.25rem);
   background: var(--cv-hero-shadow-2-bg);
   border: 1px solid var(--cv-hero-shadow-2-border);
 }
@@ -554,11 +552,11 @@ const profileBullets = [
   /*
     No background or border — content sits directly on the burgund front layer,
     matching the homepage card stack where the inner content block has no fill.
-    Same -0.375rem offset as the front layer keeps them perfectly aligned.
+    Same -0.25rem offset as the front layer keeps them perfectly aligned.
   */
   position: relative;
   z-index: 2;
-  transform: translate(-0.375rem, -0.375rem);
+  transform: translate(-0.25rem, -0.25rem);
   padding: 1rem;
   color: #e5e7eb;
 }
@@ -619,13 +617,13 @@ const profileBullets = [
   opacity: 0.8;
 }
 .cv-card::before {
-  transform: translate(0.375rem, 0.375rem);
+  transform: translate(0.25rem, 0.25rem);
   background: var(--cv-hero-shadow-1-bg);
   border: 1px solid var(--cv-hero-shadow-1-border);
   z-index: 0;
 }
 .cv-card::after {
-  transform: translate(-0.375rem, -0.375rem);
+  transform: translate(-0.25rem, -0.25rem);
   background: #8d1d29;
   border: 1px solid var(--cv-hero-shadow-2-border);
   z-index: 1;
@@ -633,7 +631,7 @@ const profileBullets = [
 .cv-card-inner {
   position: relative;
   z-index: 2;
-  transform: translate(-0.375rem, -0.375rem);
+  transform: translate(-0.25rem, -0.25rem);
   padding: 0.9rem 1rem;
   color: #ffffff;
 }
@@ -720,13 +718,13 @@ const profileBullets = [
   opacity: 0.8;
 }
 .cv-entry::before {
-  transform: translate(0.375rem, 0.375rem);
+  transform: translate(0.25rem, 0.25rem);
   background: var(--cv-hero-shadow-1-bg);
   border: 1px solid var(--cv-hero-shadow-1-border);
   z-index: 0;
 }
 .cv-entry::after {
-  transform: translate(-0.375rem, -0.375rem);
+  transform: translate(-0.25rem, -0.25rem);
   background: #8d1d29;
   border: 1px solid var(--cv-hero-shadow-2-border);
   z-index: 1;
@@ -734,7 +732,7 @@ const profileBullets = [
 .cv-entry-inner {
   position: relative;
   z-index: 2;
-  transform: translate(-0.375rem, -0.375rem);
+  transform: translate(-0.25rem, -0.25rem);
   padding: 0.85rem 1rem;
   color: #ffffff;
 }
@@ -823,18 +821,64 @@ const profileBullets = [
 }
 
 /* ------------------------------------------------------------------ */
+/* Mobile — additional spacing tweaks. The actual proportional shrink */
+/* of the sheet happens via the html.cv-route font-size override in   */
+/* the non-scoped <style> block (rem units are root-relative).        */
+/* ------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  .cv-container {
+    padding: 3.5rem 0.5rem 1.5rem;
+  }
+  .cv-grid {
+    gap: 0.6rem;
+  }
+  .cv-sidebar,
+  .cv-main {
+    gap: 0.6rem;
+  }
+  .cv-stack {
+    gap: 0.5rem;
+  }
+  /*
+    Action bar lives in the page coordinate system but should stay
+    tap-friendly. Pin everything in absolute px so the html root-scale
+    can shrink the rest without making the buttons unusable.
+  */
+  .cv-actions {
+    top: 10px;
+    right: 10px;
+    gap: 6px;
+  }
+  .cv-action-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    gap: 6px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Print rules — force light theme so the PDF is print-friendly       */
 /* regardless of the user's current OS color scheme.                  */
 /* ------------------------------------------------------------------ */
 @media print {
+  /*
+    A real page margin so every page gets natural breathing room at the top
+    (previously @page margin: 0 left page 2+ flush against the paper edge).
+    To remove the browser's auto date/URL header that lands in this margin,
+    the user disables "Kopf- und Fußzeilen" in the print dialog's "Weitere
+    Einstellungen" — there is no fully reliable CSS-only way to suppress it.
+  */
   @page {
     size: A4;
-    margin: 10mm;
+    margin: 12mm 10mm;
   }
 
   /* Reset theme tokens to light values for predictable print output */
   .cv-root {
     --cv-bg: #ffffff;
+    --cv-pattern: url("@/assets/pattern-light.svg");
+    --cv-pattern-opacity: 0.4;
     --cv-text: #1a1a1d;
     --cv-text-muted: rgba(26, 26, 29, 0.72);
     --cv-text-subtle: rgba(26, 26, 29, 0.6);
@@ -849,26 +893,77 @@ const profileBullets = [
     --cv-section-title-border: rgba(0, 0, 0, 0.18);
   }
 
-  /* Hide action bar and background pattern in print */
+  /*
+    Hide the action bar AND the section divider in print. The divider
+    fell on or near page breaks and got visually cut off; for the printed
+    CV the section heading "Projekthistorie" is enough of a separator.
+  */
   .cv-actions,
-  .cv-pattern {
+  .cv-divider {
     display: none !important;
   }
 
-  /* Force background colors to render in print — including the ::before/::after layers */
-  .cv-root,
-  .cv-hero-card,
-  .cv-hero-shadow-1,
-  .cv-hero-shadow-2,
-  .cv-hero-inner,
-  .cv-card,
-  .cv-card::before,
-  .cv-card::after,
-  .cv-entry,
-  .cv-entry::before,
-  .cv-entry::after {
+  /*
+    Same diamond SVG as the homepage, tiled at ~20% of its native size.
+    Chrome rasterizes SVG background-images for print: below ~300px tile
+    width the bitmap gets visibly upscaled by the printer DPI and looks
+    blurry. 400×300 keeps the diamonds small (~10px) but renders crisply.
+
+    position: fixed makes modern browsers repeat the pattern on every
+    printed page; print-color-adjust: exact forces it into the saved PDF.
+    image-rendering: crisp-edges asks the browser not to soften the
+    rasterized output, which helps further on lower-DPI printers.
+
+    Note: Chrome's "Hintergrundgrafiken" checkbox in the print dialog can
+    still strip background-image from the saved PDF on some systems even
+    with print-color-adjust set — if the pattern is missing from the file,
+    enable that option once under "Weitere Einstellungen".
+  */
+  .cv-pattern {
+    position: fixed !important;
+    inset: 0 !important;
+    background-size: 400px 300px !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  /* Force background colors to render in print */
+  .cv-root,
+  .cv-hero-card,
+  .cv-card,
+  .cv-entry {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /*
+    Print uses flat solid burgund cards — the screen's offset shadow stack
+    leaves visible outline artifacts on white paper and prevents cards from
+    splitting cleanly across pages. A plain box reads more like a real PDF
+    CV and breaks gracefully when needed.
+  */
+  .cv-hero-shadow-1,
+  .cv-hero-shadow-2 {
+    display: none !important;
+  }
+  .cv-card::before,
+  .cv-card::after,
+  .cv-entry::before,
+  .cv-entry::after {
+    content: none !important;
+  }
+  .cv-hero-card,
+  .cv-card,
+  .cv-entry {
+    background-color: #8d1d29 !important;
+    border: 1px solid #4b0b15 !important;
+  }
+  .cv-hero-inner,
+  .cv-card-inner,
+  .cv-entry-inner {
+    transform: none !important;
   }
 
   /* All card content sits on the burgund front layer — force pure white for max print contrast */
@@ -896,6 +991,7 @@ const profileBullets = [
 
   .cv-container {
     max-width: 100% !important;
+    /* Print margin lives on @page now, so the container is flush */
     padding: 0 !important;
   }
 
@@ -906,53 +1002,166 @@ const profileBullets = [
 
   .cv-sidebar,
   .cv-main {
-    gap: 3mm !important;
+    gap: 5mm !important;
   }
 
   .cv-stack {
-    gap: 3mm !important;
+    gap: 4mm !important;
   }
 
-  /* Avoid breaking individual cards across pages */
+  /*
+    Never split a card across pages — content cut mid-bullet looks broken.
+    To make this work without huge whitespace gaps, the print typography
+    below is aggressively compacted so more entries fit per page.
+  */
   .cv-entry,
   .cv-card,
   .cv-hero-card {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+  /* Keep the role headline glued to its bullet list */
+  .cv-entry-head {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
 
-  /* Compact typography for print */
+  /* ---------- Compact typography for print ---------- */
+
+  /* Hero */
   .cv-name {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   .cv-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
+    margin: 0.15rem 0 0.4rem;
   }
   .cv-name-inner {
-    padding: 0.9rem 1.1rem;
+    padding: 0.6rem 0.85rem;
   }
-  .cv-profile-list,
-  .cv-list,
-  .cv-entry-text {
-    font-size: 0.78rem;
-  }
-  .cv-entry-stack {
+  .cv-profile-list {
     font-size: 0.72rem;
-  }
-  .cv-section-title {
-    font-size: 0.7rem;
-  }
-  .cv-main-title {
-    font-size: 1.05rem;
+    gap: 0.1rem;
+    padding-left: 0.95rem;
   }
 
-  /* Section headings should stick with their first card */
-  .cv-section {
-    break-inside: avoid-page;
+  /* Section headings on the main column */
+  .cv-main-title {
+    font-size: 0.95rem;
+    margin: 0 0 0.4rem;
   }
+
+  /* Sidebar cards */
+  .cv-card-inner {
+    padding: 0.55rem 0.7rem;
+  }
+  .cv-section-title {
+    font-size: 0.62rem;
+    margin: 0 0 0.35rem;
+    padding-bottom: 0.2rem;
+  }
+  .cv-list {
+    font-size: 0.7rem;
+    gap: 0.1rem;
+    padding-left: 0.95rem;
+  }
+  .cv-list--plain {
+    padding-left: 0;
+  }
+  .cv-skill-list {
+    gap: 0.3rem;
+  }
+  .cv-skill-list strong {
+    font-size: 0.62rem;
+  }
+  .cv-skill-list span {
+    font-size: 0.7rem;
+    line-height: 1.25;
+  }
+
+  /* Main column cards (work + projects) */
+  .cv-entry-inner {
+    padding: 0.5rem 0.7rem;
+  }
+  .cv-entry-role {
+    font-size: 0.85rem;
+  }
+  .cv-entry-company {
+    font-size: 0.72rem;
+  }
+  .cv-entry-period {
+    font-size: 0.72rem;
+  }
+  .cv-entry-list {
+    font-size: 0.72rem;
+    gap: 0.1rem;
+    margin-top: 0.3rem;
+    padding-left: 0.95rem;
+  }
+  .cv-entry-stack {
+    font-size: 0.68rem;
+    margin: 0.2rem 0 0.3rem;
+  }
+  .cv-entry-text {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+  .cv-entry-extra {
+    font-size: 0.7rem;
+    margin-top: 0.3rem;
+  }
+
+  /*
+    Divider sits between Berufserfahrung and Projekthistorie. Generous
+    vertical margin so the section transition has visible breathing room
+    rather than the previous packed-together feel on page 2.
+  */
+  .cv-divider {
+    margin: 2.5mm 0;
+  }
+  .cv-signature {
+    font-size: 0.7rem;
+    margin-top: 0.6rem;
+  }
+  /*
+    The bullet list inside each entry sits slightly looser to match the
+    perceived spacing of page 1's hero card.
+  */
+  .cv-entry-list {
+    line-height: 1.4;
+  }
+  .cv-entry-text {
+    line-height: 1.45;
+  }
+
+  /*
+    Section headings should stay attached to their first card, but the
+    section itself MUST be allowed to break across pages — `avoid-page`
+    on tall sections leaves huge whitespace gaps before each new page.
+  */
   .cv-main-title {
     break-after: avoid;
     page-break-after: avoid;
+  }
+}
+</style>
+
+<!--
+  Non-scoped block: applies a smaller root font-size on mobile while the user
+  is on this page. The `cv-route` class is set on <html> via useHead so the
+  override naturally tears down on route change. We use html-level scaling
+  because rem units are always root-relative — scoping the change to .cv-root
+  would have no effect on rem-based child sizes.
+-->
+<style>
+@media (max-width: 640px) {
+  html.cv-route {
+    font-size: 9.5px;
+  }
+}
+@media (max-width: 380px) {
+  html.cv-route {
+    font-size: 8.5px;
   }
 }
 </style>
