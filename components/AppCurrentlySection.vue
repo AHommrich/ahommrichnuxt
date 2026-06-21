@@ -48,7 +48,7 @@ onBeforeUnmount(() => {
           class="card-content relative z-10 flex flex-col p-6 sm:justify-center"
         >
           <h3
-            class="self-center pb-3 text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
+            class="self-center pb-3 text-center text-xl text-gray-200 sm:text-2xl md:text-3xl lg:text-4xl"
           >
             Was ich aktuell mache?
           </h3>
@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
             <!-- Text column -->
             <div class="flex flex-col lg:w-1/2 lg:justify-center lg:py-4">
               <p
-                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-sm lg:text-base"
               >
                 Als Fullstack-Webentwickler arbeite ich täglich an realen
                 Projekten – von der Planung über die Umsetzung bis hin zur
@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
                 kontinuierlich erweitere.
               </p>
               <p
-                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
+                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-sm lg:text-base"
               >
                 In meiner Zeit als Entwickler habe ich gemerkt, wie gut der
                 Beruf zu mir passt. Er verbindet das, was mich sowieso antreibt
