@@ -149,7 +149,7 @@ onMounted(() => {
         class="group absolute right-0 top-1/2 h-12 w-12 -translate-y-1/2 overflow-hidden sm:h-[200px] sm:w-[200px] md:h-[250px] md:w-[250px] lg:h-[320px] lg:w-[320px] xl:h-[400px] xl:w-[400px]"
       >
         <div
-          class="absolute inset-0 rotate-[-45deg] scale-[1.5] bg-[url('/img/freeride-mtb.jpg')] bg-cover bg-center transition-transform duration-200 ease-in-out group-hover:scale-[1.75]"
+          class="absolute inset-0 rotate-[-45deg] scale-[1.5] bg-[url('/img/hund-spaziergang.jpg')] bg-cover bg-center transition-transform duration-200 ease-in-out group-hover:scale-[1.75]"
         />
         <div class="left-0-0 absolute bottom-0 z-10 h-1/2 w-1/2 bg-[#4b0b15]">
           <div
@@ -160,13 +160,13 @@ onMounted(() => {
             >
               <font-awesome-icon
                 v-if="isClient"
-                :icon="['fas', 'person-hiking']"
+                :icon="['fas', 'dog']"
                 class="h-12 w-12 text-white rotate-[-45deg]"
               />
             </div>
             <div class="pt-2 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Freizeit auf zwei Rädern und zu Fuß.
+                Freizeit zu Fuß und mit vier Pfoten.
               </p>
             </div>
           </div>
@@ -376,7 +376,7 @@ onMounted(() => {
           class="relative -right-[400px] -top-[400px] h-[200px] w-[200px] overflow-hidden"
         >
           <div
-            class="absolute inset-0 rotate-[-45deg] scale-[1.5] bg-[url('/img/freeride-mtb.jpg')] bg-cover bg-center"
+            class="absolute inset-0 rotate-[-45deg] scale-[1.5] bg-[url('/img/hund-spaziergang.jpg')] bg-cover bg-center"
           />
           <div class="absolute left-0 top-0 z-10 h-1/2 w-1/2 bg-[#8D1D29]">
             <div
@@ -387,13 +387,13 @@ onMounted(() => {
               >
                 <font-awesome-icon
                   v-if="isClient"
-                  :icon="['fas', 'person-hiking']"
+                  :icon="['fas', 'dog']"
                   class="h-12 w-12 text-white rotate-[-45deg]"
                 />
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Freizeit auf zwei Rädern und zu Fuß.
+                  Freizeit zu Fuß und mit vier Pfoten.
                 </p>
               </div>
             </div>
