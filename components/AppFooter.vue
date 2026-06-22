@@ -17,7 +17,9 @@ defineProps<{
   >
     <div class="relative mx-auto h-full w-full max-w-7xl">
       <!-- Semi-transparent burgundy background layer -->
-      <div class="absolute inset-0 z-0 rounded-t-xl bg-[#8D1D29] opacity-80" />
+      <div
+        class="absolute inset-0 z-0 [clip-path:polygon(12px_0,calc(100%-12px)_0,100%_12px,100%_100%,0_100%,0_12px)] bg-[#8D1D29] opacity-80"
+      />
 
       <div
         class="relative z-10 mx-auto flex w-full transform justify-between px-12 py-2 shadow-lg"

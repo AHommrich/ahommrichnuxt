@@ -197,7 +197,9 @@ onBeforeUnmount(() => {
     class="fixed left-1/2 z-50 w-full max-w-7xl -translate-x-1/2 transform shadow-lg"
   >
     <!-- Semi-transparent burgundy background layer -->
-    <div class="absolute inset-0 z-0 rounded-b-xl bg-[#8D1D29] opacity-80" />
+    <div
+      class="absolute inset-0 z-0 [clip-path:polygon(0_0,100%_0,100%_calc(100%-12px),calc(100%-12px)_100%,12px_100%,0_calc(100%-12px))] bg-[#8D1D29] opacity-80"
+    />
 
     <div
       class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-4 py-3 text-gray-200 opacity-100"
@@ -239,7 +241,7 @@ onBeforeUnmount(() => {
 
           <!-- Sliding underline — interpolated between nav items based on scroll progress -->
           <div
-            class="sliding-line pointer-events-none absolute bottom-0 block h-[2px] bg-black dark:bg-white"
+            class="sliding-line pointer-events-none absolute bottom-0 block h-[2px] bg-gray-200"
             :style="{
               transform: `translate3d(${lineLeft}px, 0, 0)`,
               width: `${lineWidth}px`,

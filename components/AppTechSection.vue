@@ -42,8 +42,10 @@
             eye-catcher appears above the text in the reading flow.
           -->
           <div class="flex flex-col md:flex-row md:gap-8 lg:gap-12">
-            <!-- Text column — md+: left half -->
-            <div class="order-2 md:order-1 md:w-1/2">
+            <!-- Text column — md+: left half, vertically centered to balance against the animation column -->
+            <div
+              class="order-2 flex flex-col md:order-1 md:w-1/2 md:justify-center"
+            >
               <p
                 class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
               >
