@@ -12,10 +12,16 @@ const SECTION_IDS = [
   "technologien",
 ] as const;
 
-// Template ref on the sliding underline. The rAF loop writes transform/width
-// straight to el.style instead of through Vue reactivity — same pattern as
-// AppTechSection's icon positioning loop. Skipping the per-frame Vue patch
-// keeps the loop body to a single DOM write per scroll change.
+// Active section id — drives the mobile per-tab underline. On desktop the
+// sliding underline handles the visual highlight, but writing this ref is
+// essentially free (IntersectionObserver fires once per section change,
+// not per frame).
+const activeSection = ref<string>("home");
+
+// Template ref on the sliding underline. The rAF loop writes the slider's
+// transform straight to el.style instead of through Vue reactivity — same
+// pattern as AppTechSection's icon positioning loop. Slider is desktop only
+// (hidden below the sm: breakpoint via tailwind classes).
 const sliderEl = ref<HTMLElement | null>(null);
 
 // Cached layout measurements — refreshed on mount, resize, and whenever the body
@@ -24,11 +30,13 @@ let navMetrics: { left: number; width: number }[] = [];
 let sectionMidpoints: number[] = [];
 let rafId: number | null = null;
 let bodyObserver: ResizeObserver | null = null;
+let sectionObserver: IntersectionObserver | null = null;
 
-// Last value written via setSlider — used to skip redundant DOM writes when the
-// slider is "parked" at a section anchor. onResize resets it to NaN so the next
-// tick re-applies fresh values after measurements changed.
+// Last values written via setSlider — used to skip redundant DOM writes when
+// the slider is "parked" at a section anchor. onResize resets both to NaN so
+// the next tick re-applies fresh values after measurements changed.
 let lastLeft = NaN;
+let lastWidth = NaN;
 
 // Continuous scroll-driven rAF loop state. We can't rely on scroll events alone
 // because iOS Safari throttles them heavily during momentum scrolling, which
@@ -54,24 +62,25 @@ const scrollToSection = (id: string) => {
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-// Fixed slider width (px). Visible width never changes — slider only translates,
-// which is the exact same animation profile as AppTechSection's icons (smooth on
-// mobile). This is the diagnostic A/B variant of the resize-based slider; if
-// scrolling is now smooth, the per-frame width change was the culprit. If it's
-// still janky, the bottleneck lies outside the slider (likely the fixed header's
-// clip-path/shadow combo repainting every scroll frame on iOS).
-const SLIDER_WIDTH = 40;
-
 // Direct DOM write for the underline — bypasses Vue reactivity so the rAF loop
-// doesn't schedule a component patch on every frame. left/width come in as the
-// active tab's bounds; we recenter the fixed-width slider under that tab.
+// doesn't schedule a component patch on every frame.
+//
+// Visible width is encoded as scaleX on a 1px-wide element (see <style>), not
+// via style.width. width is a layout-triggering CSS property — animating it per
+// frame would force a style recalc + layout + paint on the main thread every
+// tick. A combined transform stays entirely on the compositor thread, matching
+// the tech-section's icon animation path.
+//
+// Mobile note: the slider element is `display: none` on mobile and the rAF
+// loop isn't even registered there (see onMounted matchMedia gate), so this
+// function effectively only runs on desktop.
 const setSlider = (left: number, width: number) => {
-  const centered = left + (width - SLIDER_WIDTH) / 2;
-  if (centered === lastLeft) return;
-  lastLeft = centered;
+  if (left === lastLeft && width === lastWidth) return;
+  lastLeft = left;
+  lastWidth = width;
   const el = sliderEl.value;
   if (!el) return;
-  el.style.transform = `translate3d(${centered}px, 0, 0)`;
+  el.style.transform = `translate3d(${left}px, 0, 0) scaleX(${width})`;
 };
 
 // Reads offsetLeft/offsetWidth of each nav-link in the header. Uses a fresh DOM
@@ -160,6 +169,7 @@ const onResize = () => {
   // Invalidate the setSlider write cache so the next tick re-applies values
   // even if numerically identical — measurements may have shifted underneath.
   lastLeft = NaN;
+  lastWidth = NaN;
   measureNavItems();
   measureSections();
   updateLinePosition();
@@ -177,6 +187,29 @@ onBeforeMount(() => {
 
 onMounted(async () => {
   await nextTick();
+
+  // IntersectionObserver drives the activeSection ref — on mobile it's the
+  // sole mechanism that highlights the current tab; on desktop it co-exists
+  // with the sliding underline. The callback only fires on section change,
+  // so it stays well off the scroll hot path.
+  sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) activeSection.value = entry.target.id;
+      });
+    },
+    { threshold: 0.5 },
+  );
+  SECTION_IDS.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) sectionObserver!.observe(el);
+  });
+
+  // Slider-related work is desktop-only. On mobile the slider element is
+  // `display: none` and neither the rAF loop nor the scroll/resize/body
+  // observers are registered — keeping the mobile scroll hot path empty.
+  const isDesktop = window.matchMedia("(min-width: 640px)").matches;
+  if (!isDesktop) return;
 
   // Initial measurement + first paint of the sliding underline
   measureNavItems();
@@ -198,6 +231,8 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  sectionObserver?.disconnect();
+  sectionObserver = null;
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("resize", onResize);
   bodyObserver?.disconnect();
@@ -233,33 +268,39 @@ onBeforeUnmount(() => {
         <template v-if="route.path === '/'">
           <a
             class="nav-link mb-2 cursor-pointer text-gray-200"
+            :class="{ 'is-active': activeSection === 'home' }"
             @click.prevent="scrollToSection('home')"
           >
             Home
           </a>
           <a
             class="nav-link mb-2 cursor-pointer text-gray-200"
+            :class="{ 'is-active': activeSection === 'ueber-mich' }"
             @click.prevent="scrollToSection('ueber-mich')"
           >
             Über mich
           </a>
           <a
             class="nav-link mb-2 cursor-pointer text-gray-200"
+            :class="{ 'is-active': activeSection === 'was-ich-mache' }"
             @click.prevent="scrollToSection('was-ich-mache')"
           >
             Aktuell
           </a>
           <a
             class="nav-link mb-2 cursor-pointer text-gray-200"
+            :class="{ 'is-active': activeSection === 'technologien' }"
             @click.prevent="scrollToSection('technologien')"
           >
             Skills
           </a>
 
-          <!-- Sliding underline — transform/width written directly by the rAF loop -->
+          <!-- Sliding underline — desktop only; mobile uses the static per-tab
+               underline on .nav-link.is-active (see <style>). transform written
+               directly by the rAF loop. -->
           <div
             ref="sliderEl"
-            class="sliding-line pointer-events-none absolute bottom-0 block h-[2px] bg-gray-200"
+            class="sliding-line pointer-events-none absolute bottom-0 hidden h-[2px] bg-gray-200 sm:block"
           />
         </template>
 
@@ -275,11 +316,31 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Diagnostic A/B variant: fixed slider width, only translate per frame. Same
-   animation profile as AppTechSection's icons. Keep width in sync with the
-   SLIDER_WIDTH constant in <script>. */
+/* Sliding underline (desktop only). Visible width comes from scaleX on a 1px
+   base, not from animating style.width — width is a layout-triggering CSS
+   property and animating it per frame visibly conflicts with iOS momentum
+   scrolling. A combined transform stays GPU-composited. */
 .sliding-line {
-  width: 40px;
+  width: 1px;
+  transform-origin: left center;
   will-change: transform;
+}
+
+/* Mobile-only static per-tab underline. Implemented via box-shadow so toggling
+   `.is-active` doesn't reflow the nav. Hidden on desktop because the sliding
+   underline takes over. */
+.nav-link {
+  box-shadow: 0 2px 0 transparent;
+  transition: box-shadow 180ms ease;
+}
+.nav-link.is-active {
+  box-shadow: 0 2px 0 #e5e7eb; /* gray-200 — matches the desktop sliding underline */
+}
+@media (min-width: 640px) {
+  .nav-link,
+  .nav-link.is-active {
+    box-shadow: none;
+    transition: none;
+  }
 }
 </style>
