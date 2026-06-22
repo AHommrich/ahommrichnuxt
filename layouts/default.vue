@@ -17,20 +17,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <!-- Background: tiled SVG pattern switches between light/dark variants via Tailwind dark: -->
+  <div class="bg-pattern text-black/50 dark:text-gray-200/50">
+    <!-- Full-height flex column so the footer is always pushed to the bottom -->
     <div
-      class="bg-background-light bg-[url('@/assets/pattern-light.svg')] text-black/50 dark:bg-[url('@/assets/pattern-dark.svg')] dark:text-gray-200/50"
+      class="relative flex min-h-screen w-full flex-col selection:bg-[#9c5258] selection:text-gray-200"
     >
-      <!-- Full-height flex column so the footer is always pushed to the bottom -->
-      <div
-        class="relative flex min-h-screen w-full flex-col selection:bg-[#9c5258] selection:text-gray-200"
-      >
-        <AppHeader />
-        <!-- Page content is injected here via Nuxt's layout slot -->
-        <main><slot /></main>
-        <AppFooter :is-footer-fixed="isFooterFixed" />
-      </div>
+      <AppHeader />
+      <!-- Page content is injected here via Nuxt's layout slot -->
+      <main><slot /></main>
+      <AppFooter :is-footer-fixed="isFooterFixed" />
     </div>
   </div>
 </template>
