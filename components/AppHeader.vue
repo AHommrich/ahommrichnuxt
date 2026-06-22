@@ -2,8 +2,6 @@
 import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useRoute } from "vue-router";
 
-// Tracks the currently visible section id — used to highlight the active nav link
-const activeSection = ref("");
 const route = useRoute();
 
 // Ordered nav sections — index matches the .nav-link DOM order in the template
@@ -14,9 +12,11 @@ const SECTION_IDS = [
   "technologien",
 ] as const;
 
-// Sliding underline state — x position and width are interpolated based on scroll progress
-const lineLeft = ref(0);
-const lineWidth = ref(0);
+// Template ref on the sliding underline. The rAF loop writes transform/width
+// straight to el.style instead of through Vue reactivity — same pattern as
+// AppTechSection's icon positioning loop. Skipping the per-frame Vue patch
+// keeps the loop body to a single DOM write per scroll change.
+const sliderEl = ref<HTMLElement | null>(null);
 
 // Cached layout measurements — refreshed on mount, resize, and whenever the body
 // resizes (covers HMR text-size changes, late-loading images, FLIP scenes, etc.)
@@ -29,7 +29,6 @@ let bodyObserver: ResizeObserver | null = null;
 // because iOS Safari throttles them heavily during momentum scrolling, which
 // caused the sliding underline to lag and snap between events. The loop polls
 // window.scrollY every animation frame instead and auto-stops when idle.
-let sectionsCache: NodeListOf<Element> | null = null;
 let lastScrollY = -1;
 let idleFrames = 0;
 const MAX_IDLE_FRAMES = 30; // ~500ms at 60fps — stops the loop when scroll settles
@@ -49,6 +48,15 @@ const scrollToSection = (id: string) => {
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+// Direct DOM write for the underline — bypasses Vue reactivity so the rAF loop
+// doesn't schedule a component patch on every frame.
+const setSlider = (left: number, width: number) => {
+  const el = sliderEl.value;
+  if (!el) return;
+  el.style.transform = `translate3d(${left}px, 0, 0)`;
+  el.style.width = `${width}px`;
+};
 
 // Reads offsetLeft/offsetWidth of each nav-link in the header. Uses a fresh DOM
 // query each time so this works regardless of Vue-ref timing or HMR state.
@@ -78,15 +86,13 @@ const updateLinePosition = () => {
 
   // Before the first section midpoint → pin to first nav item
   if (viewportCenter <= sectionMidpoints[0]) {
-    lineLeft.value = navMetrics[0].left;
-    lineWidth.value = navMetrics[0].width;
+    setSlider(navMetrics[0].left, navMetrics[0].width);
     return;
   }
 
   // Past the last section midpoint → pin to last nav item
   if (viewportCenter >= sectionMidpoints[last]) {
-    lineLeft.value = navMetrics[last].left;
-    lineWidth.value = navMetrics[last].width;
+    setSlider(navMetrics[last].left, navMetrics[last].width);
     return;
   }
 
@@ -98,31 +104,17 @@ const updateLinePosition = () => {
       const span = b - a;
       if (span <= 0) return;
       const t = (viewportCenter - a) / span;
-      lineLeft.value = lerp(navMetrics[i].left, navMetrics[i + 1].left, t);
-      lineWidth.value = lerp(navMetrics[i].width, navMetrics[i + 1].width, t);
+      setSlider(
+        lerp(navMetrics[i].left, navMetrics[i + 1].left, t),
+        lerp(navMetrics[i].width, navMetrics[i + 1].width, t),
+      );
       return;
     }
   }
 };
 
-// Active-section fallback for tall sections that never cross the IO 50% threshold.
-// Lives in the same rAF loop as the underline update so we only pay one layout
-// read pass per frame instead of one per scroll event.
-const updateActiveSection = () => {
-  if (!sectionsCache) return;
-  sectionsCache.forEach((section) => {
-    const rect = section.getBoundingClientRect();
-    if (
-      rect.top <= window.innerHeight / 1.1 &&
-      rect.bottom >= window.innerHeight / 2
-    ) {
-      activeSection.value = section.id;
-    }
-  });
-};
-
-// Continuous rAF loop: polls scrollY every frame, runs the underline + active-section
-// math when the value changes, and auto-stops after MAX_IDLE_FRAMES of no movement.
+// Continuous rAF loop: polls scrollY every frame, runs the underline math when
+// the value changes, and auto-stops after MAX_IDLE_FRAMES of no movement.
 // Decoupling from scroll events keeps the underline in sync with the visible scroll
 // position on iOS, where scroll events fire sparsely during momentum scrolling.
 const tick = () => {
@@ -130,7 +122,6 @@ const tick = () => {
   if (y !== lastScrollY) {
     lastScrollY = y;
     updateLinePosition();
-    updateActiveSection();
     idleFrames = 0;
   } else {
     idleFrames++;
@@ -167,29 +158,6 @@ onBeforeMount(() => {
 
 onMounted(async () => {
   await nextTick();
-
-  // Delay the initial active section assignment slightly so the IntersectionObserver has time
-  // to fire first — prevents the scroll listener from immediately overriding it
-  setTimeout(() => {
-    activeSection.value = "home";
-  }, 10);
-
-  // IntersectionObserver: marks a section as active when it crosses the 50% visibility threshold
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          activeSection.value = entry.target.id;
-        }
-      });
-    },
-    {
-      threshold: 0.5,
-    },
-  );
-
-  sectionsCache = document.querySelectorAll("[id]");
-  sectionsCache.forEach((section) => observer.observe(section));
 
   // Initial measurement + first paint of the sliding underline
   measureNavItems();
@@ -269,23 +237,16 @@ onBeforeUnmount(() => {
             Skills
           </a>
 
-          <!-- Sliding underline — interpolated between nav items based on scroll progress -->
+          <!-- Sliding underline — transform/width written directly by the rAF loop -->
           <div
+            ref="sliderEl"
             class="sliding-line pointer-events-none absolute bottom-0 block h-[2px] bg-gray-200"
-            :style="{
-              transform: `translate3d(${lineLeft}px, 0, 0)`,
-              width: `${lineWidth}px`,
-            }"
           />
         </template>
 
         <!-- On all other pages (e.g. Impressum): show a back link instead -->
         <template v-else>
-          <NuxtLink
-            to="/"
-            class="mb-2 cursor-pointer text-gray-200"
-            @click.prevent="activeSection = 'home'"
-          >
+          <NuxtLink to="/" class="mb-2 cursor-pointer text-gray-200">
             Zurück
           </NuxtLink>
         </template>
