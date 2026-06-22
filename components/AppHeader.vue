@@ -25,6 +25,12 @@ let sectionMidpoints: number[] = [];
 let rafId: number | null = null;
 let bodyObserver: ResizeObserver | null = null;
 
+// Last values written via setSlider — used to skip redundant DOM writes when
+// the slider is "parked" at a section anchor. onResize resets these to NaN so
+// the next tick re-applies fresh values after measurements changed.
+let lastLeft = NaN;
+let lastWidth = NaN;
+
 // Continuous scroll-driven rAF loop state. We can't rely on scroll events alone
 // because iOS Safari throttles them heavily during momentum scrolling, which
 // caused the sliding underline to lag and snap between events. The loop polls
@@ -51,11 +57,20 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 // Direct DOM write for the underline — bypasses Vue reactivity so the rAF loop
 // doesn't schedule a component patch on every frame.
+//
+// Visible width is encoded as scaleX on a 1px-wide element (see <style>), not
+// via style.width. width is a layout-triggering CSS property — animating it per
+// frame would force a style recalc + layout + paint on the main thread every
+// tick, which surfaces as jank during iOS momentum scrolling. A combined
+// transform stays entirely on the compositor thread and runs in parallel to
+// scrolling, matching the tech-section's icon animation path.
 const setSlider = (left: number, width: number) => {
+  if (left === lastLeft && width === lastWidth) return;
+  lastLeft = left;
+  lastWidth = width;
   const el = sliderEl.value;
   if (!el) return;
-  el.style.transform = `translate3d(${left}px, 0, 0)`;
-  el.style.width = `${width}px`;
+  el.style.transform = `translate3d(${left}px, 0, 0) scaleX(${width})`;
 };
 
 // Reads offsetLeft/offsetWidth of each nav-link in the header. Uses a fresh DOM
@@ -141,6 +156,9 @@ const onScroll = () => {
 };
 
 const onResize = () => {
+  // Invalidate the setSlider write cache so the next tick re-applies values
+  // even if numerically identical — measurements may have shifted underneath.
+  lastLeft = lastWidth = NaN;
   measureNavItems();
   measureSections();
   updateLinePosition();
@@ -256,11 +274,15 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* No CSS transition here: the rAF loop in <script> writes a fresh transform/width
-   every frame, which already produces sub-pixel smooth motion. A CSS transition
-   on top would constantly restart between frames and cause visible stutter,
-   especially on iOS where scroll events fire sparsely during momentum scrolling. */
+/* Visible slider width comes from scaleX in the rAF loop, not from animating
+   style.width. width is a layout-triggering CSS property — animating it per
+   frame forces a style recalc + layout + paint on the main thread, which
+   visibly conflicts with iOS momentum scrolling. transform/scale by contrast
+   is composited on the GPU and runs parallel to the scroll thread, putting
+   the slider on the same fast path as AppTechSection's icon animation. */
 .sliding-line {
-  will-change: transform, width;
+  width: 1px;
+  transform-origin: left center;
+  will-change: transform;
 }
 </style>
