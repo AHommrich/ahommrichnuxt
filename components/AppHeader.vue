@@ -25,11 +25,10 @@ let sectionMidpoints: number[] = [];
 let rafId: number | null = null;
 let bodyObserver: ResizeObserver | null = null;
 
-// Last values written via setSlider — used to skip redundant DOM writes when
-// the slider is "parked" at a section anchor. onResize resets these to NaN so
-// the next tick re-applies fresh values after measurements changed.
+// Last value written via setSlider — used to skip redundant DOM writes when the
+// slider is "parked" at a section anchor. onResize resets it to NaN so the next
+// tick re-applies fresh values after measurements changed.
 let lastLeft = NaN;
-let lastWidth = NaN;
 
 // Continuous scroll-driven rAF loop state. We can't rely on scroll events alone
 // because iOS Safari throttles them heavily during momentum scrolling, which
@@ -55,22 +54,24 @@ const scrollToSection = (id: string) => {
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
+// Fixed slider width (px). Visible width never changes — slider only translates,
+// which is the exact same animation profile as AppTechSection's icons (smooth on
+// mobile). This is the diagnostic A/B variant of the resize-based slider; if
+// scrolling is now smooth, the per-frame width change was the culprit. If it's
+// still janky, the bottleneck lies outside the slider (likely the fixed header's
+// clip-path/shadow combo repainting every scroll frame on iOS).
+const SLIDER_WIDTH = 40;
+
 // Direct DOM write for the underline — bypasses Vue reactivity so the rAF loop
-// doesn't schedule a component patch on every frame.
-//
-// Visible width is encoded as scaleX on a 1px-wide element (see <style>), not
-// via style.width. width is a layout-triggering CSS property — animating it per
-// frame would force a style recalc + layout + paint on the main thread every
-// tick, which surfaces as jank during iOS momentum scrolling. A combined
-// transform stays entirely on the compositor thread and runs in parallel to
-// scrolling, matching the tech-section's icon animation path.
+// doesn't schedule a component patch on every frame. left/width come in as the
+// active tab's bounds; we recenter the fixed-width slider under that tab.
 const setSlider = (left: number, width: number) => {
-  if (left === lastLeft && width === lastWidth) return;
-  lastLeft = left;
-  lastWidth = width;
+  const centered = left + (width - SLIDER_WIDTH) / 2;
+  if (centered === lastLeft) return;
+  lastLeft = centered;
   const el = sliderEl.value;
   if (!el) return;
-  el.style.transform = `translate3d(${left}px, 0, 0) scaleX(${width})`;
+  el.style.transform = `translate3d(${centered}px, 0, 0)`;
 };
 
 // Reads offsetLeft/offsetWidth of each nav-link in the header. Uses a fresh DOM
@@ -158,7 +159,7 @@ const onScroll = () => {
 const onResize = () => {
   // Invalidate the setSlider write cache so the next tick re-applies values
   // even if numerically identical — measurements may have shifted underneath.
-  lastLeft = lastWidth = NaN;
+  lastLeft = NaN;
   measureNavItems();
   measureSections();
   updateLinePosition();
@@ -274,15 +275,11 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Visible slider width comes from scaleX in the rAF loop, not from animating
-   style.width. width is a layout-triggering CSS property — animating it per
-   frame forces a style recalc + layout + paint on the main thread, which
-   visibly conflicts with iOS momentum scrolling. transform/scale by contrast
-   is composited on the GPU and runs parallel to the scroll thread, putting
-   the slider on the same fast path as AppTechSection's icon animation. */
+/* Diagnostic A/B variant: fixed slider width, only translate per frame. Same
+   animation profile as AppTechSection's icons. Keep width in sync with the
+   SLIDER_WIDTH constant in <script>. */
 .sliding-line {
-  width: 1px;
-  transform-origin: left center;
+  width: 40px;
   will-change: transform;
 }
 </style>
