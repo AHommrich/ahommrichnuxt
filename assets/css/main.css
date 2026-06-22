@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@theme {
+  --color-burgund: #8d1d29;
+  --color-bg-dark: #3b4245;
+}
+
+:root {
+  --bg-base: #ffffff;
+  --bg-dots: url("/img/bg-dots-light.svg");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-base: #3b4245;
+    --bg-dots: url("/img/bg-dots-dark.svg");
+  }
+}
+
+.bg-pattern {
+  background-color: var(--bg-base);
+  background-image: var(--bg-dots);
+  background-size: 2000px 6000px;
+  background-repeat: repeat;
+}
