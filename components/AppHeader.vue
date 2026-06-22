@@ -25,6 +25,15 @@ let sectionMidpoints: number[] = [];
 let rafId: number | null = null;
 let bodyObserver: ResizeObserver | null = null;
 
+// Continuous scroll-driven rAF loop state. We can't rely on scroll events alone
+// because iOS Safari throttles them heavily during momentum scrolling, which
+// caused the sliding underline to lag and snap between events. The loop polls
+// window.scrollY every animation frame instead and auto-stops when idle.
+let sectionsCache: NodeListOf<Element> | null = null;
+let lastScrollY = -1;
+let idleFrames = 0;
+const MAX_IDLE_FRAMES = 30; // ~500ms at 60fps — stops the loop when scroll settles
+
 /**
  * Smoothly scrolls the page to a section by its id.
  * Applies a 100px top offset to prevent the fixed header from overlapping the section heading.
@@ -96,13 +105,48 @@ const updateLinePosition = () => {
   }
 };
 
-// rAF-throttled scroll handler — avoids running the math more than once per frame
-const onScroll = () => {
-  if (rafId !== null) return;
-  rafId = requestAnimationFrame(() => {
-    rafId = null;
-    updateLinePosition();
+// Active-section fallback for tall sections that never cross the IO 50% threshold.
+// Lives in the same rAF loop as the underline update so we only pay one layout
+// read pass per frame instead of one per scroll event.
+const updateActiveSection = () => {
+  if (!sectionsCache) return;
+  sectionsCache.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    if (
+      rect.top <= window.innerHeight / 1.1 &&
+      rect.bottom >= window.innerHeight / 2
+    ) {
+      activeSection.value = section.id;
+    }
   });
+};
+
+// Continuous rAF loop: polls scrollY every frame, runs the underline + active-section
+// math when the value changes, and auto-stops after MAX_IDLE_FRAMES of no movement.
+// Decoupling from scroll events keeps the underline in sync with the visible scroll
+// position on iOS, where scroll events fire sparsely during momentum scrolling.
+const tick = () => {
+  const y = window.scrollY;
+  if (y !== lastScrollY) {
+    lastScrollY = y;
+    updateLinePosition();
+    updateActiveSection();
+    idleFrames = 0;
+  } else {
+    idleFrames++;
+  }
+  if (idleFrames < MAX_IDLE_FRAMES) {
+    rafId = requestAnimationFrame(tick);
+  } else {
+    rafId = null;
+  }
+};
+
+const onScroll = () => {
+  if (rafId === null) {
+    idleFrames = 0;
+    rafId = requestAnimationFrame(tick);
+  }
 };
 
 const onResize = () => {
@@ -144,22 +188,8 @@ onMounted(async () => {
     },
   );
 
-  const sections = document.querySelectorAll("[id]");
-  sections.forEach((section) => observer.observe(section));
-
-  // Fallback scroll listener: handles sections too tall to ever reach the 50% threshold
-  // (e.g. on small screens where a section fills the entire viewport height)
-  window.addEventListener("scroll", () => {
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (
-        rect.top <= window.innerHeight / 1.1 &&
-        rect.bottom >= window.innerHeight / 2
-      ) {
-        activeSection.value = section.id;
-      }
-    });
-  });
+  sectionsCache = document.querySelectorAll("[id]");
+  sectionsCache.forEach((section) => observer.observe(section));
 
   // Initial measurement + first paint of the sliding underline
   measureNavItems();
@@ -265,12 +295,11 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Smooth interpolation between scroll-driven position updates — kept short so the
-   line still feels like it's tracking the scroll rather than lagging behind it */
+/* No CSS transition here: the rAF loop in <script> writes a fresh transform/width
+   every frame, which already produces sub-pixel smooth motion. A CSS transition
+   on top would constantly restart between frames and cause visible stutter,
+   especially on iOS where scroll events fire sparsely during momentum scrolling. */
 .sliding-line {
-  transition:
-    transform 120ms linear,
-    width 120ms linear;
   will-change: transform, width;
 }
 </style>
