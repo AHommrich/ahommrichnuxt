@@ -1,0 +1,19 @@
+# Build outputs
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+
+# Dependencies
+node_modules
+
+# Auto-generated
+package-lock.json
+
+# Binary assets — Prettier can't format PNGs anyway
+docs/screenshots
+
+# Local scratch — the historical refactor draft superseded by UPLIFT_PLAN.md
+REFACTOR_PLAN.md
