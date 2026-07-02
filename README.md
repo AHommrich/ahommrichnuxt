@@ -1,75 +1,119 @@
-# Nuxt Minimal Starter
+# ahommrichnuxt
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+<!-- CI badge inserted at the end of Stage 5 of UPLIFT_PLAN.md. -->
 
-## Setup
+Personal portfolio of André Hommrich — Fullstack developer from the Westerwald. Nuxt 3, Vue 3, Tailwind CSS 4, deployed via Docker + Coolify. Live at **[ahommrich.de](https://ahommrich.de)**.
 
-Make sure to install dependencies:
+> 🇩🇪 Auch auf Deutsch verfügbar: [README.de.md](README.de.md)
 
-```bash
-# npm
-npm install
+![Hero section with rotated diamond grid — desktop](docs/screenshots/hero-desktop.png)
 
-# pnpm
-pnpm install
+![Tech section in info mode — desktop](docs/screenshots/tech-info-mode-desktop.png)
 
-# yarn
-yarn install
+![Hero section — mobile](docs/screenshots/hero-mobile.png)
 
-# bun
-bun install
-```
+![Tech section in info mode — mobile](docs/screenshots/tech-info-mode-mobile.png)
 
-## Development Server
+---
 
-Start the development server on `http://localhost:3000`:
+## Feature highlights
 
-```bash
-# npm
-npm run dev
+Sorted from "engineering-interesting" to "UX polish". Each item links to the file that implements the mechanism.
 
-# pnpm
-pnpm dev
+1. **`requestAnimationFrame` physics with pointer-flee and info-mode** — one rAF loop drives 21 icons through a `x, y, vx, vy` model, flees from the pointer within a 120 px radius, and reshapes into an alphabetical card grid on demand. Replaced a GSAP implementation for mobile performance. Touch and pointer events are handled separately so mobile scroll doesn't trigger flee, and the loop is paused via `IntersectionObserver` when the section leaves the viewport.
+   → [`components/AppTechSection.vue`](components/AppTechSection.vue)
 
-# yarn
-yarn dev
+2. **Rotated 8-tile diamond grid in the hero** — desktop uses a rotated CSS grid with `overflow: hidden` per tile. Mobile falls back to stacked squares with a documented subpixel-gap fix (`translateZ(0) scale(1.005)` + `backface-visibility: hidden`) because iOS Safari renders half-pixel seams between the tiles otherwise.
+   → [`components/AppHeroSection.vue`](components/AppHeroSection.vue)
 
-# bun
-bun run dev
-```
+3. **Sticky header with `IntersectionObserver`-driven active section** — the header highlights the current section without scroll listeners; the slider under the nav has been perf-tuned across five iterations for mobile.
+   → [`components/AppHeader.vue`](components/AppHeader.vue)
 
-## Production
+4. **Printable CV route at `/lebenslauf`** — unlisted (not linked in the nav, `robots: noindex, nofollow`), print-optimized layout. Public URL by design — no login, no rate limiting; the URL is simply not published.
+   → [`pages/lebenslauf.vue`](pages/lebenslauf.vue)
 
-Build the application for production:
+5. **Zero third-party runtime** — no analytics, no CDN, no Google Fonts, no external scripts. FontAwesome is bundled locally and tree-shaken; the tech section uses local Simple Icons SVGs. This is a deliberate GDPR posture, not an accident: the privacy page states no cookies and no tracking are used, and the code matches.
+   → [`nuxt.config.ts`](nuxt.config.ts), [`plugins/fontawesome.client.js`](plugins/fontawesome.client.js)
 
-```bash
-# npm
-npm run build
+6. **Tailwind CSS 4 via `@tailwindcss/vite`** — no `tailwind.config.js`; theme tokens live in the CSS via `@theme`. Dark mode via Tailwind's `dark:` classes throughout.
+   → [`assets/css/main.css`](assets/css/main.css), [`nuxt.config.ts`](nuxt.config.ts)
 
-# pnpm
-pnpm build
+---
 
-# yarn
-yarn build
+## Tech stack
 
-# bun
-bun run build
-```
+| Layer                | Technology                                                  |
+| -------------------- | ----------------------------------------------------------- |
+| Framework            | Nuxt 3 + Vue 3 + TypeScript                                 |
+| Styling              | Tailwind CSS 4 (`@tailwindcss/vite`) — no config file       |
+| Icons (UI)           | FontAwesome (client-only via Nuxt plugin)                   |
+| Icons (Tech section) | Simple Icons — local SVGs in `public/icons/`                |
+| Animations           | `requestAnimationFrame` loop (no GSAP)                      |
+| Runtime              | Node 20 (`.nvmrc`)                                          |
+| Deploy               | Docker + Coolify (Traefik reverse proxy, Let's Encrypt TLS) |
 
-Locally preview production build:
+---
+
+## Quick start
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+nvm use              # picks up Node 20 from .nvmrc
+npm ci               # reproducible install (uses package-lock.json)
+npm run dev          # dev server on http://localhost:3000
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+### Available scripts
+
+| Command             | What it does                                  |
+| ------------------- | --------------------------------------------- |
+| `npm run dev`       | Dev server with HMR                           |
+| `npm run build`     | Production build (Nitro `node-server` preset) |
+| `npm run generate`  | Static site generation                        |
+| `npm run preview`   | Serve the production build locally            |
+| `npm run lint`      | ESLint + Prettier check                       |
+| `npm run lintfix`   | ESLint autofix + Prettier write               |
+| `npm run typecheck` | `nuxt typecheck` via `vue-tsc`                |
+
+---
+
+## Deployment
+
+Production runs on **Coolify** (self-hosted PaaS) with **Traefik** as reverse proxy and Let's Encrypt for TLS. Deploys are triggered by pushing to `main`; Coolify pulls the repo, builds the image from the [`Dockerfile`](Dockerfile), and swaps the running container.
+
+For a local production check: `npm run build && npm run preview`.
+
+---
+
+## Project structure
+
+```
+components/    App*.vue — Header, HeroSection, AboutSection, TechSection, Footer, Card, …
+pages/         index.vue, lebenslauf.vue, impressum.vue, datenschutz.vue
+layouts/       default.vue
+plugins/       fontawesome.client.js — FontAwesome setup (client-only)
+public/        img/ (portfolio photos), icons/ (21 Simple Icons SVGs)
+assets/css/    main.css — Tailwind entry
+```
+
+A more opinionated walkthrough of the animation system, mobile fixes, and conventions lives in [`CLAUDE.md`](CLAUDE.md) (context for AI assistants working on the repo).
+
+---
+
+## Architecture (short version)
+
+Single Nuxt 3 app in SSR mode with the `node-server` Nitro preset. Pages are static content; there is no API layer, no database, no auth. The animation-heavy components (`AppTechSection`, `AppHeroSection`, `AppHeader`) run entirely on the client and are self-contained — no store, no composables shared between them.
+
+---
+
+## GDPR / data protection
+
+- **No cookies, no tracking, no analytics.** Confirmed by grep, not just by policy.
+- **No third-party runtime assets.** FontAwesome + Simple Icons are bundled locally.
+- Imprint at [`/impressum`](https://ahommrich.de/impressum) (TMG § 5)
+- Privacy policy at [`/datenschutz`](https://ahommrich.de/datenschutz) (Art. 13 GDPR)
+
+---
+
+## License
+
+All rights reserved. The code is public for review and reference but is not licensed for reuse. If you would like to use a component or the setup, open an issue and ask.
