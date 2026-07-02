@@ -323,16 +323,17 @@ No new sections. No new pages.
 
 ## Follow-ups (populated as stages surface non-scope items)
 
-<!-- Populated during execution. Format:
-- [ ] Stage N: <what was noticed, why it's out of scope for that stage>
--->
+- [ ] Stage 2: Add a `.dockerignore` to keep `node_modules`, `.nuxt`, `.output`,
+  `.git`, and local logs out of the build context. Not required for correctness
+  (`npm ci` overwrites anything staged), but cuts image build time and prevents
+  local state from leaking into the deployed container.
 
 ---
 
 ## Progress tracker
 
 - [x] Stage 1 — Baseline
-- [ ] Stage 2 — Docker/Node consistency
+- [x] Stage 2 — Docker/Node consistency
 - [ ] Stage 3 — README rewrite
 - [ ] Stage 4 — Vitest + animation specs
 - [ ] Stage 5 — Minimal CI + Dependabot
