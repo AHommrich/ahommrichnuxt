@@ -9,10 +9,7 @@
     >
       <div
         ref="cardEl"
-        :class="[
-          'card-group relative w-full',
-          { 'is-in-view': isCardInView },
-        ]"
+        :class="['card-group relative w-full', { 'is-in-view': isCardInView }]"
       >
         <!--
           Decorative offset shadow layers (light/dark mode aware) — sharp edges
@@ -50,15 +47,15 @@
                 class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
               >
                 Mein Schwerpunkt liegt in der PHP Backend-Entwicklung –
-                beruflich mit Symfony, privat mit Laravel. Im Frontend setze
-                ich primär auf Vue.js, ergänzt durch TypeScript und
-                CSS-Frameworks wie Tailwind CSS und Bootstrap. Für mobile
-                Anwendungen bringe ich zudem Erfahrung mit React Native mit.
-                Diese Kombination ermöglicht es mir, Projekte ganzheitlich zu
-                denken und als Fullstack-Entwickler umzusetzen. KI-Tools wie
-                Claude Code setze ich dabei bewusst als Kooperationspartner
-                ein – nicht als Ersatz für eigenes Denken, sondern um
-                effizienter und zielgerichteter zu arbeiten.
+                beruflich mit Symfony, privat mit Laravel. Im Frontend setze ich
+                primär auf Vue.js, ergänzt durch TypeScript und CSS-Frameworks
+                wie Tailwind CSS und Bootstrap. Für mobile Anwendungen bringe
+                ich zudem Erfahrung mit React Native mit. Diese Kombination
+                ermöglicht es mir, Projekte ganzheitlich zu denken und als
+                Fullstack-Entwickler umzusetzen. KI-Tools wie Claude Code setze
+                ich dabei bewusst als Kooperationspartner ein – nicht als Ersatz
+                für eigenes Denken, sondern um effizienter und zielgerichteter
+                zu arbeiten.
               </p>
               <p
                 class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
@@ -76,10 +73,7 @@
               class="order-1 flex items-center justify-center md:order-2 md:w-1/2"
             >
               <!-- Animated icon container — rAF loop positions icons inside this element -->
-              <div
-                ref="container"
-                class="relative my-6 w-full overflow-hidden"
-              >
+              <div ref="container" class="relative my-6 w-full overflow-hidden">
                 <!-- One wrapper per icon; positioned absolutely via JS transform -->
                 <div
                   v-for="(name, index) in iconNames"
@@ -108,9 +102,7 @@
                       'pulse-hint': pulseHint,
                     }"
                     :aria-label="
-                      infoMode
-                        ? 'Animation starten'
-                        : 'Technologien anzeigen'
+                      infoMode ? 'Animation starten' : 'Technologien anzeigen'
                     "
                     @click="toggleInfoMode"
                   >
@@ -151,6 +143,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, nextTick, ref } from "vue";
+import { computeGridDimensions, ensureMinSpeed } from "~/utils/animation";
 
 // --- Physics constants ---
 const ICON_SIZE = 32; // icon width/height in pixels
@@ -250,18 +243,17 @@ let gridCardW = MIN_CARD_W;
 
 /**
  * Recalculates the grid column count and card width based on the current container width.
- * Uses as many columns as fit while respecting MIN_CARD_W, with a minimum of 2.
+ * Delegates the pure math to computeGridDimensions so it can be unit-tested.
  */
 const computeGrid = () => {
-  gridCols = Math.max(
-    2,
-    Math.floor(
-      (containerW - CARD_PAD * 2 + CARD_GAP) / (MIN_CARD_W + CARD_GAP),
-    ),
+  const dims = computeGridDimensions(
+    containerW,
+    MIN_CARD_W,
+    CARD_GAP,
+    CARD_PAD,
   );
-  gridCardW = Math.floor(
-    (containerW - CARD_PAD * 2 - (gridCols - 1) * CARD_GAP) / gridCols,
-  );
+  gridCols = dims.cols;
+  gridCardW = dims.cardW;
 };
 
 /**
@@ -366,7 +358,8 @@ const toggleInfoMode = () => {
         states[index].vx = Math.cos(angle) * BASE_SPEED;
         states[index].vy = Math.sin(angle) * BASE_SPEED;
       });
-      if (isVisible.value && rafId === null) rafId = requestAnimationFrame(tick);
+      if (isVisible.value && rafId === null)
+        rafId = requestAnimationFrame(tick);
     });
   }
 };
@@ -423,26 +416,6 @@ const initStates = () => {
 };
 
 /**
- * Ensures an icon never fully stops moving.
- * If speed drops below MIN_SPEED, velocity is scaled up (or a random direction is assigned
- * if the icon is completely stationary).
- */
-const ensureMinSpeed = (state: IconState) => {
-  const speed = Math.sqrt(state.vx * state.vx + state.vy * state.vy);
-  if (speed < MIN_SPEED) {
-    if (speed === 0) {
-      const angle = Math.random() * Math.PI * 2;
-      state.vx = Math.cos(angle) * MIN_SPEED;
-      state.vy = Math.sin(angle) * MIN_SPEED;
-    } else {
-      const factor = MIN_SPEED / speed;
-      state.vx *= factor;
-      state.vy *= factor;
-    }
-  }
-};
-
-/**
  * Main animation loop — called every frame via requestAnimationFrame.
  * For each icon:
  *   1. Apply flee force if pointer is within FLEE_RADIUS
@@ -493,7 +466,7 @@ const tick = () => {
 
     state.vx *= DAMPING;
     state.vy *= DAMPING;
-    ensureMinSpeed(state);
+    ensureMinSpeed(state, MIN_SPEED);
 
     // Position is center-based — subtract ICON_HALF to get the top-left origin for CSS transform
     el.style.transform = `translate3d(${state.x - ICON_HALF}px, ${state.y - ICON_HALF}px, 0)`;

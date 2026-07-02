@@ -337,6 +337,19 @@ No new sections. No new pages.
 - [ ] Cleanup: Remove `docker-compose.yml` — legacy, Coolify builds directly from
   the `Dockerfile`. Optionally replace with a minimal compose file for local
   production checks if that is useful — otherwise delete.
+- [ ] Stage 4: Prettier drift on pre-existing files — `CLAUDE.md`,
+  `pages/datenschutz.vue`, `pages/impressum.vue`, `UPLIFT_PLAN.md` all fail
+  `prettier --check`. Not Stage 4's scope to touch them; run
+  `npm run lintfix` in a dedicated cleanup commit (or fold into Stage 6).
+- [ ] Stage 4: `@nuxt/test-utils` v4 is installed as a devDep but not used —
+  it turned out to be incompatible with Nuxt 3.15 at install time (crashes on
+  `createApp` inside its runtime entry). Vitest is wired up standalone with
+  `@vitejs/plugin-vue` instead. Options: (a) remove `@nuxt/test-utils`,
+  (b) leave it in and revisit once Nuxt is upgraded.
+- [ ] Stage 4: `AppHeader.vue` used `onBeforeMount` without an explicit Vue
+  import (auto-imported at Nuxt runtime, but a latent bug outside of it).
+  Fixed by adding the import. Consider running a lint/typecheck pass in a
+  hypothetical non-Nuxt environment to catch similar cases.
 
 ---
 
@@ -345,7 +358,7 @@ No new sections. No new pages.
 - [x] Stage 1 — Baseline
 - [x] Stage 2 — Docker/Node consistency
 - [x] Stage 3 — README rewrite
-- [ ] Stage 4 — Vitest + animation specs
+- [x] Stage 4 — Vitest + animation specs
 - [ ] Stage 5 — Minimal CI + Dependabot
 - [ ] Stage 6 — Docblock sweep
 - [ ] Stage 7 — Commit history cleanup (destructive, last)
