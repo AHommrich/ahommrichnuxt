@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
+import { ref, onBeforeMount, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useRoute } from "vue-router";
+import { lerp } from "~/utils/animation";
 
 const route = useRoute();
 
@@ -59,8 +60,6 @@ const scrollToSection = (id: string) => {
     });
   }
 };
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 // Direct DOM write for the underline — bypasses Vue reactivity so the rAF loop
 // doesn't schedule a component patch on every frame.

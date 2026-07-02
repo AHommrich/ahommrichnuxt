@@ -13,7 +13,9 @@
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier . --check",
     "lintfix": "eslint . --fix && prettier --write --list-different .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -32,7 +34,11 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^4.0.3",
+    "@vue/test-utils": "^2.4.11",
+    "happy-dom": "^20.10.6",
     "prettier": "^3.5.1",
+    "vitest": "^4.1.9",
     "vue-tsc": "^2.1.10"
   }
 }
