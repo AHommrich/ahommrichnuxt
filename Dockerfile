@@ -1,26 +1,21 @@
-# Wähle das Node.js-Image
-FROM node:18-alpine
+# Match the Node version declared in .nvmrc so local and container builds agree.
+FROM node:20-alpine
 
-# Setze das Arbeitsverzeichnis
 WORKDIR /app
 
-# Kopiere die package.json und package-lock.json
+# Copy manifests first to keep the dependency layer cacheable between code-only changes.
 COPY package*.json ./
 
-# Installiere die Abhängigkeiten
-RUN npm install
+# `npm ci` fails fast on a lockfile drift and installs exactly what's pinned — reproducible builds.
+RUN npm ci
 
-# Kopiere den Rest des Codes
 COPY . .
 
-# Baue das Nuxt-Projekt
 RUN npm run build
 
-# Setze die Umgebungsvariablen für Nitro
+# Nitro preset for a standalone Node server (matches the deploy target).
 ENV NITRO_PRESET=node-server
 
-# Exponiere den Port
 EXPOSE 3000
 
-# Starte den Nuxt-Server
 CMD ["node", ".output/server/index.mjs"]
