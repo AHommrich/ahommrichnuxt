@@ -331,7 +331,7 @@ No new sections. No new pages.
 
 ## Progress tracker
 
-- [ ] Stage 1 — Baseline
+- [x] Stage 1 — Baseline
 - [ ] Stage 2 — Docker/Node consistency
 - [ ] Stage 3 — README rewrite
 - [ ] Stage 4 — Vitest + animation specs
