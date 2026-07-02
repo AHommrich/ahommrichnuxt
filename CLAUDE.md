@@ -140,6 +140,7 @@ Der `sm:hidden mobile-diamonds`-Wrapper ist bereits am mobilen Abschnitt gesetzt
 Ursache: Node.js v16 wird verwendet — `structuredClone` existiert erst ab Node 17.  
 Fix: `nvm use` (Node 20 laut `.nvmrc`), dann erneut ausführen.  
 **Wichtig:** `nvm use` gilt nur für die interaktive Shell. In Claude Code Bash-Sessions muss Node 20 per absolutem Pfad aufgerufen werden:
+
 ```bash
 ~/.nvm/versions/node/v20.19.4/bin/node node_modules/.bin/eslint . --fix
 ```

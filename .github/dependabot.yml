@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # npm dependencies — one grouped PR per week keeps review overhead low.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      npm-all:
+        patterns:
+          - "*"
+
+  # GitHub Actions used in workflows under .github/workflows/.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    groups:
+      actions-all:
+        patterns:
+          - "*"

@@ -17,6 +17,7 @@ a security program. The Eventplaner project has a full Laravel backend and warra
 Sub-Processor registers, CSPs, SECURITY.md, PR templates. This repo does not.
 
 **Out of scope on purpose:**
+
 - Security-Headers middleware / CSP (no forms, no auth, no third-party JS)
 - Sub-processor register (only Hetzner; already named in the privacy page)
 - Cookie banner (no cookies, no tracking)
@@ -91,6 +92,7 @@ default — verify whether `strict` is already effective via that inheritance be
 adding overrides.
 
 **Tasks:**
+
 1. Add `.editorconfig` at repo root (UTF-8, LF, 2 spaces, trim trailing whitespace,
    final newline).
 2. Add `typecheck` npm script running `nuxt typecheck` (installs `vue-tsc` as devDep
@@ -113,6 +115,7 @@ non-reproducible because of `npm install` instead of `npm ci`. `docker-compose.y
 a placeholder image name.
 
 **Tasks:**
+
 1. `Dockerfile`: `FROM node:18-alpine` → `FROM node:20-alpine`.
 2. `Dockerfile`: `npm install` → `npm ci`.
 3. `docker-compose.yml`: replace `image: your-nuxt-app-image` with a sensible name
@@ -135,18 +138,18 @@ the local **Eventplaner** README at `/Users/andrehommrich/Repos/eventplaner/READ
 
 **Structure to mirror from Eventplaner (adjusted for portfolio scope):**
 
-| Eventplaner section | Portfolio equivalent | Keep? |
-|---|---|---|
-| Title + badges + one-liner + language switcher | Same | ✅ |
-| Screenshots | Screenshots or animated GIFs of Hero/Tech | ❓ needs decision at stage start (see Q1) |
-| Feature highlights (numbered, links to central file) | Same, portfolio-flavoured | ✅ |
-| Tech stack table | Same | ✅ |
-| Quick start | Same (npm-based, not Docker for local dev) | ✅ |
-| Architecture (short) + link to `ARCHITECTURE.md` | Skip the `ARCHITECTURE.md` — code is small enough. Keep a short 3–5 line architecture note inline. | ✅ (inline only) |
-| Tests table + coverage note | Same (after Stage 4 ships) | ✅ |
-| Companion app | N/A — drop | ❌ |
-| GDPR / data protection | Short bullet list: no cookies, no analytics, no external assets, imprint + privacy links | ✅ (shortened) |
-| License | Depends on Q2 | ❓ |
+| Eventplaner section                                  | Portfolio equivalent                                                                               | Keep?                                     |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Title + badges + one-liner + language switcher       | Same                                                                                               | ✅                                        |
+| Screenshots                                          | Screenshots or animated GIFs of Hero/Tech                                                          | ❓ needs decision at stage start (see Q1) |
+| Feature highlights (numbered, links to central file) | Same, portfolio-flavoured                                                                          | ✅                                        |
+| Tech stack table                                     | Same                                                                                               | ✅                                        |
+| Quick start                                          | Same (npm-based, not Docker for local dev)                                                         | ✅                                        |
+| Architecture (short) + link to `ARCHITECTURE.md`     | Skip the `ARCHITECTURE.md` — code is small enough. Keep a short 3–5 line architecture note inline. | ✅ (inline only)                          |
+| Tests table + coverage note                          | Same (after Stage 4 ships)                                                                         | ✅                                        |
+| Companion app                                        | N/A — drop                                                                                         | ❌                                        |
+| GDPR / data protection                               | Short bullet list: no cookies, no analytics, no external assets, imprint + privacy links           | ✅ (shortened)                            |
+| License                                              | Depends on Q2                                                                                      | ❓                                        |
 
 **Feature highlights — candidate list (final list decided when writing):**
 
@@ -205,6 +208,7 @@ have burned time before (mobile subpixel gap, touch vs pointer, info-mode transi
 ordering — see CLAUDE.md). Small regression guards are worth their weight.
 
 **Tasks:**
+
 1. Install Vitest + `@nuxt/test-utils` + `@vue/test-utils` + `happy-dom` as devDeps.
 2. Add `test` and `test:watch` scripts.
 3. Add a minimal `vitest.config.ts` with Nuxt env.
@@ -235,6 +239,7 @@ skipped and why.
 Dependabot keeps FontAwesome / Nuxt / Tailwind from silently rotting.
 
 **Tasks:**
+
 1. `.github/workflows/ci.yml`: single job on `ubuntu-latest`, Node 20, npm cache,
    runs `npm ci`, `npm run lint`, `npm run typecheck`, `npm run test`. Triggers on
    `push` (all branches) and `pull_request`.
@@ -259,6 +264,7 @@ extracting helpers, no reordering. If a function looks like it needs refactoring
 note it as a follow-up and move on.
 
 **Tasks:**
+
 1. Walk `AppTechSection.vue`, `AppHeader.vue`, `AppHeroSection.vue`. For each
    non-trivial function or `ref`/`reactive` block, decide: is the WHY obvious?
    If yes → skip. If no → add a one-line or short block comment above.
@@ -284,11 +290,13 @@ under the "Follow-ups" section.
 no Conventional Commits. For a portfolio repo, `git log` is part of the product.
 
 **This stage rewrites `main`.** It requires:
+
 - A backup branch (`backup/pre-cleanup-<date>`) pushed to `origin` first
 - André's explicit go-ahead in writing after seeing the exact plan
 - André runs the git commands himself (agent produces the script, does not execute)
 
 **Approach options (agent proposes, André picks):**
+
 - **A. Interactive rebase-squash into chapter commits** — group current commits into
   logical chunks (`chore: initial project setup`, `feat: hero section`,
   `feat: about section`, `feat: tech section`, `perf: header slider`,
@@ -298,6 +306,7 @@ no Conventional Commits. For a portfolio repo, `git log` is part of the product.
 - **C. Keep history as-is, only fix future commits.** Safest, no rewrite.
 
 **Regardless of option:**
+
 - Backup branch pushed and confirmed present on GitHub before any rewrite.
 - Force-push only after André confirms the rewritten log is what he wants.
 - Never force-push without `--force-with-lease`.
@@ -311,6 +320,7 @@ André.
 
 The current `pages/datenschutz.vue` is complete for a no-tracking, no-cookies static
 site. During Stages 3 or 6, do one pass:
+
 - Add "Stand: <month year>" line at the top or bottom.
 - Verify "Server-Logs" wording is accurate (Caddy access logs off, container logs
   ephemeral, 15 MB cap).
@@ -324,32 +334,31 @@ No new sections. No new pages.
 ## Follow-ups (populated as stages surface non-scope items)
 
 - [ ] Stage 2: Add a `.dockerignore` to keep `node_modules`, `.nuxt`, `.output`,
-  `.git`, and local logs out of the build context. Not required for correctness
-  (`npm ci` overwrites anything staged), but cuts image build time and prevents
-  local state from leaking into the deployed container.
+      `.git`, and local logs out of the build context. Not required for correctness
+      (`npm ci` overwrites anything staged), but cuts image build time and prevents
+      local state from leaking into the deployed container.
 - [ ] **HIGH PRIORITY (Stage 6):** `pages/datenschutz.vue` currently names **Caddy**
-  as the web server and states "Access logs are disabled". Deployment is actually
-  on **Coolify with Traefik** (confirmed by André, 2026-07-03). This is a
-  DSGVO-relevant factual statement in a public privacy policy — it must be
-  corrected in Stage 6. Additionally, Traefik/Coolify log behaviour needs to be
-  looked up (currently unknown) and described honestly.
+      as the web server and states "Access logs are disabled". Deployment is actually
+      on **Coolify with Traefik** (confirmed by André, 2026-07-03). This is a
+      DSGVO-relevant factual statement in a public privacy policy — it must be
+      corrected in Stage 6. Additionally, Traefik/Coolify log behaviour needs to be
+      looked up (currently unknown) and described honestly.
 - [ ] Cleanup: Remove `Caddyfile` — legacy, superseded by Coolify/Traefik.
 - [ ] Cleanup: Remove `docker-compose.yml` — legacy, Coolify builds directly from
-  the `Dockerfile`. Optionally replace with a minimal compose file for local
-  production checks if that is useful — otherwise delete.
-- [ ] Stage 4: Prettier drift on pre-existing files — `CLAUDE.md`,
-  `pages/datenschutz.vue`, `pages/impressum.vue`, `UPLIFT_PLAN.md` all fail
-  `prettier --check`. Not Stage 4's scope to touch them; run
-  `npm run lintfix` in a dedicated cleanup commit (or fold into Stage 6).
+      the `Dockerfile`. Optionally replace with a minimal compose file for local
+      production checks if that is useful — otherwise delete.
+- [x] ~~Stage 4: Prettier drift on pre-existing files~~ — resolved in the
+      Stage 5 prep commit (`chore(format): apply Prettier to legacy files`) so
+      the first CI run wouldn't fail on unrelated whitespace.
 - [ ] Stage 4: `@nuxt/test-utils` v4 is installed as a devDep but not used —
-  it turned out to be incompatible with Nuxt 3.15 at install time (crashes on
-  `createApp` inside its runtime entry). Vitest is wired up standalone with
-  `@vitejs/plugin-vue` instead. Options: (a) remove `@nuxt/test-utils`,
-  (b) leave it in and revisit once Nuxt is upgraded.
+      it turned out to be incompatible with Nuxt 3.15 at install time (crashes on
+      `createApp` inside its runtime entry). Vitest is wired up standalone with
+      `@vitejs/plugin-vue` instead. Options: (a) remove `@nuxt/test-utils`,
+      (b) leave it in and revisit once Nuxt is upgraded.
 - [ ] Stage 4: `AppHeader.vue` used `onBeforeMount` without an explicit Vue
-  import (auto-imported at Nuxt runtime, but a latent bug outside of it).
-  Fixed by adding the import. Consider running a lint/typecheck pass in a
-  hypothetical non-Nuxt environment to catch similar cases.
+      import (auto-imported at Nuxt runtime, but a latent bug outside of it).
+      Fixed by adding the import. Consider running a lint/typecheck pass in a
+      hypothetical non-Nuxt environment to catch similar cases.
 
 ---
 
@@ -359,6 +368,6 @@ No new sections. No new pages.
 - [x] Stage 2 — Docker/Node consistency
 - [x] Stage 3 — README rewrite
 - [x] Stage 4 — Vitest + animation specs
-- [ ] Stage 5 — Minimal CI + Dependabot
+- [x] Stage 5 — Minimal CI + Dependabot
 - [ ] Stage 6 — Docblock sweep
 - [ ] Stage 7 — Commit history cleanup (destructive, last)

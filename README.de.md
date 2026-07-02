@@ -1,6 +1,6 @@
 # ahommrichnuxt
 
-<!-- CI-Badge folgt am Ende von Stage 5 des UPLIFT_PLAN.md. -->
+[![CI](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/ci.yml/badge.svg)](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/ci.yml)
 
 Persönliche Portfolio-Website von André Hommrich — Fullstack-Entwickler aus dem Westerwald. Nuxt 3, Vue 3, Tailwind CSS 4, deployt via Docker + Coolify. Live unter **[ahommrich.de](https://ahommrich.de)**.
 
