@@ -327,6 +327,16 @@ No new sections. No new pages.
   `.git`, and local logs out of the build context. Not required for correctness
   (`npm ci` overwrites anything staged), but cuts image build time and prevents
   local state from leaking into the deployed container.
+- [ ] **HIGH PRIORITY (Stage 6):** `pages/datenschutz.vue` currently names **Caddy**
+  as the web server and states "Access logs are disabled". Deployment is actually
+  on **Coolify with Traefik** (confirmed by André, 2026-07-03). This is a
+  DSGVO-relevant factual statement in a public privacy policy — it must be
+  corrected in Stage 6. Additionally, Traefik/Coolify log behaviour needs to be
+  looked up (currently unknown) and described honestly.
+- [ ] Cleanup: Remove `Caddyfile` — legacy, superseded by Coolify/Traefik.
+- [ ] Cleanup: Remove `docker-compose.yml` — legacy, Coolify builds directly from
+  the `Dockerfile`. Optionally replace with a minimal compose file for local
+  production checks if that is useful — otherwise delete.
 
 ---
 
@@ -334,7 +344,7 @@ No new sections. No new pages.
 
 - [x] Stage 1 — Baseline
 - [x] Stage 2 — Docker/Node consistency
-- [ ] Stage 3 — README rewrite
+- [x] Stage 3 — README rewrite
 - [ ] Stage 4 — Vitest + animation specs
 - [ ] Stage 5 — Minimal CI + Dependabot
 - [ ] Stage 6 — Docblock sweep
