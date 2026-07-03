@@ -1,5 +1,13 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { lerp, computeGridDimensions, ensureMinSpeed } from "~/utils/animation";
+import {
+  applyDamping,
+  applyFleeForce,
+  bounceOffBounds,
+  computeGridDimensions,
+  computeInfoGridPosition,
+  ensureMinSpeed,
+  lerp,
+} from "~/utils/animation";
 
 describe("lerp", () => {
   it("returns start when t=0", () => {
@@ -87,6 +95,212 @@ describe("ensureMinSpeed", () => {
     expect(state.vx).toBe(2);
     expect(state.vy).toBe(0);
     randomSpy.mockRestore();
+  });
+});
+
+describe("applyFleeForce", () => {
+  const RADIUS = 100;
+  const FORCE = 5;
+
+  it("does nothing when the pointer is exactly at the radius (boundary is exclusive)", () => {
+    // Icon at (100, 0), pointer at (0, 0) → distance == RADIUS
+    const state = { x: 100, y: 0, vx: 0, vy: 0 };
+    applyFleeForce(state, 0, 0, RADIUS, FORCE);
+    expect(state.vx).toBe(0);
+    expect(state.vy).toBe(0);
+  });
+
+  it("does nothing when the pointer is farther than the radius", () => {
+    const state = { x: 200, y: 0, vx: 0, vy: 0 };
+    applyFleeForce(state, 0, 0, RADIUS, FORCE);
+    expect(state.vx).toBe(0);
+    expect(state.vy).toBe(0);
+  });
+
+  it("does nothing when icon and pointer are coincident (avoids division by zero)", () => {
+    const state = { x: 42, y: 42, vx: 1, vy: 1 };
+    applyFleeForce(state, 42, 42, RADIUS, FORCE);
+    // Velocity untouched — no force applied
+    expect(state.vx).toBe(1);
+    expect(state.vy).toBe(1);
+  });
+
+  it("pushes the icon directly away from the pointer along the pointer→icon axis", () => {
+    // Icon at (50, 0) relative to pointer at (0, 0), radius 100, force 5.
+    // Distance = 50 → factor (1 - 50/100) * 5 = 2.5
+    // Direction unit vector: (1, 0) → vx += 2.5, vy += 0
+    const state = { x: 50, y: 0, vx: 0, vy: 0 };
+    applyFleeForce(state, 0, 0, RADIUS, FORCE);
+    expect(state.vx).toBeCloseTo(2.5, 10);
+    expect(state.vy).toBeCloseTo(0, 10);
+  });
+
+  it("scales the force linearly with proximity — closer = stronger", () => {
+    // Icon just barely inside the radius (99px away): tiny push
+    const far = { x: 99, y: 0, vx: 0, vy: 0 };
+    applyFleeForce(far, 0, 0, RADIUS, FORCE);
+    // Icon right next to pointer (1px away): near-maximum push
+    const near = { x: 1, y: 0, vx: 0, vy: 0 };
+    applyFleeForce(near, 0, 0, RADIUS, FORCE);
+    expect(near.vx).toBeGreaterThan(far.vx);
+    expect(near.vx).toBeGreaterThan(FORCE * 0.9); // very close to max
+    expect(far.vx).toBeLessThan(FORCE * 0.1); // very close to zero
+  });
+
+  it("adds to (does not overwrite) existing velocity", () => {
+    const state = { x: 50, y: 0, vx: 10, vy: -3 };
+    applyFleeForce(state, 0, 0, RADIUS, FORCE);
+    // Existing vy untouched (no y component in direction)
+    expect(state.vy).toBe(-3);
+    // Existing vx augmented, not replaced
+    expect(state.vx).toBeGreaterThan(10);
+  });
+});
+
+describe("applyDamping", () => {
+  it("multiplies both velocity components by the damping factor", () => {
+    const state = { vx: 10, vy: -4 };
+    applyDamping(state, 0.5);
+    expect(state.vx).toBe(5);
+    expect(state.vy).toBe(-2);
+  });
+
+  it("converges towards zero when applied repeatedly with a factor < 1", () => {
+    const state = { vx: 100, vy: 100 };
+    for (let i = 0; i < 100; i++) applyDamping(state, 0.9);
+    expect(Math.abs(state.vx)).toBeLessThan(0.1);
+    expect(Math.abs(state.vy)).toBeLessThan(0.1);
+  });
+
+  it("leaves velocity unchanged when damping is 1", () => {
+    const state = { vx: 3, vy: 7 };
+    applyDamping(state, 1);
+    expect(state.vx).toBe(3);
+    expect(state.vy).toBe(7);
+  });
+});
+
+describe("bounceOffBounds", () => {
+  const HALF = 10;
+  const W = 200;
+  const H = 100;
+
+  it("does not touch position or velocity when fully inside bounds", () => {
+    const state = { x: 100, y: 50, vx: 3, vy: -3 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state).toEqual({ x: 100, y: 50, vx: 3, vy: -3 });
+  });
+
+  it("clamps to the left wall and forces vx positive (rightward)", () => {
+    const state = { x: 5, y: 50, vx: -8, vy: 0 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state.x).toBe(HALF);
+    expect(state.vx).toBe(8);
+  });
+
+  it("clamps to the right wall and forces vx negative (leftward)", () => {
+    const state = { x: W - 2, y: 50, vx: 6, vy: 0 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state.x).toBe(W - HALF);
+    expect(state.vx).toBe(-6);
+  });
+
+  it("clamps to the top wall and forces vy positive (downward)", () => {
+    const state = { x: 100, y: 3, vx: 0, vy: -4 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state.y).toBe(HALF);
+    expect(state.vy).toBe(4);
+  });
+
+  it("clamps to the bottom wall and forces vy negative (upward)", () => {
+    const state = { x: 100, y: H - 1, vx: 0, vy: 5 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state.y).toBe(H - HALF);
+    expect(state.vy).toBe(-5);
+  });
+
+  it("uses abs()-based reflection so an outward-moving stuck icon doesn't re-enter", () => {
+    // Icon past the right wall but already moving right — must reverse, not just negate
+    const state = { x: W + 20, y: 50, vx: 4, vy: 0 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state.vx).toBe(-4);
+    expect(state.x).toBe(W - HALF);
+  });
+
+  it("resolves corner overshoots on both axes in a single call", () => {
+    const state = { x: -50, y: -50, vx: -3, vy: -7 };
+    bounceOffBounds(state, HALF, W, H);
+    expect(state.x).toBe(HALF);
+    expect(state.y).toBe(HALF);
+    expect(state.vx).toBe(3);
+    expect(state.vy).toBe(7);
+  });
+});
+
+describe("computeInfoGridPosition", () => {
+  // Common layout: 4 cols, 100px cards, 8px gap, 4px pad, 52px bar
+  const COLS = 4;
+  const CARD_W = 100;
+  const CARD_H = 40;
+  const GAP = 8;
+  const PAD = 4;
+  const BAR_H = 52;
+
+  it("places index 0 at (pad, bar + pad) — top-left corner below the bar", () => {
+    const { tx, ty } = computeInfoGridPosition(
+      0,
+      COLS,
+      CARD_W,
+      CARD_H,
+      GAP,
+      PAD,
+      BAR_H,
+    );
+    expect(tx).toBe(PAD);
+    expect(ty).toBe(BAR_H + PAD);
+  });
+
+  it("increments column-first — index 1 is one card+gap to the right", () => {
+    const { tx, ty } = computeInfoGridPosition(
+      1,
+      COLS,
+      CARD_W,
+      CARD_H,
+      GAP,
+      PAD,
+      BAR_H,
+    );
+    expect(tx).toBe(PAD + CARD_W + GAP);
+    expect(ty).toBe(BAR_H + PAD);
+  });
+
+  it("wraps to the next row after `cols` items", () => {
+    const { tx, ty } = computeInfoGridPosition(
+      COLS,
+      COLS,
+      CARD_W,
+      CARD_H,
+      GAP,
+      PAD,
+      BAR_H,
+    );
+    expect(tx).toBe(PAD);
+    expect(ty).toBe(BAR_H + PAD + CARD_H + GAP);
+  });
+
+  it("places the 24th icon (index 23) into row 5 col 3 for a 4-col grid", () => {
+    // 24 icons in 4 columns → 6 rows. Last index = 23 → row 5, col 3.
+    const { tx, ty } = computeInfoGridPosition(
+      23,
+      COLS,
+      CARD_W,
+      CARD_H,
+      GAP,
+      PAD,
+      BAR_H,
+    );
+    expect(tx).toBe(PAD + 3 * (CARD_W + GAP));
+    expect(ty).toBe(BAR_H + PAD + 5 * (CARD_H + GAP));
   });
 });
 

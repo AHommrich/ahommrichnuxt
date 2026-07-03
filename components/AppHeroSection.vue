@@ -415,6 +415,29 @@ onMounted(() => {
 
 <style scoped>
 /*
+  Reduced motion: keep every diamond background at its idle scale(1.5). No
+  hover-driven zoom, no transition. The layered burgundy overlays with the
+  captions remain fully visible — only the continuous background motion is
+  removed. Selector targets every `.bg-cover` inline element inside the
+  section; all diamond tiles share that class.
+*/
+/*
+  Reduced motion: freeze the diamond backgrounds at their idle scale, no
+  hover-driven zoom, no transition. `scale` and `rotate` are individual CSS
+  properties in Tailwind v4 — overriding just `scale` keeps the -45deg
+  counter-rotation intact instead of stacking a second transform on top.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .bg-cover {
+    scale: 1.5 !important;
+    transition: none !important;
+  }
+  .group:hover .bg-cover {
+    scale: 1.5 !important;
+  }
+}
+
+/*
   Mobile subpixel gap fix:
   On real devices, adjacent overflow:hidden tiles rendered with fractional pixel
   coordinates develop white hairline gaps due to subpixel anti-aliasing. The

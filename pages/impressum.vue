@@ -18,6 +18,11 @@ useSeoMeta({
       <a href="mailto:andre-hommrich@web.de" class="text-gray-200 underline"
         >andre-hommrich@web.de</a
       >
+      <p class="text-gray-200 text-sm mt-4">
+        Diese Website ist ein privat betriebenes Portfolio zur beruflichen
+        Selbstdarstellung. Es findet keine gewerbliche Nutzung statt; eine
+        Umsatzsteuer-Identifikationsnummer ist daher nicht vergeben.
+      </p>
     </AppCard>
 
     <!-- Photo credits card -->
