@@ -35,8 +35,8 @@ useSeoMeta({
         Gunzenhausen. Der Serverstandort ist
         <strong>Nürnberg, Deutschland</strong>. Hetzner kann auf
         Infrastrukturebene (Netzwerk, Hypervisor) technische Verbindungsdaten
-        verarbeiten. Informationen dazu finden sich in der
-        Datenschutzerklärung von Hetzner:
+        verarbeiten. Informationen dazu finden sich in der Datenschutzerklärung
+        von Hetzner:
         <a
           href="https://www.hetzner.com/de/legal/privacy-policy"
           target="_blank"
@@ -53,8 +53,8 @@ useSeoMeta({
         IP-Adressen verarbeiten. Diese werden nicht dauerhaft gespeichert und
         dienen ausschließlich der Bereitstellung sowie der Betriebssicherheit
         der Website. Die Nuxt-Anwendung selbst schreibt
-        <strong>keine Access-Logs</strong> und speichert keine
-        personenbezogenen Nutzungsdaten.
+        <strong>keine Access-Logs</strong> und speichert keine personenbezogenen
+        Nutzungsdaten.
       </p>
     </AppCard>
 

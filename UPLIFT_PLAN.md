@@ -15,15 +15,15 @@ No further stages remain; the document below is preserved for reference.
 
 ### Progress snapshot
 
-| Stage                                       | Status        | Notes                                                                                                           |
-| ------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------- |
-| 1 — Baseline (typecheck, .editorconfig)     | ✅ committed  | `chore(tooling): add typecheck script, vue-tsc, and .editorconfig`                                              |
-| 2 — Docker/Node consistency                 | ✅ committed  | `build(docker): upgrade Node to 20 and use npm ci for reproducible …`                                           |
-| 3 — README rewrite (EN + DE + screenshots)  | ✅ committed  | `docs(readme): rewrite README from starter boilerplate (EN + DE)`                                               |
-| 4 — Vitest setup + 23 specs                 | ✅ committed  | `test(vitest): add setup and animation specs (23 tests total)`                                                  |
-| 5 — CI workflow + Dependabot + badge        | ✅ committed  | `chore(format): apply Prettier to legacy files and add .prettierignore` (Prep + Stage 5 folded into one commit) |
-| 6 — DSGVO fix + Docblock sweep              | ✅ committed  | `docs(privacy): correct hosting/proxy statement + refresh doc comments` (folded; see notes below)               |
-| 7 — Commit history cleanup                  | ✅ resolved   | **Option C chosen (2026-07-03):** history kept as-is, Conventional Commits going forward. No rewrite performed. |
+| Stage                                      | Status       | Notes                                                                                                           |
+| ------------------------------------------ | ------------ | --------------------------------------------------------------------------------------------------------------- |
+| 1 — Baseline (typecheck, .editorconfig)    | ✅ committed | `chore(tooling): add typecheck script, vue-tsc, and .editorconfig`                                              |
+| 2 — Docker/Node consistency                | ✅ committed | `build(docker): upgrade Node to 20 and use npm ci for reproducible …`                                           |
+| 3 — README rewrite (EN + DE + screenshots) | ✅ committed | `docs(readme): rewrite README from starter boilerplate (EN + DE)`                                               |
+| 4 — Vitest setup + 23 specs                | ✅ committed | `test(vitest): add setup and animation specs (23 tests total)`                                                  |
+| 5 — CI workflow + Dependabot + badge       | ✅ committed | `chore(format): apply Prettier to legacy files and add .prettierignore` (Prep + Stage 5 folded into one commit) |
+| 6 — DSGVO fix + Docblock sweep             | ✅ committed | `docs(privacy): correct hosting/proxy statement + refresh doc comments` (folded; see notes below)               |
+| 7 — Commit history cleanup                 | ✅ resolved  | **Option C chosen (2026-07-03):** history kept as-is, Conventional Commits going forward. No rewrite performed. |
 
 **Last commit at handoff:** _to be filled in by André after Stage 6 is committed_ (previous: `e7edf85`).
 
@@ -46,6 +46,7 @@ No further stages remain; the document below is preserved for reference.
    in fact silent, the wording can be tightened.
 
 2. **`CLAUDE.md`** — corrected two stale sections:
+
    - Deployment line: „Docker + Caddy" → „Docker + Coolify (Traefik reverse proxy)".
    - Icon count: „21 Stück" → „24 Stück" (also list refreshed to include `mariadb`, `nuxtdotjs`, `vite`).
    - Subpixel-fix CSS block: replaced the outdated snippet (`outline: 1px solid transparent`, `scale(1.005)`) with the current one (`margin: -1px`, `isolation: isolate`, `scale(1.01)`).
@@ -63,8 +64,8 @@ No further stages remain; the document below is preserved for reference.
 
 5. **`components/AppHeroSection.vue`** — the subpixel-fix comment was
    stale: it still referenced `outline: 1px solid transparent` and
-   `scale(1.005)`, but the CSS block underneath already used `margin: -1px`
-   + `isolation: isolate` + `scale(1.01)`. Rewrote the comment to describe
+   `scale(1.005)`, but the CSS block underneath already used `margin: -1px`,
+   `isolation: isolate` and `scale(1.01)`. Rewrote the comment to describe
    the current four-piece combo and its role, and added a note that the
    values are load-bearing on iOS Safari.
 
