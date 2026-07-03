@@ -1,15 +1,17 @@
 # Repo Uplift Plan — ahommrichnuxt
 
-> **Status: IN PROGRESS — 6 of 7 stages complete.** New agent: read
-> "▶ Session handoff" below first, then jump to the stage marked as next.
+> **Status: COMPLETE — 7 of 7 stages done.** Stage 7 resolved to Option C
+> (keep history, use Conventional Commits from now on). Nothing left to
+> action; this document is kept as a record of the uplift and can be
+> deleted or moved to `docs/` whenever it stops being useful.
 
 ---
 
-## ▶ Session handoff (as of 2026-07-03, post-Stage-6)
+## ▶ Session handoff (as of 2026-07-03, uplift complete)
 
-**How to start:** run `git status`, `git log --oneline -10`. If tree is clean
-and last commit matches the "Last commit" line below, everything is fine —
-begin Stage 7 preparation. If not, reconcile before touching anything.
+All seven stages are done. Stage 7 was resolved to Option C on 2026-07-03:
+history stays as-is, Conventional Commits are the going-forward rule.
+No further stages remain; the document below is preserved for reference.
 
 ### Progress snapshot
 
@@ -21,7 +23,7 @@ begin Stage 7 preparation. If not, reconcile before touching anything.
 | 4 — Vitest setup + 23 specs                 | ✅ committed  | `test(vitest): add setup and animation specs (23 tests total)`                                                  |
 | 5 — CI workflow + Dependabot + badge        | ✅ committed  | `chore(format): apply Prettier to legacy files and add .prettierignore` (Prep + Stage 5 folded into one commit) |
 | 6 — DSGVO fix + Docblock sweep              | ✅ committed  | `docs(privacy): correct hosting/proxy statement + refresh doc comments` (folded; see notes below)               |
-| **7 — Commit history cleanup (destructive)** | ⏭ **NEXT**  | Requires explicit go-ahead + backup branch                                                                      |
+| 7 — Commit history cleanup                  | ✅ resolved   | **Option C chosen (2026-07-03):** history kept as-is, Conventional Commits going forward. No rewrite performed. |
 
 **Last commit at handoff:** _to be filled in by André after Stage 6 is committed_ (previous: `e7edf85`).
 
@@ -94,17 +96,23 @@ Things the next agent will NOT infer from code alone:
    protocol". Short: agent finishes stage, provides a 3-line commit message,
    waits for André to commit manually, then next stage.
 
-### First moves for the next agent (Stage 7)
+### Stage 7 resolution (2026-07-03)
 
-1. Read this whole section.
-2. Read `## Stage 7 — Commit history cleanup` further down.
-3. **DO NOT run any git write commands.** Stage 7 is destructive by
-   definition. Agent only prepares the script and preview; André executes.
-4. **Ask André which option (A / B / C) he wants** before writing any
-   script. Present the three options with a short pro/con table.
-5. Once he picks: produce a concrete `git` script, the exact list of
-   rewritten commits, and a backup-branch proposal. Wait for a written
-   go-ahead before André runs anything.
+**Choice: Option C — keep history, only fix future commits.**
+
+Rationale André gave when picking: the `asdf`-style commits are honest
+project history for a solo-owned portfolio repo. A force-push on `main`
+to rewrite them carries more downside (risk, lost context) than upside
+(cosmetic log). Going forward every commit follows Conventional Commits
+per the section further below.
+
+**Consequences:**
+
+- No backup branch was created (none needed).
+- No `git filter-branch`/`rebase -i`/force-push was executed.
+- Old commit messages remain visible on GitHub.
+- The seven Uplift-era commits (`891e9d2` … `2598c48`) already follow
+  Conventional Commits and establish the going-forward style.
 
 ---
 
@@ -473,4 +481,4 @@ No new sections. No new pages.
 - [x] Stage 4 — Vitest + animation specs
 - [x] Stage 5 — Minimal CI + Dependabot
 - [x] Stage 6 — DSGVO fix + Docblock sweep
-- [ ] Stage 7 — Commit history cleanup (destructive, last)
+- [x] Stage 7 — Commit history cleanup (resolved: Option C, no rewrite)
