@@ -28,7 +28,7 @@ docker compose logs -f app    # Logs
 - **Icons (UI):** FontAwesome (nur client-side — immer `import.meta.client` prüfen, sonst Hydration-Fehler)
 - **Icons (Tech-Section):** Simple Icons als lokale SVGs in `public/icons/` — kein FontAwesome hier!
 - **Animationen:** `requestAnimationFrame` Loop (kein GSAP in AppTechSection — wurde aus Performance-Gründen ersetzt)
-- **Deployment:** Docker + Caddy (Let's Encrypt SSL, externer Docker-Network)
+- **Deployment:** Docker + Coolify (Traefik reverse proxy, Let's Encrypt SSL)
 - **Node.js:** v20 (`.nvmrc` vorhanden — `nvm use` vor Dev-Start)
 
 ## Projektstruktur
@@ -55,7 +55,7 @@ assets/
   pattern-dark.svg
 public/
   img/                 # Portfolio-Fotos (8 JPGs)
-  icons/               # Simple Icons SVGs (21 Stück, alphabetisch)
+  icons/               # Simple Icons SVGs (24 Stück, alphabetisch)
 ```
 
 ## Design-System
@@ -92,9 +92,9 @@ public/
 - Labels: `v-show` (nicht `v-if`) um DOM-Mutation während Transition zu vermeiden
 - Container-Höhe wird dynamisch per JS gesetzt (grid-basiert)
 
-### Icons (21 Stück in `public/icons/`)
+### Icons (24 Stück in `public/icons/`)
 
-alphabetisch: anthropic, apple, bootstrap, css3, docker, git, github, gitlab, html5, javascript, jetbrains, laravel, linux, mysql, openai, php, symfony, tailwindcss, typescript, visualstudiocode, vuedotjs
+alphabetisch: anthropic, apple, bootstrap, css3, docker, git, github, gitlab, html5, javascript, jetbrains, laravel, linux, mariadb, mysql, nuxtdotjs, openai, php, symfony, tailwindcss, typescript, visualstudiocode, vite, vuedotjs
 
 - Darstellung: `<img>` mit `filter: brightness(0) invert(1)` (weiß im Dark Mode)
 - `openai.svg` und `visualstudiocode.svg` kommen NICHT von simpleicons.org (dort entfernt) — aus Iconify-API bzw. vscode-material-icon-theme GitHub
@@ -106,14 +106,15 @@ Mobile Diamonds haben weiße Lücken zwischen den `overflow:hidden`-Elementen du
 
 ```css
 .mobile-diamonds > div > div {
-  outline: 1px solid transparent;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transform: translateZ(0) scale(1.005);
+  transform: translateZ(0) scale(1.01);
+  margin: -1px;
+  isolation: isolate;
 }
 ```
 
-Der `sm:hidden mobile-diamonds`-Wrapper ist bereits am mobilen Abschnitt gesetzt.
+Der `sm:hidden mobile-diamonds`-Wrapper ist bereits am mobilen Abschnitt gesetzt. Werte sind load-bearing (insbesondere iOS Safari) — nicht ohne Gerätetest anpassen.
 
 ## Checkliste vor jedem Commit
 

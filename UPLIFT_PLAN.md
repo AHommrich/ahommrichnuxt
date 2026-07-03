@@ -1,7 +1,110 @@
 # Repo Uplift Plan — ahommrichnuxt
 
-> **Status: PLAN-ONLY.** No implementation until André explicitly starts a stage.
-> Each stage ends with a stop point. Do not chain stages without approval.
+> **Status: IN PROGRESS — 6 of 7 stages complete.** New agent: read
+> "▶ Session handoff" below first, then jump to the stage marked as next.
+
+---
+
+## ▶ Session handoff (as of 2026-07-03, post-Stage-6)
+
+**How to start:** run `git status`, `git log --oneline -10`. If tree is clean
+and last commit matches the "Last commit" line below, everything is fine —
+begin Stage 7 preparation. If not, reconcile before touching anything.
+
+### Progress snapshot
+
+| Stage                                       | Status        | Notes                                                                                                           |
+| ------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1 — Baseline (typecheck, .editorconfig)     | ✅ committed  | `chore(tooling): add typecheck script, vue-tsc, and .editorconfig`                                              |
+| 2 — Docker/Node consistency                 | ✅ committed  | `build(docker): upgrade Node to 20 and use npm ci for reproducible …`                                           |
+| 3 — README rewrite (EN + DE + screenshots)  | ✅ committed  | `docs(readme): rewrite README from starter boilerplate (EN + DE)`                                               |
+| 4 — Vitest setup + 23 specs                 | ✅ committed  | `test(vitest): add setup and animation specs (23 tests total)`                                                  |
+| 5 — CI workflow + Dependabot + badge        | ✅ committed  | `chore(format): apply Prettier to legacy files and add .prettierignore` (Prep + Stage 5 folded into one commit) |
+| 6 — DSGVO fix + Docblock sweep              | ✅ committed  | `docs(privacy): correct hosting/proxy statement + refresh doc comments` (folded; see notes below)               |
+| **7 — Commit history cleanup (destructive)** | ⏭ **NEXT**  | Requires explicit go-ahead + backup branch                                                                      |
+
+**Last commit at handoff:** _to be filled in by André after Stage 6 is committed_ (previous: `e7edf85`).
+
+**Working tree:** clean once Stage 6 is committed.
+
+**CI status:** GitHub Actions was set up in Stage 5. Local `npm run lint`,
+`npm run typecheck`, `npm test` (23/23) all green as of Stage 6 close.
+
+### What Stage 6 did
+
+1. **`pages/datenschutz.vue`** — replaced the Caddy claim in section 2 (Hosting)
+   with a factually correct paragraph naming Traefik under Coolify and drawing
+   a line between proxy-level (can process IPs briefly for operations) and
+   app-level (Nuxt writes no access logs). Also added Serverstandort
+   „Nürnberg, Deutschland" and a „Stand: Juli 2026" line at the bottom of
+   the page. **Note on log wording:** André confirmed 2026-07-03 that he
+   can't currently see the Traefik log configuration in Coolify. The new
+   text was chosen deliberately not to claim „no access logs" at the proxy
+   level — this is honest and DSGVO-safe. If it later turns out Traefik is
+   in fact silent, the wording can be tightened.
+
+2. **`CLAUDE.md`** — corrected two stale sections:
+   - Deployment line: „Docker + Caddy" → „Docker + Coolify (Traefik reverse proxy)".
+   - Icon count: „21 Stück" → „24 Stück" (also list refreshed to include `mariadb`, `nuxtdotjs`, `vite`).
+   - Subpixel-fix CSS block: replaced the outdated snippet (`outline: 1px solid transparent`, `scale(1.005)`) with the current one (`margin: -1px`, `isolation: isolate`, `scale(1.01)`).
+
+3. **`components/AppTechSection.vue`** — added a short header comment above
+   the physics constants block explaining how FLEE_FORCE, DAMPING and
+   MIN_SPEED interact (why changing one requires re-tuning the others),
+   and rewrote the inline comments on those four constants to link the
+   chosen values to the observed behaviour instead of just restating what
+   each variable does.
+
+4. **`components/AppHeader.vue`** — untouched. Every non-obvious detail
+   (iOS momentum-scroll rAF, matchMedia mobile gate, scaleX-vs-width choice,
+   dual-mechanism IO+rAF) already had a comment explaining its WHY.
+
+5. **`components/AppHeroSection.vue`** — the subpixel-fix comment was
+   stale: it still referenced `outline: 1px solid transparent` and
+   `scale(1.005)`, but the CSS block underneath already used `margin: -1px`
+   + `isolation: isolate` + `scale(1.01)`. Rewrote the comment to describe
+   the current four-piece combo and its role, and added a note that the
+   values are load-bearing on iOS Safari.
+
+### Non-obvious context still relevant
+
+Things the next agent will NOT infer from code alone:
+
+1. **Deployment is Coolify + Traefik on Hetzner Nürnberg.** The `Caddyfile`
+   and `docker-compose.yml` in the repo are legacy — Coolify builds directly
+   from the `Dockerfile`. Both files are still flagged for removal in
+   Follow-ups but were left in place during Stage 6 (out of scope).
+
+2. **`@nuxt/test-utils` v4 is installed as devDep but unused** — see the
+   Follow-up. Vitest is wired up standalone via `@vitejs/plugin-vue`.
+
+3. **`AppHeader.vue` had `onBeforeMount` used without an explicit import** —
+   masked by Nuxt auto-import. Fixed in Stage 4's commit. Similar latent
+   auto-import dependencies could still exist elsewhere; a lint pass in a
+   non-Nuxt env is a possible follow-up but out of Stage 7's scope.
+
+4. **Screenshots are committed under `docs/screenshots/`.**
+   Four files: `hero-desktop.png`, `tech-info-mode-desktop.png`,
+   `hero-mobile.png`, `tech-info-mode-mobile.png`.
+
+5. **Conversation is in German, artifacts (code, docs, commit messages) in
+   English.** No `Co-Authored-By: Claude` footer. Conventional Commits.
+
+6. **Handoff protocol per stage** — see the section below "Per-stage handoff
+   protocol". Short: agent finishes stage, provides a 3-line commit message,
+   waits for André to commit manually, then next stage.
+
+### First moves for the next agent (Stage 7)
+
+1. Read this whole section.
+2. Read `## Stage 7 — Commit history cleanup` further down.
+3. **DO NOT run any git write commands.** Stage 7 is destructive by
+   definition. Agent only prepares the script and preview; André executes.
+4. **Ask André which option (A / B / C) he wants** before writing any
+   script. Present the three options with a short pro/con table.
+5. Once he picks: produce a concrete `git` script, the exact list of
+   rewritten commits, and a backup-branch proposal. Wait for a written
+   go-ahead before André runs anything.
 
 ---
 
@@ -9,8 +112,9 @@
 
 `ahommrichnuxt` is a **static personal portfolio site** — no backend logic, no user
 accounts, no forms, no analytics, no cookies. It runs on Nuxt 3 + Vue 3 + Tailwind v4,
-deployed via Docker + Caddy on Hetzner under `ahommrich.de`. There is one unlisted route
-`/lebenslauf` used to print André's CV — public but not linked, intentionally simple.
+deployed via Docker + Coolify (Traefik reverse proxy) under `ahommrich.de`. There is
+one unlisted route `/lebenslauf` used to print André's CV — public but not linked,
+intentionally simple.
 
 The goal of this plan is **presentability + regression-safety for the animations**, not
 a security program. The Eventplaner project has a full Laravel backend and warrants
@@ -337,12 +441,11 @@ No new sections. No new pages.
       `.git`, and local logs out of the build context. Not required for correctness
       (`npm ci` overwrites anything staged), but cuts image build time and prevents
       local state from leaking into the deployed container.
-- [ ] **HIGH PRIORITY (Stage 6):** `pages/datenschutz.vue` currently names **Caddy**
-      as the web server and states "Access logs are disabled". Deployment is actually
-      on **Coolify with Traefik** (confirmed by André, 2026-07-03). This is a
-      DSGVO-relevant factual statement in a public privacy policy — it must be
-      corrected in Stage 6. Additionally, Traefik/Coolify log behaviour needs to be
-      looked up (currently unknown) and described honestly.
+- [x] ~~**HIGH PRIORITY (Stage 6):** `pages/datenschutz.vue` — Caddy claim
+      corrected to Traefik-under-Coolify, Serverstandort Nürnberg added,
+      Stand-Zeile eingefügt.~~ Traefik log behaviour still not confirmed;
+      wording chosen to be honest (does not claim „no access logs" at proxy
+      level) so no follow-up needed unless André wants to tighten it later.
 - [ ] Cleanup: Remove `Caddyfile` — legacy, superseded by Coolify/Traefik.
 - [ ] Cleanup: Remove `docker-compose.yml` — legacy, Coolify builds directly from
       the `Dockerfile`. Optionally replace with a minimal compose file for local
@@ -369,5 +472,5 @@ No new sections. No new pages.
 - [x] Stage 3 — README rewrite
 - [x] Stage 4 — Vitest + animation specs
 - [x] Stage 5 — Minimal CI + Dependabot
-- [ ] Stage 6 — Docblock sweep
+- [x] Stage 6 — DSGVO fix + Docblock sweep
 - [ ] Stage 7 — Commit history cleanup (destructive, last)

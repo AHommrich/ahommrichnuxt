@@ -416,12 +416,14 @@ onMounted(() => {
 <style scoped>
 /*
   Mobile subpixel gap fix:
-  On real devices, adjacent overflow:hidden tiles rendered with fractional pixel coordinates
-  develop white hairline gaps due to subpixel anti-aliasing. The combination of:
-    - outline: 1px solid transparent  →  forces the browser to treat edges as opaque
-    - backface-visibility: hidden      →  promotes element to its own compositing layer
-    - translateZ(0) scale(1.01)        →  GPU-accelerated render + slight overscale closes gaps
-  Note: scale(1.005) was the original value; 1.01 is used here for reliability on more devices.
+  On real devices, adjacent overflow:hidden tiles rendered with fractional pixel
+  coordinates develop white hairline gaps due to subpixel anti-aliasing. The
+  combination below hides those gaps without changing visible layout:
+    - backface-visibility: hidden    →  promotes each tile to its own compositing layer
+    - translateZ(0) scale(1.01)      →  GPU-composited paint + slight overscale so tile edges bleed into the neighbour instead of leaving a gap
+    - margin: -1px                   →  pulls neighbours back together after the overscale, keeping outer cluster bounds intact
+    - isolation: isolate             →  gives each tile its own stacking context so z-index inside a tile can't leak across the seam
+  Values are load-bearing on iOS Safari especially — do not tweak without device testing.
 */
 .mobile-diamonds > div > div {
   -webkit-backface-visibility: hidden;
