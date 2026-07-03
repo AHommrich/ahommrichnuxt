@@ -1,8 +1,11 @@
 # ahommrichnuxt
 
-[![CI](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/ci.yml/badge.svg)](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/ci.yml)
+[![Lint](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/lint.yml/badge.svg)](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/lint.yml)
+[![Typecheck](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/typecheck.yml/badge.svg)](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/typecheck.yml)
+[![Tests](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/test.yml/badge.svg)](https://github.com/AHommrich/ahommrichnuxt/actions/workflows/test.yml)
+[![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](LICENSE)
 
-Personal portfolio of André Hommrich — Fullstack developer from the Westerwald. Nuxt 3, Vue 3, Tailwind CSS 4, deployed via Docker + Coolify. Live at **[ahommrich.de](https://ahommrich.de)**.
+Personal portfolio of André Hommrich — Fullstack developer from the Westerwald. Nuxt 3, Vue 3, Tailwind CSS 4, deployed via Docker + Coolify. Live at **[ahommrich.de](https://ahommrich.de)** and **[hommri.ch](https://hommri.ch)**.
 
 > 🇩🇪 Auch auf Deutsch verfügbar: [README.de.md](README.de.md)
 
@@ -29,13 +32,10 @@ Sorted from "engineering-interesting" to "UX polish". Each item links to the fil
 3. **Sticky header with `IntersectionObserver`-driven active section** — the header highlights the current section without scroll listeners; the slider under the nav has been perf-tuned across five iterations for mobile.
    → [`components/AppHeader.vue`](components/AppHeader.vue)
 
-4. **Printable CV route at `/lebenslauf`** — unlisted (not linked in the nav, `robots: noindex, nofollow`), print-optimized layout. Public URL by design — no login, no rate limiting; the URL is simply not published.
-   → [`pages/lebenslauf.vue`](pages/lebenslauf.vue)
-
-5. **Zero third-party runtime** — no analytics, no CDN, no Google Fonts, no external scripts. FontAwesome is bundled locally and tree-shaken; the tech section uses local Simple Icons SVGs. This is a deliberate GDPR posture, not an accident: the privacy page states no cookies and no tracking are used, and the code matches.
+4. **Zero third-party runtime** — no analytics, no CDN, no Google Fonts, no external scripts. FontAwesome is bundled locally and tree-shaken; the tech section uses local Simple Icons SVGs. This is a deliberate GDPR posture, not an accident: the privacy page states no cookies and no tracking are used, and the code matches.
    → [`nuxt.config.ts`](nuxt.config.ts), [`plugins/fontawesome.client.js`](plugins/fontawesome.client.js)
 
-6. **Tailwind CSS 4 via `@tailwindcss/vite`** — no `tailwind.config.js`; theme tokens live in the CSS via `@theme`. Dark mode via Tailwind's `dark:` classes throughout.
+5. **Tailwind CSS 4 via `@tailwindcss/vite`** — no `tailwind.config.js`; theme tokens live in the CSS via `@theme`. Dark mode via Tailwind's `dark:` classes throughout.
    → [`assets/css/main.css`](assets/css/main.css), [`nuxt.config.ts`](nuxt.config.ts)
 
 ---
@@ -88,7 +88,7 @@ For a local production check: `npm run build && npm run preview`.
 
 ```
 components/    App*.vue — Header, HeroSection, AboutSection, TechSection, Footer, Card, …
-pages/         index.vue, lebenslauf.vue, impressum.vue, datenschutz.vue
+pages/         index.vue, impressum.vue, datenschutz.vue
 layouts/       default.vue
 plugins/       fontawesome.client.js — FontAwesome setup (client-only)
 public/        img/ (portfolio photos), icons/ (21 Simple Icons SVGs)
