@@ -146,14 +146,18 @@ import { computed, onBeforeUnmount, onMounted, nextTick, ref } from "vue";
 import { computeGridDimensions, ensureMinSpeed } from "~/utils/animation";
 
 // --- Physics constants ---
+// Values are tuned empirically so icons stay visibly reactive to the pointer
+// without spiralling into chaos: FLEE_FORCE injects energy near the pointer,
+// DAMPING bleeds it off, MIN_SPEED prevents damping from ever freezing an icon.
+// Changing one usually requires re-tuning the others.
 const ICON_SIZE = 32; // icon width/height in pixels
 const ICON_HALF = ICON_SIZE / 2;
 const BASE_SPEED = 1.5; // initial velocity magnitude (px/frame)
-const FLEE_RADIUS = 120; // distance at which icons start fleeing the pointer (px)
+const FLEE_RADIUS = 120; // pointer proximity at which flee kicks in — chosen large enough to feel responsive on desktop, small enough that mobile taps don't repel the whole grid
 const FLEE_RADIUS_SQ = FLEE_RADIUS * FLEE_RADIUS; // squared to avoid Math.sqrt in the hot loop
-const FLEE_FORCE = 5; // acceleration applied when the pointer is inside FLEE_RADIUS
-const DAMPING = 0.92; // velocity multiplier per frame (< 1 simulates friction)
-const MIN_SPEED = 0.8; // prevents icons from coming to a complete stop
+const FLEE_FORCE = 5; // per-frame acceleration inside FLEE_RADIUS — high enough for a noticeable dodge, low enough that DAMPING can absorb it within ~1s
+const DAMPING = 0.92; // per-frame velocity multiplier (< 1). Without it, sustained pointer pressure would compound flee forces and icons would fly out of the container
+const MIN_SPEED = 0.8; // floor enforced after DAMPING so icons never fully stop and the section always looks alive
 
 // All technology icons (filenames without extension, matching /public/icons/)
 const iconNames = [

@@ -32,9 +32,11 @@ useSeoMeta({
       <p class="text-gray-200 text-sm leading-relaxed">
         Diese Website wird gehostet bei der
         <strong>Hetzner Online GmbH</strong>, Industriestr. 25, 91710
-        Gunzenhausen. Hetzner kann auf Infrastrukturebene (Netzwerk, Hypervisor)
-        technische Verbindungsdaten verarbeiten. Informationen dazu finden sich
-        in der Datenschutzerklärung von Hetzner:
+        Gunzenhausen. Der Serverstandort ist
+        <strong>Nürnberg, Deutschland</strong>. Hetzner kann auf
+        Infrastrukturebene (Netzwerk, Hypervisor) technische Verbindungsdaten
+        verarbeiten. Informationen dazu finden sich in der
+        Datenschutzerklärung von Hetzner:
         <a
           href="https://www.hetzner.com/de/legal/privacy-policy"
           target="_blank"
@@ -45,12 +47,14 @@ useSeoMeta({
         </a>
       </p>
       <p class="text-gray-200 text-sm leading-relaxed">
-        Der eingesetzte Webserver (Caddy) ist so konfiguriert, dass
-        <strong>keine Access-Logs</strong> geschrieben werden. Es werden somit
-        keine IP-Adressen oder sonstige Zugriffsdaten auf Anwendungsebene
-        gespeichert. Technische Fehlermeldungen des Servers werden
-        ausschließlich temporär im Arbeitsspeicher des Containers vorgehalten
-        und sind auf maximal 15 MB begrenzt.
+        Als Reverse Proxy setzt der Server <strong>Traefik</strong> ein,
+        verwaltet über die Deployment-Plattform <strong>Coolify</strong>. Zum
+        technischen Betrieb kann Traefik kurzzeitig Verbindungsdaten wie
+        IP-Adressen verarbeiten. Diese werden nicht dauerhaft gespeichert und
+        dienen ausschließlich der Bereitstellung sowie der Betriebssicherheit
+        der Website. Die Nuxt-Anwendung selbst schreibt
+        <strong>keine Access-Logs</strong> und speichert keine
+        personenbezogenen Nutzungsdaten.
       </p>
     </AppCard>
 
@@ -134,5 +138,7 @@ useSeoMeta({
         >.
       </p>
     </AppCard>
+
+    <p class="text-gray-400 text-xs italic text-right">Stand: Juli 2026</p>
   </div>
 </template>
