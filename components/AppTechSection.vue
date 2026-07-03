@@ -7,143 +7,138 @@
     <div
       class="relative z-10 flex w-full flex-col items-center px-4 py-6 sm:px-9 sm:py-9"
     >
-      <div
-        ref="cardEl"
-        :class="['card-group relative w-full', { 'is-in-view': isCardInView }]"
-      >
+      <AppCard content-class="p-6">
+        <h3
+          class="self-center pb-3 text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
+        >
+          Womit ich arbeite
+        </h3>
+
         <!--
-          Decorative offset shadow layers (light/dark mode aware) — sharp edges
-          echo the Hero diamond grid. They sit exactly on top of each other by
-          default and slide apart on hover (or when the card scrolls into view
-          on touch devices).
+          Two-column layout (md+): text left, animation right.
+          Default flex `items-stretch` lets the animation column match the
+          taller text column's height; the inner flex centres the fixed-height
+          animation container within that space.
+          Mobile: stacked — animation rendered first (order-1) so the
+          eye-catcher appears above the text in the reading flow.
         -->
-        <div
-          class="card-layer card-layer-back absolute inset-0 w-full border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
-        />
-        <div
-          class="card-layer card-layer-front absolute inset-0 w-full border border-[#3b4245] bg-[#8D1D29] opacity-80 dark:border-white"
-        />
-        <div class="card-content relative z-10 flex flex-col p-6">
-          <h3
-            class="self-center pb-3 text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
+        <div class="flex flex-col md:flex-row md:gap-8 lg:gap-12">
+          <!-- Text column — md+: left half, vertically centered to balance against the animation column -->
+          <div
+            class="order-2 flex flex-col md:order-1 md:w-1/2 md:justify-center"
           >
-            Womit ich arbeite
-          </h3>
-
-          <!--
-            Two-column layout (md+): text left, animation right.
-            Default flex `items-stretch` lets the animation column match the
-            taller text column's height; the inner flex centres the fixed-height
-            animation container within that space.
-            Mobile: stacked — animation rendered first (order-1) so the
-            eye-catcher appears above the text in the reading flow.
-          -->
-          <div class="flex flex-col md:flex-row md:gap-8 lg:gap-12">
-            <!-- Text column — md+: left half, vertically centered to balance against the animation column -->
-            <div
-              class="order-2 flex flex-col md:order-1 md:w-1/2 md:justify-center"
+            <p
+              class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              <p
-                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
-              >
-                Mein Schwerpunkt liegt in der PHP Backend-Entwicklung –
-                beruflich mit Symfony, privat mit Laravel. Im Frontend setze ich
-                primär auf Vue.js, ergänzt durch TypeScript und CSS-Frameworks
-                wie Tailwind CSS und Bootstrap. Für mobile Anwendungen bringe
-                ich zudem Erfahrung mit React Native mit. Diese Kombination
-                ermöglicht es mir, Projekte ganzheitlich zu denken und als
-                Fullstack-Entwickler umzusetzen. KI-Tools wie Claude Code setze
-                ich dabei bewusst als Kooperationspartner ein – nicht als Ersatz
-                für eigenes Denken, sondern um effizienter und zielgerichteter
-                zu arbeiten.
-              </p>
-              <p
-                class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
-              >
-                Containerisierung mit Docker, Versionskontrolle mit Git,
-                CI/CD-Pipelines und Datenbankarbeit mit MySQL gehören für mich
-                zum Alltag. Ich halte mich ständig auf dem neuesten Stand – ob
-                neue Frameworks, Deployment-Konzepte oder moderne
-                Entwicklungsworkflows.
-              </p>
-            </div>
-
-            <!-- Animation column — md+: right half, stretches to text height -->
-            <div
-              class="order-1 flex items-center justify-center md:order-2 md:w-1/2"
+              Mein Schwerpunkt liegt in der PHP Backend-Entwicklung – beruflich
+              mit Symfony, privat mit Laravel. Im Frontend setze ich primär auf
+              Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie Tailwind
+              CSS und Bootstrap. Für mobile Anwendungen bringe ich zudem
+              Erfahrung mit React Native mit. Diese Kombination ermöglicht es
+              mir, Projekte ganzheitlich zu denken und als Fullstack-Entwickler
+              umzusetzen. KI-Tools wie Claude Code setze ich dabei bewusst als
+              Kooperationspartner ein – nicht als Ersatz für eigenes Denken,
+              sondern um effizienter und zielgerichteter zu arbeiten.
+            </p>
+            <p
+              class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              <!-- Animated icon container — rAF loop positions icons inside this element -->
-              <div ref="container" class="relative my-6 w-full overflow-hidden">
-                <!-- One wrapper per icon; positioned absolutely via JS transform -->
-                <div
-                  v-for="(name, index) in iconNames"
-                  :key="name"
-                  :ref="(el) => ((animatedElements as any)[index] = el)"
-                  class="icon-wrapper"
+              Containerisierung mit Docker, Versionskontrolle mit Git,
+              CI/CD-Pipelines und Datenbankarbeit mit MySQL gehören für mich zum
+              Alltag. Ich halte mich ständig auf dem neuesten Stand – ob neue
+              Frameworks, Deployment-Konzepte oder moderne
+              Entwicklungsworkflows.
+            </p>
+          </div>
+
+          <!-- Animation column — md+: right half, stretches to text height -->
+          <div
+            class="order-1 flex items-center justify-center md:order-2 md:w-1/2"
+          >
+            <!-- Animated icon container — rAF loop positions icons inside this element -->
+            <div ref="container" class="relative my-6 w-full overflow-hidden">
+              <!-- One wrapper per icon; positioned absolutely via JS transform -->
+              <div
+                v-for="(name, index) in iconNames"
+                :key="name"
+                :ref="(el) => ((animatedElements as any)[index] = el)"
+                class="icon-wrapper"
+              >
+                <!-- SVG icon rendered as solid white via CSS filter -->
+                <img
+                  :src="`/icons/${name}.svg`"
+                  :alt="iconLabels[name]"
+                  class="h-8 w-8 shrink-0 icon-white"
+                />
+                <!-- Label only visible in info mode (v-show keeps DOM stable during transition) -->
+                <span v-show="infoMode" class="icon-label-inline">{{
+                  iconLabels[name]
+                }}</span>
+              </div>
+
+              <!--
+                Info bar: toggle button + disclaimer text.
+                The button stays available under prefers-reduced-motion so the
+                user can opt into the animation manually; only the pulse's
+                scale change is dropped (see CSS).
+              -->
+              <div class="info-bar">
+                <button
+                  class="info-btn"
+                  :class="{
+                    active: infoMode,
+                    'pulse-hint': pulseHint,
+                  }"
+                  :aria-label="
+                    infoMode ? 'Animation starten' : 'Technologien anzeigen'
+                  "
+                  @click="toggleInfoMode"
                 >
-                  <!-- SVG icon rendered as solid white via CSS filter -->
-                  <img
-                    :src="`/icons/${name}.svg`"
-                    :alt="iconLabels[name]"
-                    class="h-8 w-8 shrink-0 icon-white"
-                  />
-                  <!-- Label only visible in info mode (v-show keeps DOM stable during transition) -->
-                  <span v-show="infoMode" class="icon-label-inline">{{
-                    iconLabels[name]
+                  <!-- Inline info (ℹ) icon — SVG to avoid FontAwesome client-only constraint -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="flex-shrink: 0"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="8.5" />
+                    <line x1="12" y1="12" x2="12" y2="16" />
+                  </svg>
+                  <span class="info-btn-label">{{
+                    infoMode ? "Animation" : "Technologien"
                   }}</span>
-                </div>
-
-                <!-- Info bar: toggle button + disclaimer text -->
-                <div class="info-bar">
-                  <button
-                    class="info-btn"
-                    :class="{
-                      active: infoMode,
-                      'pulse-hint': pulseHint,
-                    }"
-                    :aria-label="
-                      infoMode ? 'Animation starten' : 'Technologien anzeigen'
-                    "
-                    @click="toggleInfoMode"
-                  >
-                    <!-- Inline info (ℹ) icon — SVG to avoid FontAwesome client-only constraint -->
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      style="flex-shrink: 0"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="12" y1="8" x2="12" y2="8.5" />
-                      <line x1="12" y1="12" x2="12" y2="16" />
-                    </svg>
-                    <span class="info-btn-label">{{
-                      infoMode ? "Animation" : "Technologien"
-                    }}</span>
-                  </button>
-                  <span v-show="infoMode" class="info-disclaimer"
-                    >Eine Auswahl an Tools &amp; Technologien, die ich
-                    regelmäßig einsetze.</span
-                  >
-                </div>
+                </button>
+                <span v-show="infoMode" class="info-disclaimer"
+                  >Eine Auswahl an Tools &amp; Technologien, die ich regelmäßig
+                  einsetze.</span
+                >
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </AppCard>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, nextTick, ref } from "vue";
-import { computeGridDimensions, ensureMinSpeed } from "~/utils/animation";
+import {
+  applyDamping,
+  applyFleeForce,
+  bounceOffBounds,
+  computeGridDimensions,
+  computeInfoGridPosition,
+  ensureMinSpeed,
+} from "~/utils/animation";
+import type { IconState } from "~/utils/animation";
 
 // --- Physics constants ---
 // Values are tuned empirically so icons stay visibly reactive to the pointer
@@ -154,7 +149,6 @@ const ICON_SIZE = 32; // icon width/height in pixels
 const ICON_HALF = ICON_SIZE / 2;
 const BASE_SPEED = 1.5; // initial velocity magnitude (px/frame)
 const FLEE_RADIUS = 120; // pointer proximity at which flee kicks in — chosen large enough to feel responsive on desktop, small enough that mobile taps don't repel the whole grid
-const FLEE_RADIUS_SQ = FLEE_RADIUS * FLEE_RADIUS; // squared to avoid Math.sqrt in the hot loop
 const FLEE_FORCE = 5; // per-frame acceleration inside FLEE_RADIUS — high enough for a noticeable dodge, low enough that DAMPING can absorb it within ~1s
 const DAMPING = 0.92; // per-frame velocity multiplier (< 1). Without it, sustained pointer pressure would compound flee forces and icons would fly out of the container
 const MIN_SPEED = 0.8; // floor enforced after DAMPING so icons never fully stop and the section always looks alive
@@ -215,14 +209,6 @@ const iconLabels: Record<string, string> = {
   vuedotjs: "Vue.js",
 };
 
-/** Per-icon physics state — updated on every animation frame */
-interface IconState {
-  x: number; // center X position within container (px)
-  y: number; // center Y position within container (px)
-  vx: number; // horizontal velocity (px/frame)
-  vy: number; // vertical velocity (px/frame)
-}
-
 // --- Vue refs ---
 const container = ref<HTMLElement | null>(null); // the overflow:hidden animation canvas
 const animatedElements = ref<HTMLElement[]>([]); // one DOM element per icon (filled by v-for :ref)
@@ -231,9 +217,9 @@ const animatedElements = ref<HTMLElement[]>([]); // one DOM element per icon (fi
 const infoMode = ref(true); // true = static grid layout, false = physics animation
 const isVisible = ref(false); // tracks viewport visibility (driven by IntersectionObserver below)
 // Continuous pulse on the toggle button while the list is shown and the section is in view.
+// Kept active even under prefers-reduced-motion — the reduce override in the CSS
+// keyframes drops just the scale change, so users can still notice the button.
 const pulseHint = computed(() => infoMode.value && isVisible.value);
-const cardEl = ref<HTMLElement | null>(null); // outer card wrapper used by the card-layer slide observer
-const isCardInView = ref(false); // toggled by the card observer; consumed by (hover: none) CSS branch
 
 // --- Info-mode grid layout constants ---
 const MIN_CARD_W = 160; // minimum card width — guarantees readable label text
@@ -276,10 +262,15 @@ const applyInfoLayoutInstant = () => {
     e.classList.add("info-card");
     e.style.transition = "none";
     e.style.transitionDelay = "";
-    const col = index % gridCols;
-    const row = Math.floor(index / gridCols);
-    const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
-    const ty = INFO_BAR_H + CARD_PAD + row * (CARD_H + CARD_GAP);
+    const { tx, ty } = computeInfoGridPosition(
+      index,
+      gridCols,
+      gridCardW,
+      CARD_H,
+      CARD_GAP,
+      CARD_PAD,
+      INFO_BAR_H,
+    );
     e.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
     if (states[index]) {
       states[index].x = tx + ICON_HALF;
@@ -329,10 +320,15 @@ const toggleInfoMode = () => {
     iconNames.forEach((_, index) => {
       const el = animatedElements.value[index] as HTMLElement;
       if (!el) return;
-      const col = index % gridCols;
-      const row = Math.floor(index / gridCols);
-      const tx = CARD_PAD + col * (gridCardW + CARD_GAP);
-      const ty = INFO_BAR_H + CARD_PAD + row * (CARD_H + CARD_GAP);
+      const { tx, ty } = computeInfoGridPosition(
+        index,
+        gridCols,
+        gridCardW,
+        CARD_H,
+        CARD_GAP,
+        CARD_PAD,
+        INFO_BAR_H,
+      );
       el.style.transitionDelay = `${index * 20}ms`;
       el.style.transition = "transform 0.3s ease-out";
       el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
@@ -377,7 +373,6 @@ let pointerY = -1000; // pointer Y relative to container — starts far off-scre
 let rafId: number | null = null; // current requestAnimationFrame handle
 let resizeObserver: ResizeObserver | null = null;
 let intersectionObserver: IntersectionObserver | null = null;
-let cardObserver: IntersectionObserver | null = null;
 // Document-relative container origin — cached so scroll/pointermove handlers need no layout reads
 let containerDocTop = 0;
 let containerDocLeft = 0;
@@ -434,42 +429,14 @@ const tick = () => {
     const el = animatedElements.value[index];
     if (!el) return;
 
-    // Flee: push icon away from pointer if it is within FLEE_RADIUS
-    const dx = state.x - pointerX;
-    const dy = state.y - pointerY;
-    const distSq = dx * dx + dy * dy;
-
-    if (distSq < FLEE_RADIUS_SQ && distSq > 0) {
-      const dist = Math.sqrt(distSq);
-      // Force is proportional to proximity: strongest at distance 0, zero at FLEE_RADIUS
-      const force = (1 - dist / FLEE_RADIUS) * FLEE_FORCE;
-      state.vx += (dx / dist) * force;
-      state.vy += (dy / dist) * force;
-    }
+    applyFleeForce(state, pointerX, pointerY, FLEE_RADIUS, FLEE_FORCE);
 
     // Integrate velocity
     state.x += state.vx;
     state.y += state.vy;
 
-    // Bounce off left/right walls
-    if (state.x < ICON_HALF) {
-      state.x = ICON_HALF;
-      state.vx = Math.abs(state.vx);
-    } else if (state.x > containerW - ICON_HALF) {
-      state.x = containerW - ICON_HALF;
-      state.vx = -Math.abs(state.vx);
-    }
-    // Bounce off top/bottom walls
-    if (state.y < ICON_HALF) {
-      state.y = ICON_HALF;
-      state.vy = Math.abs(state.vy);
-    } else if (state.y > containerH - ICON_HALF) {
-      state.y = containerH - ICON_HALF;
-      state.vy = -Math.abs(state.vy);
-    }
-
-    state.vx *= DAMPING;
-    state.vy *= DAMPING;
+    bounceOffBounds(state, ICON_HALF, containerW, containerH);
+    applyDamping(state, DAMPING);
     ensureMinSpeed(state, MIN_SPEED);
 
     // Position is center-based — subtract ICON_HALF to get the top-left origin for CSS transform
@@ -584,17 +551,6 @@ onMounted(async () => {
   );
   intersectionObserver.observe(container.value);
 
-  // Separate observer on the card wrapper — drives the layer-slide animation on touch devices
-  if (cardEl.value) {
-    cardObserver = new IntersectionObserver(
-      ([entry]) => {
-        isCardInView.value = entry.isIntersecting;
-      },
-      { threshold: 0.25 },
-    );
-    cardObserver.observe(cardEl.value);
-  }
-
   // Attach pointer and touch event listeners to the container
   container.value.addEventListener("pointermove", handlePointerMove);
   container.value.addEventListener("pointerleave", resetPointer);
@@ -615,7 +571,6 @@ onBeforeUnmount(() => {
   if (rafId !== null) cancelAnimationFrame(rafId);
   resizeObserver?.disconnect();
   intersectionObserver?.disconnect();
-  cardObserver?.disconnect();
   container.value?.removeEventListener("pointermove", handlePointerMove);
   container.value?.removeEventListener("pointerleave", resetPointer);
   container.value?.removeEventListener("touchstart", handleTouchStart);
@@ -747,33 +702,24 @@ onBeforeUnmount(() => {
 }
 
 /*
-  Card layer animation — both shadow layers sit on top of each other by default
-  and slide apart on hover (desktop) or when the card enters the viewport (touch).
-  Distance matches Tailwind's translate-1.5 (= 0.375rem).
+  Reduced motion: keep the pulse's colour/border/glow blink because it stays
+  useful as a subtle visual cue, but drop the transform: scale change so the
+  button doesn't grow. Users who want the full animation can still trigger it
+  via the toggle.
 */
-.card-layer,
-.card-content {
-  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
-}
-
-@media (hover: hover) {
-  .card-group:hover .card-layer-back {
-    transform: translate(0.375rem, 0.375rem);
-  }
-  .card-group:hover .card-layer-front,
-  .card-group:hover .card-content {
-    transform: translate(-0.375rem, -0.375rem);
-  }
-}
-
-@media (hover: none) {
-  .card-group.is-in-view .card-layer-back {
-    transform: translate(0.375rem, 0.375rem);
-  }
-  .card-group.is-in-view .card-layer-front,
-  .card-group.is-in-view .card-content {
-    transform: translate(-0.375rem, -0.375rem);
+@media (prefers-reduced-motion: reduce) {
+  @keyframes pulse-hint {
+    0%,
+    100% {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+      background: rgba(255, 255, 255, 0.42);
+      border-color: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.18);
+    }
   }
 }
 </style>

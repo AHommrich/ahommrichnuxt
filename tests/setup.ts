@@ -48,3 +48,9 @@ if (typeof window !== "undefined" && !("navigation" in window.performance)) {
     configurable: true,
   });
 }
+
+// Nuxt auto-imports useSeoMeta at build time; in Vitest it isn't defined.
+// A no-op is enough — SEO tags aren't what these specs assert about.
+(
+  globalThis as unknown as { useSeoMeta?: (...args: unknown[]) => void }
+).useSeoMeta = () => {};
