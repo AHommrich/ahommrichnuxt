@@ -20,14 +20,14 @@ wie sie im Browser aussieht — korrekter Hintergrund, Farben, Schriften, Vektor
 
 ## Entscheidungen (bereits getroffen, nicht mehr diskutieren)
 
-| Frage | Entscheidung | Begründung |
-|---|---|---|
-| Deployment | Dockerfile bleibt einzelner Container | Kein zweiter Service nötig, Chromium läuft als Node.js-Subprocess |
-| Docker Compose | Nicht nötig | Keine Datenbank, keine isolierten Services |
-| Puppeteer-Paket | `puppeteer-core` + System-Chromium via apt | Kleineres Image (~500MB) vs. `puppeteer` mit bundled Chrome (~900MB) |
-| Architektur | Interne Server-Route im bestehenden Nuxt-Server | Keine neue Instanz, kein neuer Port, Coolify/Traefik sehen keinen Unterschied |
-| DSGVO | Unbedenklich | Alles läuft auf eigenem Server, keine externen Dienste |
-| Anschreiben-Daten | Bestehende `getContent()`-Funktion liefert JSON | Bereits implementiert für Import/Export — gleiche Struktur |
+| Frage             | Entscheidung                                    | Begründung                                                                    |
+| ----------------- | ----------------------------------------------- | ----------------------------------------------------------------------------- |
+| Deployment        | Dockerfile bleibt einzelner Container           | Kein zweiter Service nötig, Chromium läuft als Node.js-Subprocess             |
+| Docker Compose    | Nicht nötig                                     | Keine Datenbank, keine isolierten Services                                    |
+| Puppeteer-Paket   | `puppeteer-core` + System-Chromium via apt      | Kleineres Image (~500MB) vs. `puppeteer` mit bundled Chrome (~900MB)          |
+| Architektur       | Interne Server-Route im bestehenden Nuxt-Server | Keine neue Instanz, kein neuer Port, Coolify/Traefik sehen keinen Unterschied |
+| DSGVO             | Unbedenklich                                    | Alles läuft auf eigenem Server, keine externen Dienste                        |
+| Anschreiben-Daten | Bestehende `getContent()`-Funktion liefert JSON | Bereits implementiert für Import/Export — gleiche Struktur                    |
 
 ---
 
@@ -79,6 +79,7 @@ Browser
 ### Phase 2 — Print-Routen anlegen
 
 - [ ] **`/anschreiben/print` Route** anlegen (`pages/anschreiben/print.vue`)
+
   - `layout: false`, `noindex`
   - Empfängt Feldinhalte via URL-Query-Params oder Session-Storage
   - Rendert nur den Brief ohne Action-Bar, ohne Hint-Text
@@ -93,43 +94,47 @@ Browser
 - [ ] **`server/api/pdf/anschreiben.post.ts`** implementieren
 
   ```typescript
-  import puppeteer from 'puppeteer-core'
+  import puppeteer from "puppeteer-core";
 
   export default defineEventHandler(async (event) => {
-    const body = await readBody(event)  // { datum, firma, zh, ... }
+    const body = await readBody(event); // { datum, firma, zh, ... }
 
     const browser = await puppeteer.launch({
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
 
-    const page = await browser.newPage()
-    await page.setViewport({ width: 794, height: 1123 })  // A4 bei 96 DPI
+    const page = await browser.newPage();
+    await page.setViewport({ width: 794, height: 1123 }); // A4 bei 96 DPI
 
     // Seite aufrufen (Self-Call) oder HTML direkt injecten
-    const params = new URLSearchParams(body).toString()
+    const params = new URLSearchParams(body).toString();
     await page.goto(`http://localhost:3000/anschreiben/print?${params}`, {
-      waitUntil: 'networkidle0',
-    })
+      waitUntil: "networkidle0",
+    });
 
     const pdf = await page.pdf({
-      format: 'A4',
+      format: "A4",
       printBackground: true,
-      margin: { top: '15mm', right: '20mm', bottom: '15mm', left: '20mm' },
-    })
+      margin: { top: "15mm", right: "20mm", bottom: "15mm", left: "20mm" },
+    });
 
-    await browser.close()
+    await browser.close();
 
-    setHeader(event, 'Content-Type', 'application/pdf')
-    setHeader(event, 'Content-Disposition', 'attachment; filename="anschreiben.pdf"')
-    return pdf
-  })
+    setHeader(event, "Content-Type", "application/pdf");
+    setHeader(
+      event,
+      "Content-Disposition",
+      'attachment; filename="anschreiben.pdf"',
+    );
+    return pdf;
+  });
   ```
 
 - [ ] **`server/api/pdf/lebenslauf.get.ts`** implementieren (analog, kein Body)
 
 - [ ] **Puppeteer Browser-Instanz** warmhalten (optional, Optimierung):
-  Browser beim Server-Start einmal öffnen statt pro Request neu starten → spart ~2-3s pro PDF
+      Browser beim Server-Start einmal öffnen statt pro Request neu starten → spart ~2-3s pro PDF
 
 ### Phase 4 — Frontend anpassen
 
@@ -137,18 +142,18 @@ Browser
 
   ```typescript
   async function downloadPdf() {
-    const response = await fetch('/api/pdf/anschreiben', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/pdf/anschreiben", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(getContent()),
-    })
-    const blob = await response.blob()
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'anschreiben.pdf'
-    a.click()
-    URL.revokeObjectURL(url)
+    });
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "anschreiben.pdf";
+    a.click();
+    URL.revokeObjectURL(url);
   }
   ```
 
