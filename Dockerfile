@@ -1,6 +1,17 @@
 # Match the Node version declared in .nvmrc so local and container builds agree.
 FROM node:20-alpine
 
+# Chromium and required system libraries for Puppeteer headless PDF generation.
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 WORKDIR /app
 
 # Copy manifests first to keep the dependency layer cacheable between code-only changes.

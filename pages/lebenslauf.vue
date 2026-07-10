@@ -15,10 +15,28 @@ useHead({
   htmlAttrs: { lang: "de", class: "cv-route" },
 });
 
-// Triggers the browser's native print dialog, used by the user to save as PDF.
-function downloadPdf() {
-  window.print();
+const isPdfLoading = ref(false);
+
+async function downloadPdf() {
+  isPdfLoading.value = true;
+  try {
+    const response = await fetch("/api/pdf/lebenslauf");
+    if (!response.ok) throw new Error("PDF-Generierung fehlgeschlagen");
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "lebenslauf.pdf";
+    a.click();
+    URL.revokeObjectURL(url);
+  } finally {
+    isPdfLoading.value = false;
+  }
 }
+
+onMounted(() => {
+  document.documentElement.setAttribute("data-ready", "1");
+});
 
 // Career history — most recent first.
 const experience = [
@@ -54,7 +72,7 @@ const experience = [
     location: "Sankt Augustin",
     role: "Servicetechniker",
     bullets: [
-      "RZ-Installationen",
+      "Rechenzentrum- und Serverraum-Installationen",
       "Netzwerk-Verkabelungen",
       "Wartungen & Inbetriebnahmen",
       "Vorarbeiter-Tätigkeiten",
@@ -78,7 +96,7 @@ const experience = [
     bullets: [
       "Rohbau-Installationen",
       "Kundendienst",
-      "TV-Sat-Anlagen / KNX & EIB / Netzwerk",
+      "TV-Sat-Anlagen - KNX/EIB - Netzwerktechnik",
     ],
     extra: "Abschluss: Sekundarabschluss I",
   },
@@ -86,6 +104,36 @@ const experience = [
 
 // Project history — most recent first.
 const projects = [
+  {
+    client: "Eventplaner — eveplan.de",
+    role: "Fullstack-Entwicklung & Mobile",
+    stack: [
+      "Laravel 12",
+      "Vue 3",
+      "TypeScript",
+      "Inertia.js",
+      "Tailwind CSS 4",
+      "React Native",
+      "Expo",
+      "Docker",
+    ],
+    description:
+      "Vollständig selbst entwickelter Hochzeits- und Eventplaner als Progressive Web App mit nativer Begleiter-App für Gäste (React Native / Expo). Gäste authentifizieren sich per QR-Code ohne Passwort; der persönliche Event-Hub bietet Fotogalerie mit Upload, Fotospiel mit delta-basiertem Aufgabenmodell, Trinkspiel mit physiologisch motivierter Punktberechnung und tokengesicherter Beamer-Slideshow. Backend durch rund 200 automatisierte Pest-Tests abgedeckt, dreistufiger Deploy-Prozess (develop → staging → production) mit CI-Guard gegen Compose-Drift. Live unter eveplan.de.",
+  },
+  {
+    client: "Portfolio — hommri.ch",
+    role: "Frontend-Entwicklung",
+    stack: [
+      "Nuxt 3",
+      "Vue 3",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Docker",
+      "Coolify",
+    ],
+    description:
+      "Persönliche Portfolio-Website ohne externe Runtime-Abhängigkeiten — kein CDN, kein Tracking, keine Analytics. Tech-Icon-Sektion mit eigenem requestAnimationFrame-Loop, Physics-Modell und Pointer-Flee-Verhalten. Hero-Sektion als rotiertes CSS-Grid. Deployed über Docker und Coolify. Live unter hommri.ch.",
+  },
   {
     client: "grapeminds GmbH",
     role: "Frontend-Entwicklung",
@@ -100,13 +148,6 @@ const projects = [
     ],
     description:
       "Webapplikation mit ergänzender Smartphone-App zur Verwaltung von Weinbeständen und Bereitstellung von Informationen zu den vorhandenen Weinen. Als Frontend-Entwickler habe ich neue Features entwickelt, bestehende Komponenten optimiert und die Codebasis refaktoriert. Durch selbstständige Arbeitsweise wurden Entwicklungsprozesse effizienter und die Qualität der Anwendung kontinuierlich verbessert.",
-  },
-  {
-    client: "HIDO Immobilien",
-    role: "Webentwicklung",
-    stack: ["Nuxt 3", "Tailwind CSS", "HTML5", "CSS3", "Docker", "Node.js"],
-    description:
-      "Vollständig selbst entwickelte und gehostete Nuxt 3 Landing Page für ein Immobilienberatungsunternehmen. Inklusive Microservice-Erweiterung für die serverseitige Verarbeitung von Kontaktanfragen über die Nuxt 3 Server-Routes.",
   },
   {
     client: "AWESOME! Software — CRM",
@@ -164,11 +205,11 @@ const skillset = [
   {
     label: "Frontend",
     items:
-      "Vue.js, Nuxt.js, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS, Bootstrap, Vite",
+      "Vue.js, Nuxt.js, Vite, TypeScript, JavaScript, Tailwind CSS, Bootstrap, HTML5, CSS3",
   },
   {
     label: "Backend",
-    items: "PHP, Symfony, Laravel",
+    items: "PHP, Laravel, Symfony",
   },
   {
     label: "Datenbanken",
@@ -181,7 +222,7 @@ const skillset = [
   },
   {
     label: "KI-Werkzeuge",
-    items: "Anthropic (Claude), OpenAI",
+    items: "Anthropic (Claude Code), OpenAI (Codex)",
   },
 ];
 
@@ -196,8 +237,8 @@ const profileBullets = [
 
 <template>
   <div class="cv-root">
-    <!-- Tiled diamond pattern — same SVG asset used on the homepage -->
-    <div class="cv-pattern" aria-hidden="true" />
+    <!-- Inline SVG pattern — keeps vector rendering in Chrome PDF export -->
+    <AppCvPattern />
 
     <!-- Action bar — screen only -->
     <div class="cv-actions">
@@ -205,9 +246,10 @@ const profileBullets = [
       <button
         type="button"
         class="cv-action-btn cv-action-btn--primary"
+        :disabled="isPdfLoading"
         @click="downloadPdf"
       >
-        Als PDF speichern
+        {{ isPdfLoading ? "Wird generiert…" : "Als PDF speichern" }}
       </button>
     </div>
 
@@ -303,12 +345,12 @@ const profileBullets = [
         <!-- MAIN COLUMN -->
         <main class="cv-main">
           <!-- Name / profile hero -->
-          <div class="cv-hero-card">
+          <div class="cv-hero-card cv-name-hero">
             <div class="cv-hero-shadow-1" />
             <div class="cv-hero-shadow-2" />
             <div class="cv-hero-inner cv-name-inner">
               <h1 class="cv-name">ANDRÉ HOMMRICH</h1>
-              <p class="cv-subtitle">Webentwickler &amp; Elektriker</p>
+              <p class="cv-subtitle">Fullstack-Webentwickler</p>
               <ul class="cv-profile-list">
                 <li v-for="b in profileBullets" :key="b">{{ b }}</li>
               </ul>
@@ -380,21 +422,16 @@ const profileBullets = [
 
 <style scoped>
 /* ------------------------------------------------------------------ */
-/* Theme tokens — light by default, dark via prefers-color-scheme.    */
-/* Mirrors the same dark-mode trigger used by Tailwind v4 elsewhere.  */
+/* Theme tokens                                                        */
 /* ------------------------------------------------------------------ */
 .cv-root {
-  /* Light theme (default) */
-  --cv-bg: #f5f5f5;
-  --cv-pattern: url("@/assets/pattern-light.svg");
-  --cv-pattern-opacity: 0.55;
+  --cv-bg: #ffffff;
   --cv-text: #1a1a1d;
-  --cv-text-muted: rgba(26, 26, 29, 0.72);
-  --cv-text-subtle: rgba(26, 26, 29, 0.6);
-  --cv-card-bg: rgba(255, 255, 255, 0.9);
-  --cv-card-border: rgba(0, 0, 0, 0.12);
-  --cv-hero-inner-bg: #ffffff;
-  --cv-hero-inner-border: rgba(0, 0, 0, 0.1);
+  --cv-text-muted: rgba(26, 26, 29, 0.65);
+  --cv-text-subtle: rgba(26, 26, 29, 0.5);
+  --cv-card-bg: #ffffff;
+  --cv-card-border: rgba(0, 0, 0, 0.1);
+  --cv-card-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   --cv-hero-shadow-1-bg: #ffffff;
   --cv-hero-shadow-1-border: #3b4245;
   --cv-hero-shadow-2-bg: #8d1d29;
@@ -403,7 +440,6 @@ const profileBullets = [
   --cv-action-bg-hover: rgba(255, 255, 255, 1);
   --cv-action-color: #1a1a1d;
   --cv-action-border: rgba(0, 0, 0, 0.15);
-  --cv-section-title-border: rgba(0, 0, 0, 0.15);
 
   position: relative;
   min-height: 100vh;
@@ -423,16 +459,13 @@ const profileBullets = [
 
 @media (prefers-color-scheme: dark) {
   .cv-root {
-    --cv-bg: #1a1a1d;
-    --cv-pattern: url("@/assets/pattern-dark.svg");
-    --cv-pattern-opacity: 0.35;
+    --cv-bg: #3b4245;
     --cv-text: #e5e7eb;
-    --cv-text-muted: rgba(229, 231, 235, 0.85);
-    --cv-text-subtle: rgba(229, 231, 235, 0.6);
-    --cv-card-bg: rgba(26, 26, 29, 0.7);
-    --cv-card-border: rgba(229, 231, 235, 0.18);
-    --cv-hero-inner-bg: #1a1a1d;
-    --cv-hero-inner-border: rgba(59, 66, 69, 0.6);
+    --cv-text-muted: rgba(229, 231, 235, 0.75);
+    --cv-text-subtle: rgba(229, 231, 235, 0.5);
+    --cv-card-bg: #26262a;
+    --cv-card-border: rgba(229, 231, 235, 0.1);
+    --cv-card-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
     --cv-hero-shadow-1-bg: #3b4245;
     --cv-hero-shadow-1-border: #ffffff;
     --cv-hero-shadow-2-bg: #8d1d29;
@@ -441,17 +474,7 @@ const profileBullets = [
     --cv-action-bg-hover: rgba(75, 85, 89, 0.95);
     --cv-action-color: #e5e7eb;
     --cv-action-border: rgba(229, 231, 235, 0.2);
-    --cv-section-title-border: rgba(229, 231, 235, 0.18);
   }
-}
-
-.cv-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: var(--cv-pattern);
-  background-repeat: repeat;
-  opacity: var(--cv-pattern-opacity);
-  pointer-events: none;
 }
 
 .cv-actions {
@@ -503,19 +526,13 @@ const profileBullets = [
 }
 
 .cv-grid {
-  /*
-    Always keep the two-column PDF layout — including on mobile.
-    On small screens the whole sheet scales down via the font-size
-    reduction further below, so it reads like a shrunk PDF preview
-    instead of growing each card to full screen width.
-  */
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 1.25rem;
 }
 
 /* ------------------------------------------------------------------ */
-/* Cards                                                              */
+/* Columns                                                            */
 /* ------------------------------------------------------------------ */
 .cv-sidebar,
 .cv-main {
@@ -524,45 +541,30 @@ const profileBullets = [
   gap: 1rem;
 }
 
+/* ------------------------------------------------------------------ */
+/* Hero cards (portrait + name) — both use the same clean card style  */
+/* ------------------------------------------------------------------ */
 .cv-hero-card {
   position: relative;
 }
-/*
-  Static "expanded" rendering of the homepage card-group — the two shadow layers
-  sit permanently offset behind a sharp-edged inner content block. No hover or
-  in-view animation: the CV is a presentation artifact, not an interactive page.
-*/
+
+/* Shadow divs unused in new design — hidden on all hero cards */
 .cv-hero-shadow-1,
 .cv-hero-shadow-2 {
-  position: absolute;
-  inset: 0;
-  opacity: 0.8;
-}
-.cv-hero-shadow-1 {
-  transform: translate(0.25rem, 0.25rem);
-  background: var(--cv-hero-shadow-1-bg);
-  border: 1px solid var(--cv-hero-shadow-1-border);
-}
-.cv-hero-shadow-2 {
-  transform: translate(-0.25rem, -0.25rem);
-  background: var(--cv-hero-shadow-2-bg);
-  border: 1px solid var(--cv-hero-shadow-2-border);
+  display: none;
 }
 .cv-hero-inner {
-  /*
-    No background or border — content sits directly on the burgund front layer,
-    matching the homepage card stack where the inner content block has no fill.
-    Same -0.25rem offset as the front layer keeps them perfectly aligned.
-  */
   position: relative;
-  z-index: 2;
-  transform: translate(-0.25rem, -0.25rem);
   padding: 1rem;
-  color: #e5e7eb;
 }
 
+/* Portrait — full-bleed photo, no inner padding */
 .cv-portrait .cv-hero-inner {
-  padding: 0.5rem;
+  padding: 0;
+  background: var(--cv-card-bg);
+  border: 1px solid var(--cv-card-border);
+  border-top: 3px solid #8d1d29;
+  box-shadow: var(--cv-card-shadow);
 }
 .cv-portrait-img {
   width: 100%;
@@ -571,20 +573,32 @@ const profileBullets = [
   display: block;
 }
 
+/* Name hero — same card style as sidebar, name in burgund as anchor */
+.cv-name-hero .cv-hero-inner {
+  background: var(--cv-card-bg);
+  border: 1px solid var(--cv-card-border);
+  border-top: 3px solid #8d1d29;
+  box-shadow: var(--cv-card-shadow);
+}
 .cv-name-inner {
   padding: 1.25rem 1.5rem;
 }
 .cv-name {
-  font-size: 1.875rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 900;
   letter-spacing: 0.02em;
+  line-height: 1;
   margin: 0;
-  color: #ffffff;
+  color: #8d1d29;
 }
+/* Uppercase with generous tracking — reads like a professional label under the name */
 .cv-subtitle {
-  font-size: 1.05rem;
-  color: rgba(229, 231, 235, 0.85);
-  margin: 0.25rem 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cv-text-muted);
+  margin: 0.5rem 0 1rem;
 }
 .cv-profile-list {
   margin: 0;
@@ -592,67 +606,45 @@ const profileBullets = [
   list-style: disc;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  font-size: 0.92rem;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--cv-text);
 }
 
-/*
-  Card stack — mirrors the homepage card-group:
-  ::before = back layer (white/dark grey, +offset)
-  ::after  = front layer (burgund, -offset)
-  .cv-card-inner = content sitting on the front layer (-offset, white text)
-*/
+/* ------------------------------------------------------------------ */
+/* Sidebar cards — white with burgund top accent                      */
+/* ------------------------------------------------------------------ */
 .cv-card {
   position: relative;
-  isolation: isolate;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-.cv-card::before,
-.cv-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.8;
-}
-.cv-card::before {
-  transform: translate(0.25rem, 0.25rem);
-  background: var(--cv-hero-shadow-1-bg);
-  border: 1px solid var(--cv-hero-shadow-1-border);
-  z-index: 0;
-}
-.cv-card::after {
-  transform: translate(-0.25rem, -0.25rem);
-  background: #8d1d29;
-  border: 1px solid var(--cv-hero-shadow-2-border);
-  z-index: 1;
 }
 .cv-card-inner {
-  position: relative;
-  z-index: 2;
-  transform: translate(-0.25rem, -0.25rem);
-  padding: 0.9rem 1rem;
-  color: #ffffff;
+  padding: 1rem 1.1rem;
+  background: var(--cv-card-bg);
+  border: 1px solid var(--cv-card-border);
+  border-top: 3px solid #8d1d29;
+  box-shadow: var(--cv-card-shadow);
+  color: var(--cv-text);
 }
 
 .cv-section-title {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin: 0 0 0.5rem;
-  color: #ffffff;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.12em;
+  margin: 0 0 0.65rem;
+  color: #8d1d29;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(141, 29, 41, 0.2);
 }
 
 .cv-main-title {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  margin: 0 0 0.75rem;
-  padding-bottom: 0.25rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.3rem;
   border-bottom: 2px solid #8d1d29;
   color: var(--cv-text);
 }
@@ -661,11 +653,12 @@ const profileBullets = [
   list-style: disc;
   padding-left: 1.1rem;
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  color: #ffffff;
+  gap: 0.3rem;
+  color: var(--cv-text);
 }
 .cv-list--plain {
   list-style: none;
@@ -680,20 +673,25 @@ const profileBullets = [
   gap: 0.05rem;
 }
 .cv-skill-list strong {
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  color: #8d1d29;
 }
 .cv-skill-list span {
-  font-size: 0.82rem;
-  line-height: 1.35;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--cv-text-muted);
 }
 .cv-list a {
   color: inherit;
   text-decoration: underline;
 }
 
+/* ------------------------------------------------------------------ */
+/* Main column                                                        */
+/* ------------------------------------------------------------------ */
 .cv-section {
   display: block;
 }
@@ -703,38 +701,17 @@ const profileBullets = [
   gap: 0.75rem;
 }
 
+/* Job/project entries — white card with left burgund accent stripe */
 .cv-entry {
   position: relative;
-  isolation: isolate;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-.cv-entry::before,
-.cv-entry::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.8;
-}
-.cv-entry::before {
-  transform: translate(0.25rem, 0.25rem);
-  background: var(--cv-hero-shadow-1-bg);
-  border: 1px solid var(--cv-hero-shadow-1-border);
-  z-index: 0;
-}
-.cv-entry::after {
-  transform: translate(-0.25rem, -0.25rem);
-  background: #8d1d29;
-  border: 1px solid var(--cv-hero-shadow-2-border);
-  z-index: 1;
 }
 .cv-entry-inner {
-  position: relative;
-  z-index: 2;
-  transform: translate(-0.25rem, -0.25rem);
-  padding: 0.85rem 1rem;
-  color: #ffffff;
+  padding: 1rem 1.1rem;
+  background: var(--cv-card-bg);
+  border: 1px solid var(--cv-card-border);
+  border-left: 3px solid #8d1d29;
+  box-shadow: var(--cv-card-shadow);
+  color: var(--cv-text);
 }
 .cv-entry-head {
   display: flex;
@@ -756,43 +733,43 @@ const profileBullets = [
 }
 .cv-entry-role {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
-  color: #ffffff;
+  color: #8d1d29;
 }
 .cv-entry-company {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
+  font-size: 0.84rem;
+  color: var(--cv-text-muted);
+  margin: 0.1rem 0 0;
 }
 .cv-entry-period {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.84rem;
+  color: var(--cv-text-muted);
   white-space: nowrap;
 }
 .cv-entry-list {
-  margin-top: 0.4rem;
+  margin-top: 0.55rem;
+  color: var(--cv-text);
 }
 .cv-entry-extra {
   margin: 0.4rem 0 0;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--cv-text-muted);
 }
 .cv-entry-stack {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.75);
-  margin: 0.3rem 0 0.5rem;
-  letter-spacing: 0.01em;
+  font-size: 0.8rem;
+  color: var(--cv-text-subtle);
+  margin: 0.35rem 0 0.5rem;
 }
 .cv-entry-text {
-  font-size: 0.86rem;
-  color: #ffffff;
+  font-size: 0.9rem;
+  color: var(--cv-text);
   margin: 0;
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
-/* Diamond divider between main sections — mirrors AppSectionDivider on the homepage */
+/* Diamond divider between main sections */
 .cv-divider {
   display: flex;
   align-items: center;
@@ -821,9 +798,7 @@ const profileBullets = [
 }
 
 /* ------------------------------------------------------------------ */
-/* Mobile — additional spacing tweaks. The actual proportional shrink */
-/* of the sheet happens via the html.cv-route font-size override in   */
-/* the non-scoped <style> block (rem units are root-relative).        */
+/* Mobile                                                             */
 /* ------------------------------------------------------------------ */
 @media (max-width: 640px) {
   .cv-container {
@@ -839,11 +814,6 @@ const profileBullets = [
   .cv-stack {
     gap: 0.5rem;
   }
-  /*
-    Action bar lives in the page coordinate system but should stay
-    tap-friendly. Pin everything in absolute px so the html root-scale
-    can shrink the rest without making the buttons unusable.
-  */
   .cv-actions {
     top: 10px;
     right: 10px;
@@ -858,131 +828,122 @@ const profileBullets = [
 }
 
 /* ------------------------------------------------------------------ */
-/* Print rules — force light theme so the PDF is print-friendly       */
-/* regardless of the user's current OS color scheme.                  */
+/* Print — light theme forced, white cards render natively            */
+/* Disable "Kopf- und Fußzeilen" in Chrome's print dialog to remove  */
+/* the auto date/URL strips from the 12mm margin area.               */
 /* ------------------------------------------------------------------ */
 @media print {
-  /*
-    A real page margin so every page gets natural breathing room at the top
-    (previously @page margin: 0 left page 2+ flush against the paper edge).
-    To remove the browser's auto date/URL header that lands in this margin,
-    the user disables "Kopf- und Fußzeilen" in the print dialog's "Weitere
-    Einstellungen" — there is no fully reliable CSS-only way to suppress it.
-  */
   @page {
     size: A4;
-    margin: 12mm 10mm;
+    margin: 15mm 20mm;
   }
 
-  /* Reset theme tokens to light values for predictable print output */
   .cv-root {
     --cv-bg: #ffffff;
-    --cv-pattern: url("@/assets/pattern-light.svg");
-    --cv-pattern-opacity: 0.4;
     --cv-text: #1a1a1d;
-    --cv-text-muted: rgba(26, 26, 29, 0.72);
-    --cv-text-subtle: rgba(26, 26, 29, 0.6);
+    --cv-text-muted: rgba(26, 26, 29, 0.65);
+    --cv-text-subtle: rgba(26, 26, 29, 0.5);
     --cv-card-bg: #ffffff;
     --cv-card-border: rgba(0, 0, 0, 0.15);
-    --cv-hero-inner-bg: #ffffff;
-    --cv-hero-inner-border: rgba(0, 0, 0, 0.12);
+    --cv-card-shadow: none;
     --cv-hero-shadow-1-bg: #ffffff;
     --cv-hero-shadow-1-border: #3b4245;
     --cv-hero-shadow-2-bg: #8d1d29;
     --cv-hero-shadow-2-border: #3b4245;
-    --cv-section-title-border: rgba(0, 0, 0, 0.18);
+    /* transparent so the html background pattern shows through */
+    background-color: transparent !important;
   }
 
-  /*
-    Hide the action bar AND the section divider in print. The divider
-    fell on or near page breaks and got visually cut off; for the printed
-    CV the section heading "Projekthistorie" is enough of a separator.
-  */
   .cv-actions,
   .cv-divider {
     display: none !important;
   }
 
-  /*
-    Same diamond SVG as the homepage, tiled at ~20% of its native size.
-    Chrome rasterizes SVG background-images for print: below ~300px tile
-    width the bitmap gets visibly upscaled by the printer DPI and looks
-    blurry. 400×300 keeps the diamonds small (~10px) but renders crisply.
-
-    position: fixed makes modern browsers repeat the pattern on every
-    printed page; print-color-adjust: exact forces it into the saved PDF.
-    image-rendering: crisp-edges asks the browser not to soften the
-    rasterized output, which helps further on lower-DPI printers.
-
-    Note: Chrome's "Hintergrundgrafiken" checkbox in the print dialog can
-    still strip background-image from the saved PDF on some systems even
-    with print-color-adjust set — if the pattern is missing from the file,
-    enable that option once under "Weitere Einstellungen".
-  */
-  .cv-pattern {
-    position: fixed !important;
-    inset: 0 !important;
-    background-size: 400px 300px !important;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Force background colors to render in print */
-  .cv-root,
-  .cv-hero-card,
-  .cv-card,
-  .cv-entry {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /*
-    Print uses flat solid burgund cards — the screen's offset shadow stack
-    leaves visible outline artifacts on white paper and prevents cards from
-    splitting cleanly across pages. A plain box reads more like a real PDF
-    CV and breaks gracefully when needed.
-  */
-  .cv-hero-shadow-1,
-  .cv-hero-shadow-2 {
+  :deep(.pattern-wrap) {
     display: none !important;
   }
-  .cv-card::before,
-  .cv-card::after,
-  .cv-entry::before,
-  .cv-entry::after {
-    content: none !important;
-  }
-  .cv-hero-card,
-  .cv-card,
-  .cv-entry {
-    background-color: #8d1d29 !important;
-    border: 1px solid #4b0b15 !important;
-  }
+
+  /* Force burgund accents to render in print */
+  .cv-root,
   .cv-hero-inner,
   .cv-card-inner,
   .cv-entry-inner {
-    transform: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  /* All card content sits on the burgund front layer — force pure white for max print contrast */
-  .cv-hero-inner,
-  .cv-name,
-  .cv-subtitle,
-  .cv-profile-list,
-  .cv-card-inner,
-  .cv-entry-inner,
-  .cv-section-title,
-  .cv-list,
-  .cv-skill-list strong,
-  .cv-entry-role,
+  /* Portrait */
+  .cv-portrait .cv-hero-inner {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-top: 3px solid #8d1d29 !important;
+    box-shadow: none !important;
+  }
+
+  /* Name hero — white card, burgund name */
+  .cv-name-hero .cv-hero-inner {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-top: 3px solid #8d1d29 !important;
+    box-shadow: none !important;
+  }
+  .cv-name {
+    color: #8d1d29 !important;
+  }
+  .cv-subtitle {
+    color: rgba(26, 26, 29, 0.65) !important;
+  }
+  .cv-profile-list {
+    color: #1a1a1d !important;
+  }
+
+  /* Sidebar cards: white + burgund top border */
+  .cv-card-inner {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-top: 3px solid #8d1d29 !important;
+    box-shadow: none !important;
+    color: #1a1a1d !important;
+  }
+  .cv-section-title {
+    color: #8d1d29 !important;
+    border-bottom-color: rgba(141, 29, 41, 0.25) !important;
+  }
+  .cv-list {
+    color: #1a1a1d !important;
+  }
+  .cv-skill-list strong {
+    color: #8d1d29 !important;
+  }
+  .cv-skill-list span {
+    color: rgba(26, 26, 29, 0.7) !important;
+  }
+
+  /* Entries: white + burgund left stripe */
+  .cv-entry-inner {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-left: 3px solid #8d1d29 !important;
+    box-shadow: none !important;
+    color: #1a1a1d !important;
+  }
+  .cv-entry-role {
+    color: #8d1d29 !important;
+  }
   .cv-entry-company,
   .cv-entry-period,
-  .cv-entry-extra,
-  .cv-entry-stack,
+  .cv-entry-extra {
+    color: rgba(26, 26, 29, 0.65) !important;
+  }
+  .cv-entry-stack {
+    color: rgba(26, 26, 29, 0.5) !important;
+  }
+  .cv-entry-list,
   .cv-entry-text {
-    color: #ffffff !important;
+    color: #1a1a1d !important;
+  }
+  .cv-signature {
+    color: rgba(26, 26, 29, 0.6) !important;
   }
 
   .cv-root {
@@ -991,8 +952,8 @@ const profileBullets = [
 
   .cv-container {
     max-width: 100% !important;
-    /* Print margin lives on @page now, so the container is flush */
-    padding: 0 !important;
+    /* left/right padding applies on every page; top/bottom via element margins */
+    padding: 0 13mm 10mm !important;
   }
 
   .cv-grid {
@@ -1003,145 +964,121 @@ const profileBullets = [
   .cv-sidebar,
   .cv-main {
     gap: 5mm !important;
+    padding-top: 0 !important;
   }
 
   .cv-stack {
-    gap: 4mm !important;
+    gap: 3mm !important;
+    margin-top: 4mm !important;
   }
 
-  /*
-    Never split a card across pages — content cut mid-bullet looks broken.
-    To make this work without huge whitespace gaps, the print typography
-    below is aggressively compacted so more entries fit per page.
-  */
+  .cv-signature {
+    display: none !important;
+  }
+
   .cv-entry,
   .cv-card,
   .cv-hero-card {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-  /* Keep the role headline glued to its bullet list */
   .cv-entry-head {
     break-after: avoid;
     page-break-after: avoid;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
-  /* ---------- Compact typography for print ---------- */
-
-  /* Hero */
+  /* Compact typography for print */
   .cv-name {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
   }
   .cv-subtitle {
-    font-size: 0.8rem;
-    margin: 0.15rem 0 0.4rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    margin: 0.3rem 0 0.5rem;
   }
   .cv-name-inner {
     padding: 0.6rem 0.85rem;
   }
   .cv-profile-list {
-    font-size: 0.72rem;
-    gap: 0.1rem;
-    padding-left: 0.95rem;
-  }
-
-  /* Section headings on the main column */
-  .cv-main-title {
-    font-size: 0.95rem;
-    margin: 0 0 0.4rem;
-  }
-
-  /* Sidebar cards */
-  .cv-card-inner {
-    padding: 0.55rem 0.7rem;
-  }
-  .cv-section-title {
-    font-size: 0.62rem;
-    margin: 0 0 0.35rem;
-    padding-bottom: 0.2rem;
-  }
-  .cv-list {
     font-size: 0.7rem;
     gap: 0.1rem;
+    line-height: 1.45;
     padding-left: 0.95rem;
+  }
+  .cv-main-title {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.4rem;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .cv-card-inner {
+    padding: 0.4rem 0.6rem;
+  }
+  .cv-section-title {
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    margin: 0 0 0.25rem;
+    padding-bottom: 0.15rem;
+  }
+  .cv-list {
+    font-size: 0.67rem;
+    gap: 0.05rem;
+    padding-left: 0.85rem;
   }
   .cv-list--plain {
     padding-left: 0;
   }
   .cv-skill-list {
-    gap: 0.3rem;
+    gap: 0.2rem;
   }
   .cv-skill-list strong {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
   }
   .cv-skill-list span {
-    font-size: 0.7rem;
-    line-height: 1.25;
+    font-size: 0.67rem;
+    line-height: 1.2;
   }
-
-  /* Main column cards (work + projects) */
   .cv-entry-inner {
-    padding: 0.5rem 0.7rem;
+    padding: 0.35rem 0.6rem;
   }
   .cv-entry-role {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
-  .cv-entry-company {
-    font-size: 0.72rem;
-  }
+  .cv-entry-company,
   .cv-entry-period {
-    font-size: 0.72rem;
+    font-size: 0.69rem;
   }
   .cv-entry-list {
-    font-size: 0.72rem;
-    gap: 0.1rem;
-    margin-top: 0.3rem;
-    padding-left: 0.95rem;
+    font-size: 0.69rem;
+    line-height: 1.35;
+    gap: 0.05rem;
+    margin-top: 0.2rem;
+    padding-left: 0.85rem;
   }
   .cv-entry-stack {
-    font-size: 0.68rem;
-    margin: 0.2rem 0 0.3rem;
+    font-size: 0.65rem;
+    margin: 0.15rem 0 0.2rem;
   }
   .cv-entry-text {
-    font-size: 0.74rem;
-    line-height: 1.35;
+    font-size: 0.69rem;
+    line-height: 1.38;
   }
   .cv-entry-extra {
-    font-size: 0.7rem;
-    margin-top: 0.3rem;
+    font-size: 0.67rem;
+    margin-top: 0.2rem;
   }
-
-  /*
-    Divider sits between Berufserfahrung and Projekthistorie. Generous
-    vertical margin so the section transition has visible breathing room
-    rather than the previous packed-together feel on page 2.
-  */
   .cv-divider {
-    margin: 2.5mm 0;
+    margin: 2mm 0;
   }
   .cv-signature {
     font-size: 0.7rem;
     margin-top: 0.6rem;
-  }
-  /*
-    The bullet list inside each entry sits slightly looser to match the
-    perceived spacing of page 1's hero card.
-  */
-  .cv-entry-list {
-    line-height: 1.4;
-  }
-  .cv-entry-text {
-    line-height: 1.45;
-  }
-
-  /*
-    Section headings should stay attached to their first card, but the
-    section itself MUST be allowed to break across pages — `avoid-page`
-    on tall sections leaves huge whitespace gaps before each new page.
-  */
-  .cv-main-title {
-    break-after: avoid;
-    page-break-after: avoid;
   }
 }
 </style>
@@ -1162,6 +1099,12 @@ const profileBullets = [
 @media (max-width: 380px) {
   html.cv-route {
     font-size: 8.5px;
+  }
+}
+@media print {
+  html.cv-route,
+  html.cv-route body {
+    background: transparent !important;
   }
 }
 </style>
