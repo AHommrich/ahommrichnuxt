@@ -26,6 +26,11 @@ export default defineNuxtConfig({
     "~/assets/css/main.css",
   ],
   modules: ["@nuxt/eslint"],
+  nitro: {
+    // puppeteer-core must not be bundled by Rollup — it relies on dynamic
+    // requires and a native Chromium binary resolved at runtime.
+    externals: { external: ["puppeteer-core"] },
+  },
   vite: {
     plugins: [
       // Tailwind CSS v4 is integrated as a Vite plugin — no tailwind.config.js needed
