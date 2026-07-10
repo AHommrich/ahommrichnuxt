@@ -163,7 +163,10 @@ onMounted(() => {
             Dernbacher Str. 26 · 56410 Montabaur<br />
             <a href="mailto:andre-hommrich@web.de">andre-hommrich@web.de</a>
             ·
-            <a href="https://ahommrich.de" target="_blank" rel="noopener noreferrer"
+            <a
+              href="https://ahommrich.de"
+              target="_blank"
+              rel="noopener noreferrer"
               >ahommrich.de</a
             >
           </address>
