@@ -30,21 +30,22 @@ export default defineEventHandler(async (event) => {
         );
       }
 
-      const bodyEl = document.querySelector(
-        ".letter-body",
-      ) as HTMLElement | null;
-      if (!bodyEl) return;
-      const raw = bodyEl.innerText;
-      bodyEl.innerHTML = "";
-      for (const para of raw.split(/\n\n+/)) {
-        const trimmed = para.trim();
-        if (!trimmed) continue;
-        const div = document.createElement("div");
-        div.style.cssText =
-          "break-inside: avoid; page-break-inside: avoid; margin-bottom: 1em;";
-        div.innerHTML = linkify(trimmed);
-        bodyEl.appendChild(div);
-      }
+      const sections = document.querySelectorAll(
+        ".letter-section",
+      ) as NodeListOf<HTMLElement>;
+      sections.forEach((section) => {
+        const raw = section.innerText;
+        section.innerHTML = "";
+        for (const para of raw.split(/\n\n+/)) {
+          const trimmed = para.trim();
+          if (!trimmed) continue;
+          const div = document.createElement("div");
+          div.style.cssText =
+            "break-inside: avoid; page-break-inside: avoid; margin-bottom: 0.6em;";
+          div.innerHTML = linkify(trimmed);
+          section.appendChild(div);
+        }
+      });
     });
 
     const svgContent = await page.evaluate(async () => {
