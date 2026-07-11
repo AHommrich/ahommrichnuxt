@@ -19,7 +19,12 @@ const elStrasse = ref<HTMLElement | null>(null);
 const elOrt = ref<HTMLElement | null>(null);
 const elStelle = ref<HTMLElement | null>(null);
 const elAnrede = ref<HTMLElement | null>(null);
-const elBody = ref<HTMLElement | null>(null);
+const elInteresse = ref<HTMLElement | null>(null);
+const elAktuell = ref<HTMLElement | null>(null);
+const elProjekte = ref<HTMLElement | null>(null);
+const elGeschichte = ref<HTMLElement | null>(null);
+const elReferenzen = ref<HTMLElement | null>(null);
+const elAbschluss = ref<HTMLElement | null>(null);
 
 const refsMap = {
   datum: elDatum,
@@ -29,18 +34,34 @@ const refsMap = {
   ort: elOrt,
   stelle: elStelle,
   anrede: elAnrede,
-  body: elBody,
+  interesse: elInteresse,
+  aktuell: elAktuell,
+  projekte: elProjekte,
+  geschichte: elGeschichte,
+  referenzen: elReferenzen,
+  abschluss: elAbschluss,
 };
 
 const DEFAULTS = {
-  datum: "Montabaur, den 10. Juli 2026",
-  firma: "Muster GmbH",
-  zh: "z. H. Max Mustermann",
-  strasse: "Musterstraße 1",
-  ort: "12345 Musterstadt",
+  datum: "Montabaur, den [Datum]",
+  firma: "[Unternehmen]",
+  zh: "z. H. [Ansprechpartner]",
+  strasse: "[Straße Hausnummer]",
+  ort: "[PLZ Ort]",
   stelle: "Bewerbung als [Jobtitel]",
   anrede: "Sehr geehrte Damen und Herren,",
-  body: "mit großem Interesse habe ich Ihre Stellenanzeige für die Position als [Jobtitel] gelesen und bewerbe mich hiermit bei Ihnen.\n\n[Erfahrung und Qualifikation]\n\n[Motivation für das Unternehmen]\n\nÜber eine Einladung zu einem persönlichen Gespräch würde ich mich sehr freuen.",
+  interesse:
+    "[Wie Sie auf die Stelle aufmerksam wurden und was Sie am Unternehmen, Produkt oder der Branche konkret angesprochen hat.]",
+  aktuell:
+    "[Aktuelle Rolle, eingesetzte Technologien und Art der Projekte — was Sie täglich machen und welche Verantwortung Sie tragen.]",
+  projekte:
+    "Privat entwickle ich eigene Projekte Fullstack und betreibe sie selbst per Docker auf eigener Infrastruktur. Dadurch weiß ich aus eigener Erfahrung, was ein Backend liefern muss, damit Website und App gut damit arbeiten können. Eine ausführliche Übersicht der Technologien, mit denen ich bereits gearbeitet habe, finden Sie unter https://ahommrich.de/#technologien",
+  geschichte:
+    "Seit 2025 bin ich ausgebildeter Fachinformatiker für Anwendungsentwicklung. Davor war ich seit 2013 in der Elektrotechnik tätig, mit Abschluss als Elektriker 2017. Aus der Zeit habe ich mir eine praxisnahe Herangehensweise an technische Probleme mitgenommen und ein gutes Gespür dafür, wie Anwender Software im Alltag wirklich benutzen.",
+  referenzen:
+    "Damit Sie sich ein Bild von meiner Arbeitsweise machen können, habe ich drei eigene Referenzprojekte beigefügt:\n\nEvePlan – Selbst entwickelte Hochzeitssoftware für Planung, Einladungen, RSVP-Verwaltung und Event-Organisation.\nRepository: https://github.com/AHommrich/eventplaner\n\nEvePlan App – Die begleitende Smartphone-App für Gäste, angebunden an das EvePlan-System.\nRepository: https://github.com/AHommrich/eventplaner-app\n\nahommrich.de – Meine persönliche Website zu meinem Werdegang und meinen technischen Schwerpunkten.\nLive-Demo: https://ahommrich.de | Repository: https://github.com/AHommrich/ahommrichnuxt",
+  abschluss:
+    "Da ich mich aus einer ungekündigten Festanstellung heraus bewerbe, bitte ich um vertrauliche Behandlung meiner Bewerbung. Für den Erstkontakt erreichen Sie mich am besten per E-Mail. Gerne können wir darüber auch direkt einen Termin für ein erstes Telefonat oder einen Videocall ausmachen.\nIch freue mich, wenn wir ins Gespräch kommen.",
 };
 
 function getContent(): Record<string, string> {
@@ -225,12 +246,54 @@ onMounted(() => {
           @keydown.enter.prevent
         />
 
-        <!-- Body — multi-line, Enter allowed -->
-        <div
-          ref="elBody"
-          class="letter-field letter-body"
-          contenteditable="plaintext-only"
-        />
+        <!-- Body: 6 structured paragraphs, labels are screen-only hints -->
+        <div class="letter-body">
+          <div class="section-label" aria-hidden="true">① Interesse am Job</div>
+          <div
+            ref="elInteresse"
+            class="letter-field letter-section"
+            contenteditable="plaintext-only"
+          />
+
+          <div class="section-label" aria-hidden="true">
+            ② Aktuelle Jobposition
+          </div>
+          <div
+            ref="elAktuell"
+            class="letter-field letter-section"
+            contenteditable="plaintext-only"
+          />
+
+          <div class="section-label" aria-hidden="true">
+            ③ Eigene Entwicklungssituation
+          </div>
+          <div
+            ref="elProjekte"
+            class="letter-field letter-section"
+            contenteditable="plaintext-only"
+          />
+
+          <div class="section-label" aria-hidden="true">④ Jobgeschichte</div>
+          <div
+            ref="elGeschichte"
+            class="letter-field letter-section"
+            contenteditable="plaintext-only"
+          />
+
+          <div class="section-label" aria-hidden="true">⑤ Referenzen</div>
+          <div
+            ref="elReferenzen"
+            class="letter-field letter-section"
+            contenteditable="plaintext-only"
+          />
+
+          <div class="section-label" aria-hidden="true">⑥ Abschluss</div>
+          <div
+            ref="elAbschluss"
+            class="letter-field letter-section"
+            contenteditable="plaintext-only"
+          />
+        </div>
 
         <!-- Closing — fixed -->
         <div class="letter-closing">
@@ -425,10 +488,30 @@ onMounted(() => {
 }
 
 .letter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(141, 29, 41, 0.45);
+  margin-top: 0.65rem;
+  margin-bottom: 0.1rem;
+  pointer-events: none;
+  user-select: none;
+}
+.section-label:first-child {
+  margin-top: 0;
+}
+
+.letter-section {
   font-size: 0.95rem;
   line-height: 1.75;
   white-space: pre-wrap;
-  min-height: 8rem;
+  min-height: 1.4em;
 }
 
 .letter-closing {
@@ -558,6 +641,10 @@ onMounted(() => {
   .letter-body {
     orphans: 4;
     widows: 4;
+  }
+
+  .section-label {
+    display: none !important;
   }
 
   .letter-field:hover,
