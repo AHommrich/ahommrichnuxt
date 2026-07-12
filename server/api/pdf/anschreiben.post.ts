@@ -48,19 +48,12 @@ export default defineEventHandler(async (event) => {
       });
     });
 
-    const svgContent = await page.evaluate(async () => {
-      const r = await fetch("/img/bg-dots-light.svg");
-      return r.text();
+    const pdf = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: { top: 0, right: 0, bottom: 0, left: 0 },
+      preferCSSPageSize: true,
     });
-    const svgDataUri =
-      "data:image/svg+xml;charset=utf-8," +
-      encodeURIComponent(svgContent as string);
-
-    const contentPdf = Buffer.from(
-      await page.pdf({ format: "A4", printBackground: true }),
-    );
-    const bgPdf = await generateBackgroundPdf(browser, svgDataUri);
-    const pdf = await mergeContentWithBackground(contentPdf, bgPdf);
 
     setHeader(event, "Content-Type", "application/pdf");
     setHeader(
@@ -68,7 +61,7 @@ export default defineEventHandler(async (event) => {
       "Content-Disposition",
       'attachment; filename="anschreiben.pdf"',
     );
-    return pdf;
+    return Buffer.from(pdf);
   } finally {
     await browser.close();
   }

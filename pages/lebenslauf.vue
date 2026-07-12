@@ -15,24 +15,7 @@ useHead({
   htmlAttrs: { lang: "de", class: "cv-route" },
 });
 
-const isPdfLoading = ref(false);
-
-async function downloadPdf() {
-  isPdfLoading.value = true;
-  try {
-    const response = await fetch("/api/pdf/lebenslauf");
-    if (!response.ok) throw new Error("PDF-Generierung fehlgeschlagen");
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "lebenslauf.pdf";
-    a.click();
-    URL.revokeObjectURL(url);
-  } finally {
-    isPdfLoading.value = false;
-  }
-}
+const { isPdfLoading, downloadPdf } = useDocumentPdf("lebenslauf.pdf");
 
 onMounted(() => {
   document.documentElement.setAttribute("data-ready", "1");
@@ -45,6 +28,7 @@ const experience = [
     company: "Creavo Projekt GmbH",
     location: "Limburg",
     role: "PHP Webentwickler",
+    current: true,
     bullets: [
       "Backend-Entwicklung mit Symfony und dazugehörigem Ökosystem (Doctrine etc.)",
       "Frontend-Entwicklung mit Twig, Bootstrap und einzelnen JavaScript-Packages nach ES6",
@@ -106,7 +90,7 @@ const experience = [
 const projects = [
   {
     client: "Eventplaner — eveplan.de",
-    role: "Fullstack-Entwicklung & Mobile",
+    role: "Fullstack & Mobile",
     stack: [
       "Laravel 12",
       "Vue 3",
@@ -122,7 +106,7 @@ const projects = [
   },
   {
     client: "Portfolio — hommri.ch",
-    role: "Frontend-Entwicklung",
+    role: "Frontend",
     stack: [
       "Nuxt 3",
       "Vue 3",
@@ -136,7 +120,7 @@ const projects = [
   },
   {
     client: "grapeminds GmbH",
-    role: "Frontend-Entwicklung",
+    role: "Frontend",
     stack: [
       "Ionic",
       "Vue 3",
@@ -151,7 +135,7 @@ const projects = [
   },
   {
     client: "AWESOME! Software — CRM",
-    role: "Fullstack-Entwicklung",
+    role: "Fullstack",
     stack: [
       "Laravel",
       "Vue 2",
@@ -166,7 +150,7 @@ const projects = [
   },
   {
     client: "AWESOME! Software — Mitarbeiterplattform",
-    role: "Fullstack-Entwicklung",
+    role: "Fullstack",
     stack: [
       "Nuxt 3",
       "Vue 3",
@@ -181,7 +165,7 @@ const projects = [
   },
   {
     client: "Abschlussprojekt — eLade-Monitoring",
-    role: "Fullstack-Entwicklung",
+    role: "Fullstack",
     stack: [
       "Laravel",
       "React",
@@ -204,25 +188,42 @@ const projects = [
 const skillset = [
   {
     label: "Frontend",
-    items:
-      "Vue.js, Nuxt.js, Vite, TypeScript, JavaScript, Tailwind CSS, Bootstrap, HTML5, CSS3",
+    items: [
+      "Vue.js",
+      "Nuxt.js",
+      "Vite",
+      "TypeScript",
+      "JavaScript",
+      "Tailwind CSS",
+      "Bootstrap",
+      "HTML5",
+      "CSS3",
+    ],
   },
   {
     label: "Backend",
-    items: "PHP, Laravel, Symfony",
+    items: ["PHP", "Laravel", "Symfony"],
   },
   {
     label: "Datenbanken",
-    items: "MySQL, MariaDB",
+    items: ["MySQL", "MariaDB"],
   },
   {
     label: "DevOps & Tooling",
-    items:
-      "Docker, Git, GitHub, GitLab, Linux, Apple Ecosystem, VS Code, JetBrains",
+    items: [
+      "Docker",
+      "Git",
+      "GitHub",
+      "GitLab",
+      "Linux",
+      "Apple Ecosystem",
+      "VS Code",
+      "JetBrains",
+    ],
   },
   {
     label: "KI-Werkzeuge",
-    items: "Anthropic (Claude Code), OpenAI (Codex)",
+    items: ["Anthropic (Claude Code)", "OpenAI (Codex)"],
   },
 ];
 
@@ -247,142 +248,126 @@ const profileBullets = [
         type="button"
         class="cv-action-btn cv-action-btn--primary"
         :disabled="isPdfLoading"
-        @click="downloadPdf"
+        @click="downloadPdf('/api/pdf/lebenslauf')"
       >
         {{ isPdfLoading ? "Wird generiert…" : "Als PDF speichern" }}
       </button>
     </div>
 
-    <div class="cv-container">
-      <div class="cv-grid">
+    <!-- Document paper — floats over the site pattern -->
+    <div class="cv-paper">
+      <!-- SIGNATURE: header band -->
+      <header class="cv-band">
+        <div>
+          <h1 class="cv-band-name">André Hommrich</h1>
+          <p class="cv-band-sub">Fullstack-Webentwickler</p>
+        </div>
+        <div class="cv-band-diamonds" aria-hidden="true">
+          <span /><span /><span />
+        </div>
+      </header>
+      <div class="cv-band-pin" aria-hidden="true"><span /></div>
+
+      <div class="cv-body">
         <!-- SIDEBAR -->
         <aside class="cv-sidebar">
-          <!-- Portrait card with offset-shadow stack (same idiom as homepage) -->
-          <div class="cv-hero-card cv-portrait">
-            <div class="cv-hero-shadow-1" />
-            <div class="cv-hero-shadow-2" />
-            <div class="cv-hero-inner">
-              <img
-                src="/img/andre.jpg"
-                alt="Portraitfoto von André Hommrich"
-                class="cv-portrait-img"
-              />
-            </div>
+          <div class="cv-portrait">
+            <img src="/img/andre.jpg" alt="Portraitfoto von André Hommrich" />
           </div>
 
-          <section class="cv-card">
-            <div class="cv-card-inner">
-              <h2 class="cv-section-title">Kontakt</h2>
-              <ul class="cv-list cv-list--plain">
-                <li>André Hommrich</li>
-                <li>Dernbacher Str. 26</li>
-                <li>56410 Montabaur</li>
-                <li>
-                  <a href="mailto:andre-hommrich@web.de"
-                    >andre-hommrich@web.de</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://hommri.ch"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >hommri.ch</a
-                  >
-                </li>
-              </ul>
+          <section>
+            <h2 class="cv-label">Kontakt</h2>
+            <ul class="cv-list">
+              <li>André Hommrich</li>
+              <li>Dernbacher Str. 26</li>
+              <li>56410 Montabaur</li>
+              <li>
+                <a href="mailto:andre-hommrich@web.de">andre-hommrich@web.de</a>
+              </li>
+              <li>
+                <a
+                  href="https://hommri.ch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >hommri.ch</a
+                >
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="cv-label">Skillset</h2>
+            <div
+              v-for="group in skillset"
+              :key="group.label"
+              class="cv-skill-group"
+            >
+              <h3>{{ group.label }}</h3>
+              <div class="cv-pills">
+                <span v-for="item in group.items" :key="item" class="cv-pill">
+                  {{ item }}
+                </span>
+              </div>
             </div>
           </section>
 
-          <section class="cv-card">
-            <div class="cv-card-inner">
-              <h2 class="cv-section-title">Skillset</h2>
-              <ul class="cv-list cv-list--plain cv-skill-list">
-                <li v-for="group in skillset" :key="group.label">
-                  <strong>{{ group.label }}</strong>
-                  <span>{{ group.items }}</span>
-                </li>
-              </ul>
-            </div>
+          <section>
+            <h2 class="cv-label">Sprachen</h2>
+            <ul class="cv-list">
+              <li><strong>Deutsch</strong> — Muttersprache</li>
+              <li>
+                <strong>Englisch</strong> — sicher im Verständnis, täglich im
+                beruflichen Einsatz
+              </li>
+            </ul>
           </section>
 
-          <section class="cv-card">
-            <div class="cv-card-inner">
-              <h2 class="cv-section-title">Sprachen</h2>
-              <ul class="cv-list cv-list--plain">
-                <li><strong>Deutsch</strong> — Muttersprache</li>
-                <li>
-                  <strong>Englisch</strong> — sicher im Verständnis, täglich im
-                  beruflichen Einsatz
-                </li>
-              </ul>
-            </div>
+          <section>
+            <h2 class="cv-label">Weiterbildung</h2>
+            <ul class="cv-list">
+              <li>
+                <strong>2020</strong> — Elektrofachkraft mit erweiterten
+                Sicherheitskenntnissen
+              </li>
+            </ul>
           </section>
 
-          <section class="cv-card">
-            <div class="cv-card-inner">
-              <h2 class="cv-section-title">Weiterbildung</h2>
-              <ul class="cv-list cv-list--plain">
-                <li>
-                  <strong>2020</strong> — Elektrofachkraft mit erweiterten
-                  Sicherheitskenntnissen
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <section class="cv-card">
-            <div class="cv-card-inner">
-              <h2 class="cv-section-title">Führerschein</h2>
-              <ul class="cv-list">
-                <li>Klasse B</li>
-                <li>Staplerführerschein</li>
-              </ul>
-            </div>
+          <section>
+            <h2 class="cv-label">Führerschein</h2>
+            <ul class="cv-list">
+              <li>Klasse B</li>
+              <li>Staplerführerschein</li>
+            </ul>
           </section>
         </aside>
 
         <!-- MAIN COLUMN -->
         <main class="cv-main">
-          <!-- Name / profile hero -->
-          <div class="cv-hero-card cv-name-hero">
-            <div class="cv-hero-shadow-1" />
-            <div class="cv-hero-shadow-2" />
-            <div class="cv-hero-inner cv-name-inner">
-              <h1 class="cv-name">ANDRÉ HOMMRICH</h1>
-              <p class="cv-subtitle">Fullstack-Webentwickler</p>
-              <ul class="cv-profile-list">
-                <li v-for="b in profileBullets" :key="b">{{ b }}</li>
-              </ul>
-            </div>
-          </div>
+          <section>
+            <ul class="cv-profile">
+              <li v-for="b in profileBullets" :key="b">{{ b }}</li>
+            </ul>
+          </section>
 
-          <!-- Berufserfahrung -->
-          <section class="cv-section">
-            <h2 class="cv-main-title">Berufserfahrung</h2>
-            <div class="cv-stack">
+          <!-- Berufserfahrung — timeline -->
+          <section>
+            <h2 class="cv-label">Berufserfahrung</h2>
+            <div class="tl">
               <article
                 v-for="job in experience"
                 :key="job.company + job.period"
-                class="cv-entry"
+                class="tl-entry"
+                :class="{ 'tl-current': job.current }"
               >
-                <div class="cv-entry-inner">
-                  <div class="cv-entry-head">
-                    <div class="cv-entry-headline">
-                      <h3 class="cv-entry-role">{{ job.role }}</h3>
-                      <p class="cv-entry-company">
-                        {{ job.company }} · {{ job.location }}
-                      </p>
-                    </div>
-                    <span class="cv-entry-period">{{ job.period }}</span>
-                  </div>
-                  <ul class="cv-list cv-entry-list">
-                    <li v-for="b in job.bullets" :key="b">{{ b }}</li>
-                  </ul>
-                  <p v-if="job.extra" class="cv-entry-extra">
-                    {{ job.extra }}
-                  </p>
+                <div class="tl-head">
+                  <h3 class="tl-role">{{ job.role }}</h3>
+                  <span class="tl-date">{{ job.period }}</span>
                 </div>
+                <p class="tl-org">{{ job.company }} · {{ job.location }}</p>
+                <ul>
+                  <li v-for="b in job.bullets" :key="b">{{ b }}</li>
+                </ul>
+                <p v-if="job.extra" class="tl-note">{{ job.extra }}</p>
               </article>
             </div>
           </section>
@@ -395,25 +380,21 @@ const profileBullets = [
           </div>
 
           <!-- Projekthistorie -->
-          <section class="cv-section">
-            <h2 class="cv-main-title">Projekthistorie</h2>
-            <div class="cv-stack">
-              <article v-for="(p, i) in projects" :key="i" class="cv-entry">
-                <div class="cv-entry-inner">
-                  <div class="cv-entry-head">
-                    <div class="cv-entry-headline">
-                      <h3 class="cv-entry-role">{{ p.client }}</h3>
-                      <p class="cv-entry-company">{{ p.role }}</p>
-                    </div>
-                  </div>
-                  <p class="cv-entry-stack">{{ p.stack.join(" · ") }}</p>
-                  <p class="cv-entry-text">{{ p.description }}</p>
-                </div>
-              </article>
-            </div>
+          <section>
+            <h2 class="cv-label">Projekthistorie</h2>
+            <article v-for="(p, i) in projects" :key="i" class="prj">
+              <div class="prj-head">
+                <h3 class="prj-title">{{ p.client }}</h3>
+                <span class="prj-role">{{ p.role }}</span>
+              </div>
+              <div class="cv-pills">
+                <span v-for="s in p.stack" :key="s" class="cv-pill">{{
+                  s
+                }}</span>
+              </div>
+              <p>{{ p.description }}</p>
+            </article>
           </section>
-
-          <p class="cv-signature">André Hommrich · Montabaur</p>
         </main>
       </div>
     </div>
@@ -422,663 +403,290 @@ const profileBullets = [
 
 <style scoped>
 /* ------------------------------------------------------------------ */
-/* Theme tokens                                                        */
+/* Grid — structure via whitespace, no more boxes                     */
 /* ------------------------------------------------------------------ */
-.cv-root {
-  --cv-bg: #ffffff;
-  --cv-text: #1a1a1d;
-  --cv-text-muted: rgba(26, 26, 29, 0.65);
-  --cv-text-subtle: rgba(26, 26, 29, 0.5);
-  --cv-card-bg: #ffffff;
-  --cv-card-border: rgba(0, 0, 0, 0.1);
-  --cv-card-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-  --cv-hero-shadow-1-bg: #ffffff;
-  --cv-hero-shadow-1-border: #3b4245;
-  --cv-hero-shadow-2-bg: #8d1d29;
-  --cv-hero-shadow-2-border: #3b4245;
-  --cv-action-bg: rgba(255, 255, 255, 0.9);
-  --cv-action-bg-hover: rgba(255, 255, 255, 1);
-  --cv-action-color: #1a1a1d;
-  --cv-action-border: rgba(0, 0, 0, 0.15);
-
-  position: relative;
-  min-height: 100vh;
-  background-color: var(--cv-bg);
-  color: var(--cv-text);
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-  overflow-x: hidden;
-}
-
-@media (prefers-color-scheme: dark) {
-  .cv-root {
-    --cv-bg: #3b4245;
-    --cv-text: #e5e7eb;
-    --cv-text-muted: rgba(229, 231, 235, 0.75);
-    --cv-text-subtle: rgba(229, 231, 235, 0.5);
-    --cv-card-bg: #26262a;
-    --cv-card-border: rgba(229, 231, 235, 0.1);
-    --cv-card-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
-    --cv-hero-shadow-1-bg: #3b4245;
-    --cv-hero-shadow-1-border: #ffffff;
-    --cv-hero-shadow-2-bg: #8d1d29;
-    --cv-hero-shadow-2-border: #ffffff;
-    --cv-action-bg: rgba(59, 66, 69, 0.85);
-    --cv-action-bg-hover: rgba(75, 85, 89, 0.95);
-    --cv-action-color: #e5e7eb;
-    --cv-action-border: rgba(229, 231, 235, 0.2);
-  }
-}
-
-.cv-actions {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 50;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.cv-action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--cv-action-bg);
-  color: var(--cv-action-color);
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border: 1px solid var(--cv-action-border);
-  transition:
-    background 0.2s,
-    transform 0.1s;
-  text-decoration: none;
-}
-.cv-action-btn:hover {
-  background: var(--cv-action-bg-hover);
-}
-.cv-action-btn:active {
-  transform: translateY(1px);
-}
-.cv-action-btn--primary {
-  background: rgba(141, 29, 41, 0.9);
-  border-color: rgba(229, 231, 235, 0.25);
-  color: #f5f5f5;
-}
-.cv-action-btn--primary:hover {
-  background: #8d1d29;
-}
-
-.cv-container {
-  position: relative;
-  z-index: 10;
-  max-width: 210mm;
-  margin: 0 auto;
-  padding: 3rem 1rem 2rem;
-}
-
-.cv-grid {
+.cv-body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: 1.25rem;
+  gap: 0 2.4rem;
+  padding: 2.2rem 2.6rem 2.6rem;
+}
+.cv-band {
+  padding: 2.2rem 2.6rem 2rem;
 }
 
-/* ------------------------------------------------------------------ */
-/* Columns                                                            */
-/* ------------------------------------------------------------------ */
 .cv-sidebar,
 .cv-main {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.6rem;
+  min-width: 0;
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero cards (portrait + name) — both use the same clean card style  */
+/* Sidebar                                                             */
 /* ------------------------------------------------------------------ */
-.cv-hero-card {
-  position: relative;
-}
 
-/* Shadow divs unused in new design — hidden on all hero cards */
-.cv-hero-shadow-1,
-.cv-hero-shadow-2 {
-  display: none;
-}
-.cv-hero-inner {
+/* Portrait — static offset idiom (AppCard end-state, no hover/animation) */
+.cv-portrait {
   position: relative;
-  padding: 1rem;
+  margin: 0.2rem 0.45rem 0.45rem 0;
 }
-
-/* Portrait — full-bleed photo, no inner padding */
-.cv-portrait .cv-hero-inner {
-  padding: 0;
-  background: var(--cv-card-bg);
-  border: 1px solid var(--cv-card-border);
-  border-top: 3px solid #8d1d29;
-  box-shadow: var(--cv-card-shadow);
+.cv-portrait::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate(0.45rem, 0.45rem);
+  border: 1px solid var(--cv-anthrazit);
+  background: var(--cv-paper);
 }
-.cv-portrait-img {
+.cv-portrait img {
+  position: relative;
+  display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  display: block;
+  border: 1px solid var(--cv-burgund);
 }
 
-/* Name hero — same card style as sidebar, name in burgund as anchor */
-.cv-name-hero .cv-hero-inner {
-  background: var(--cv-card-bg);
-  border: 1px solid var(--cv-card-border);
-  border-top: 3px solid #8d1d29;
-  box-shadow: var(--cv-card-shadow);
-}
-.cv-name-inner {
-  padding: 1.25rem 1.5rem;
-}
-.cv-name {
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  margin: 0;
-  color: #8d1d29;
-}
-/* Uppercase with generous tracking — reads like a professional label under the name */
-.cv-subtitle {
-  font-size: 0.78rem;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cv-text-muted);
-  margin: 0.5rem 0 1rem;
-}
-.cv-profile-list {
-  margin: 0;
-  padding-left: 1.1rem;
-  list-style: disc;
+/* Diamond cluster right of the name — echoes the hero overlays */
+.cv-band-diamonds {
   display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.9rem;
-  line-height: 1.55;
-  color: var(--cv-text);
+  gap: 0.85rem;
+  padding-bottom: 0.2rem;
+}
+.cv-band-diamonds span {
+  width: 0.7rem;
+  height: 0.7rem;
+  transform: rotate(45deg);
+}
+.cv-band-diamonds span:nth-child(1) {
+  background: var(--cv-burgund-dark);
+}
+.cv-band-diamonds span:nth-child(2) {
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+.cv-band-diamonds span:nth-child(3) {
+  background: rgba(255, 255, 255, 0.9);
 }
 
-/* ------------------------------------------------------------------ */
-/* Sidebar cards — white with burgund top accent                      */
-/* ------------------------------------------------------------------ */
-.cv-card {
-  position: relative;
+.cv-band-name {
+  font-size: 2.1rem;
 }
-.cv-card-inner {
-  padding: 1rem 1.1rem;
-  background: var(--cv-card-bg);
-  border: 1px solid var(--cv-card-border);
-  border-top: 3px solid #8d1d29;
-  box-shadow: var(--cv-card-shadow);
-  color: var(--cv-text);
-}
-
-.cv-section-title {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin: 0 0 0.65rem;
-  color: #8d1d29;
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid rgba(141, 29, 41, 0.2);
-}
-
-.cv-main-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin: 0 0 0.85rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 2px solid #8d1d29;
-  color: var(--cv-text);
+.cv-band-sub {
+  font-size: 0.74rem;
 }
 
 .cv-list {
-  list-style: disc;
-  padding-left: 1.1rem;
-  margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  color: var(--cv-text);
-}
-.cv-list--plain {
   list-style: none;
-  padding-left: 0;
-}
-.cv-skill-list {
-  gap: 0.4rem;
-}
-.cv-skill-list li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.05rem;
-}
-.cv-skill-list strong {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #8d1d29;
-}
-.cv-skill-list span {
-  font-size: 0.86rem;
-  line-height: 1.45;
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  line-height: 1.65;
   color: var(--cv-text-muted);
 }
 .cv-list a {
   color: inherit;
-  text-decoration: underline;
 }
-
-/* ------------------------------------------------------------------ */
-/* Main column                                                        */
-/* ------------------------------------------------------------------ */
-.cv-section {
-  display: block;
-}
-.cv-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-/* Job/project entries — white card with left burgund accent stripe */
-.cv-entry {
-  position: relative;
-}
-.cv-entry-inner {
-  padding: 1rem 1.1rem;
-  background: var(--cv-card-bg);
-  border: 1px solid var(--cv-card-border);
-  border-left: 3px solid #8d1d29;
-  box-shadow: var(--cv-card-shadow);
+.cv-list strong {
   color: var(--cv-text);
+  font-weight: 600;
 }
-.cv-entry-head {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+
+.cv-skill-group {
+  margin-bottom: 0.75rem;
 }
-@media (min-width: 640px) {
-  .cv-entry-head {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-  }
+.cv-skill-group:last-child {
+  margin-bottom: 0;
 }
-.cv-entry-headline {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-.cv-entry-role {
-  font-size: 1rem;
+.cv-skill-group h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  margin: 0;
-  color: #8d1d29;
-}
-.cv-entry-company {
-  font-size: 0.84rem;
-  color: var(--cv-text-muted);
-  margin: 0.1rem 0 0;
-}
-.cv-entry-period {
-  font-size: 0.84rem;
-  color: var(--cv-text-muted);
-  white-space: nowrap;
-}
-.cv-entry-list {
-  margin-top: 0.55rem;
-  color: var(--cv-text);
-}
-.cv-entry-extra {
-  margin: 0.4rem 0 0;
-  font-size: 0.84rem;
-  font-style: italic;
-  color: var(--cv-text-muted);
-}
-.cv-entry-stack {
-  font-size: 0.8rem;
-  color: var(--cv-text-subtle);
-  margin: 0.35rem 0 0.5rem;
-}
-.cv-entry-text {
-  font-size: 0.9rem;
-  color: var(--cv-text);
-  margin: 0;
-  line-height: 1.55;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cv-accent-strong);
 }
 
-/* Diamond divider between main sections */
-.cv-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  margin: 0.25rem 0;
+/* ------------------------------------------------------------------ */
+/* Main column                                                         */
+/* ------------------------------------------------------------------ */
+.cv-profile {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--cv-text-muted);
 }
-.cv-divider-line {
-  height: 1px;
-  width: 4rem;
-  background: #8d1d29;
+.cv-profile li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: 0.25rem;
 }
-.cv-divider-square {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: #8d1d29;
+.cv-profile li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 0.32rem;
+  height: 0.32rem;
+  background: var(--cv-accent);
   transform: rotate(45deg);
 }
 
-.cv-signature {
-  font-size: 0.82rem;
-  font-style: italic;
-  text-align: right;
+/* Timeline: border per entry instead of an absolute line → break-safe.
+   Diamond dot marks each station. */
+.tl {
+  display: flex;
+  flex-direction: column;
+}
+.tl-entry {
+  position: relative;
+  border-left: 1px solid var(--cv-line);
+  padding: 0 0 1.2rem 1.3rem;
+  margin-left: 0.25rem;
+}
+.tl-entry:last-child {
+  padding-bottom: 0.2rem;
+}
+.tl-entry::before {
+  content: "";
+  position: absolute;
+  left: -0.3rem;
+  top: 0.28em;
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--cv-paper);
+  border: 1.5px solid var(--cv-accent);
+  transform: rotate(45deg);
+}
+.tl-entry.tl-current::before {
+  background: var(--cv-accent);
+}
+
+.tl-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.tl-role {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--cv-text);
+}
+.tl-date {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cv-accent);
+  white-space: nowrap;
+}
+.tl-org {
+  margin: 0.15rem 0 0.45rem;
+  font-size: 0.78rem;
+  color: var(--cv-text-subtle);
+}
+.tl-entry ul {
+  margin: 0;
+  padding-left: 1.05rem;
+  font-size: 0.8rem;
+  line-height: 1.55;
   color: var(--cv-text-muted);
-  margin: 1rem 0 0;
+}
+.tl-entry ul li {
+  margin-bottom: 0.12rem;
+}
+.tl-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.74rem;
+  font-style: italic;
+  color: var(--cv-text-subtle);
+}
+
+/* Projects: compact, pills for the stack */
+.prj {
+  margin-bottom: 1.1rem;
+}
+.prj:last-child {
+  margin-bottom: 0;
+}
+.prj-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.prj-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cv-accent-strong);
+}
+.prj-role {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cv-text-subtle);
+  white-space: nowrap;
+}
+.prj .cv-pills {
+  margin: 0.35rem 0 0.4rem;
+}
+.prj p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--cv-text-muted);
 }
 
 /* ------------------------------------------------------------------ */
 /* Mobile                                                             */
 /* ------------------------------------------------------------------ */
 @media (max-width: 640px) {
-  .cv-container {
-    padding: 3.5rem 0.5rem 1.5rem;
+  .cv-body {
+    grid-template-columns: 1fr;
+    padding: 1.4rem 1.2rem 1.6rem;
+    gap: 1.2rem 0;
   }
-  .cv-grid {
-    gap: 0.6rem;
-  }
-  .cv-sidebar,
-  .cv-main {
-    gap: 0.6rem;
-  }
-  .cv-stack {
-    gap: 0.5rem;
-  }
-  .cv-actions {
-    top: 10px;
-    right: 10px;
-    gap: 6px;
-  }
-  .cv-action-btn {
-    font-size: 13px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    gap: 6px;
+  .cv-band {
+    padding: 1.6rem 1.2rem 1.4rem;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/* Print — light theme forced, white cards render natively            */
-/* Disable "Kopf- und Fußzeilen" in Chrome's print dialog to remove  */
-/* the auto date/URL strips from the 12mm margin area.               */
+/* Print — white pages, band prints in colour, diamond divider stays  */
+/* visible. Disable "Kopf- und Fußzeilen" in Chrome's print dialog to */
+/* remove the auto date/URL strips.                                  */
 /* ------------------------------------------------------------------ */
 @media print {
-  @page {
-    size: A4;
-    margin: 15mm 20mm;
+  .cv-band {
+    padding: 14mm 20mm 10mm;
   }
-
-  .cv-root {
-    --cv-bg: #ffffff;
-    --cv-text: #1a1a1d;
-    --cv-text-muted: rgba(26, 26, 29, 0.65);
-    --cv-text-subtle: rgba(26, 26, 29, 0.5);
-    --cv-card-bg: #ffffff;
-    --cv-card-border: rgba(0, 0, 0, 0.15);
-    --cv-card-shadow: none;
-    --cv-hero-shadow-1-bg: #ffffff;
-    --cv-hero-shadow-1-border: #3b4245;
-    --cv-hero-shadow-2-bg: #8d1d29;
-    --cv-hero-shadow-2-border: #3b4245;
-    /* transparent so the html background pattern shows through */
-    background-color: transparent !important;
+  .cv-body {
+    padding: 10mm 20mm 15mm;
+    gap: 0 8mm;
+    /* Repeats the padding on every page fragment — without it, only the
+       first page gets top clearance and subsequent pages start flush
+       against the page edge. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
-
-  .cv-actions,
-  .cv-divider {
-    display: none !important;
-  }
-
-  :deep(.pattern-wrap) {
-    display: none !important;
-  }
-
-  /* Force burgund accents to render in print */
-  .cv-root,
-  .cv-hero-inner,
-  .cv-card-inner,
-  .cv-entry-inner {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Portrait */
-  .cv-portrait .cv-hero-inner {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    border-top: 3px solid #8d1d29 !important;
-    box-shadow: none !important;
-  }
-
-  /* Name hero — white card, burgund name */
-  .cv-name-hero .cv-hero-inner {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    border-top: 3px solid #8d1d29 !important;
-    box-shadow: none !important;
-  }
-  .cv-name {
-    color: #8d1d29 !important;
-  }
-  .cv-subtitle {
-    color: rgba(26, 26, 29, 0.65) !important;
-  }
-  .cv-profile-list {
-    color: #1a1a1d !important;
-  }
-
-  /* Sidebar cards: white + burgund top border */
-  .cv-card-inner {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    border-top: 3px solid #8d1d29 !important;
-    box-shadow: none !important;
-    color: #1a1a1d !important;
-  }
-  .cv-section-title {
-    color: #8d1d29 !important;
-    border-bottom-color: rgba(141, 29, 41, 0.25) !important;
-  }
-  .cv-list {
-    color: #1a1a1d !important;
-  }
-  .cv-skill-list strong {
-    color: #8d1d29 !important;
-  }
-  .cv-skill-list span {
-    color: rgba(26, 26, 29, 0.7) !important;
-  }
-
-  /* Entries: white + burgund left stripe */
-  .cv-entry-inner {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    border-left: 3px solid #8d1d29 !important;
-    box-shadow: none !important;
-    color: #1a1a1d !important;
-  }
-  .cv-entry-role {
-    color: #8d1d29 !important;
-  }
-  .cv-entry-company,
-  .cv-entry-period,
-  .cv-entry-extra {
-    color: rgba(26, 26, 29, 0.65) !important;
-  }
-  .cv-entry-stack {
-    color: rgba(26, 26, 29, 0.5) !important;
-  }
-  .cv-entry-list,
-  .cv-entry-text {
-    color: #1a1a1d !important;
-  }
-  .cv-signature {
-    color: rgba(26, 26, 29, 0.6) !important;
-  }
-
-  .cv-root {
-    min-height: 0 !important;
-  }
-
-  .cv-container {
-    max-width: 100% !important;
-    /* left/right padding applies on every page; top/bottom via element margins */
-    padding: 0 13mm 10mm !important;
-  }
-
-  .cv-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) !important;
-    gap: 6mm !important;
-  }
-
-  .cv-sidebar,
-  .cv-main {
-    gap: 5mm !important;
-    padding-top: 0 !important;
-  }
-
-  .cv-stack {
-    gap: 3mm !important;
-    margin-top: 4mm !important;
-  }
-
-  .cv-signature {
-    display: none !important;
-  }
-
-  .cv-entry,
-  .cv-card,
-  .cv-hero-card {
+  .tl-entry,
+  .prj,
+  .cv-skill-group,
+  .cv-portrait {
     break-inside: avoid;
-    page-break-inside: avoid;
   }
-  .cv-entry-head {
+  .cv-label {
     break-after: avoid;
-    page-break-after: avoid;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
   }
-
-  /* Compact typography for print */
-  .cv-name {
-    font-size: 1.3rem;
-    letter-spacing: 0.02em;
-  }
-  .cv-subtitle {
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    margin: 0.3rem 0 0.5rem;
-  }
-  .cv-name-inner {
-    padding: 0.6rem 0.85rem;
-  }
-  .cv-profile-list {
-    font-size: 0.7rem;
-    gap: 0.1rem;
-    line-height: 1.45;
-    padding-left: 0.95rem;
-  }
-  .cv-main-title {
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
-    margin: 0 0 0.4rem;
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-  .cv-card-inner {
-    padding: 0.4rem 0.6rem;
-  }
-  .cv-section-title {
-    font-size: 0.54rem;
-    letter-spacing: 0.14em;
-    margin: 0 0 0.25rem;
-    padding-bottom: 0.15rem;
-  }
-  .cv-list {
-    font-size: 0.67rem;
-    gap: 0.05rem;
-    padding-left: 0.85rem;
-  }
-  .cv-list--plain {
-    padding-left: 0;
-  }
-  .cv-skill-list {
-    gap: 0.2rem;
-  }
-  .cv-skill-list strong {
-    font-size: 0.6rem;
-  }
-  .cv-skill-list span {
-    font-size: 0.67rem;
-    line-height: 1.2;
-  }
-  .cv-entry-inner {
-    padding: 0.35rem 0.6rem;
-  }
-  .cv-entry-role {
-    font-size: 0.82rem;
-  }
-  .cv-entry-company,
-  .cv-entry-period {
-    font-size: 0.69rem;
-  }
-  .cv-entry-list {
-    font-size: 0.69rem;
-    line-height: 1.35;
-    gap: 0.05rem;
-    margin-top: 0.2rem;
-    padding-left: 0.85rem;
-  }
-  .cv-entry-stack {
-    font-size: 0.65rem;
-    margin: 0.15rem 0 0.2rem;
-  }
-  .cv-entry-text {
-    font-size: 0.69rem;
-    line-height: 1.38;
-  }
-  .cv-entry-extra {
-    font-size: 0.67rem;
-    margin-top: 0.2rem;
-  }
-  .cv-divider {
-    margin: 2mm 0;
-  }
-  .cv-signature {
-    font-size: 0.7rem;
-    margin-top: 0.6rem;
+  .cv-profile li::before,
+  .tl-entry::before {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 </style>

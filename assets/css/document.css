@@ -1,0 +1,316 @@
+/* Shared tokens + structural primitives for the "document" pages
+   (/lebenslauf, /anschreiben). Mirrors lebenslauf-redesign.html /
+   anschreiben-redesign.html (design reference, kept outside the app).
+   Page-specific layout (grid, entries, letter body) stays in each
+   page's own <style scoped> block. */
+
+.cv-root {
+  --cv-burgund: var(--color-burgund);
+  --cv-burgund-dark: var(--color-burgund-dark);
+  /* Accent tokens for text/marks placed directly on the paper. Equal to
+     the brand colors in light mode; brightened in dark mode so they stay
+     readable against the dark paper. --cv-burgund/-dark themselves stay
+     the true brand color always — the header band must render in actual
+     burgund regardless of color scheme. */
+  --cv-accent: var(--cv-burgund);
+  --cv-accent-strong: var(--cv-burgund-dark);
+  --cv-anthrazit: #3b4245;
+  --cv-paper: #ffffff;
+  --cv-text: #1a1a1d;
+  --cv-text-muted: rgba(26, 26, 29, 0.65);
+  --cv-text-subtle: rgba(26, 26, 29, 0.5);
+  --cv-line: rgba(141, 29, 41, 0.25);
+  --cv-line-soft: rgba(141, 29, 41, 0.14);
+  --cv-pill-bg: rgba(141, 29, 41, 0.06);
+  --cv-bevel: 12px;
+  --cv-paper-shadow: 0 8px 40px rgba(59, 66, 69, 0.18);
+  --cv-action-bg: rgba(255, 255, 255, 0.9);
+  --cv-action-bg-hover: rgba(255, 255, 255, 1);
+  --cv-action-color: #1a1a1d;
+  --cv-action-border: rgba(0, 0, 0, 0.15);
+
+  position: relative;
+  min-height: 100vh;
+  color: var(--cv-text);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  overflow-x: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .cv-root {
+    --cv-accent: #d67680;
+    --cv-accent-strong: #e39aa3;
+    --cv-anthrazit: #ffffff;
+    --cv-paper: #26262a;
+    --cv-text: #e5e7eb;
+    --cv-text-muted: rgba(229, 231, 235, 0.75);
+    --cv-text-subtle: rgba(229, 231, 235, 0.5);
+    --cv-line: rgba(229, 231, 235, 0.25);
+    --cv-line-soft: rgba(229, 231, 235, 0.14);
+    --cv-pill-bg: rgba(229, 231, 235, 0.08);
+    --cv-paper-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+    --cv-action-bg: rgba(59, 66, 69, 0.85);
+    --cv-action-bg-hover: rgba(75, 85, 89, 0.95);
+    --cv-action-color: #e5e7eb;
+    --cv-action-border: rgba(229, 231, 235, 0.2);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Action bar — screen only                                           */
+/* ------------------------------------------------------------------ */
+.cv-actions {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cv-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--cv-action-bg);
+  color: var(--cv-action-color);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: 1px solid var(--cv-action-border);
+  transition:
+    background 0.2s,
+    transform 0.1s;
+  text-decoration: none;
+}
+.cv-action-btn:hover {
+  background: var(--cv-action-bg-hover);
+}
+.cv-action-btn:active {
+  transform: translateY(1px);
+}
+.cv-action-btn--primary {
+  background: rgba(141, 29, 41, 0.9);
+  border-color: rgba(229, 231, 235, 0.25);
+  color: #f5f5f5;
+}
+.cv-action-btn--primary:hover {
+  background: var(--cv-burgund);
+}
+
+/* ------------------------------------------------------------------ */
+/* Paper — the document floats over the site pattern (AppCvPattern)   */
+/* ------------------------------------------------------------------ */
+.cv-paper {
+  position: relative;
+  z-index: 10;
+  max-width: 210mm;
+  margin: 3rem auto 2rem;
+  background: var(--cv-paper);
+  box-shadow: var(--cv-paper-shadow);
+}
+
+@media (max-width: 640px) {
+  .cv-paper {
+    margin: 3.5rem 0.5rem 1.5rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Header band — the signature element (12px-bevel idiom from         */
+/* AppHeader/AppFooter) with a diamond pin at the bottom edge.        */
+/* ------------------------------------------------------------------ */
+.cv-band {
+  position: relative;
+  background: var(--cv-burgund);
+  /* Sharp top corners (band sits flush at the very top of the paper/page),
+     beveled bottom corners transitioning into the content below — same
+     orientation as AppHeader.vue, not AppFooter.vue. */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--cv-bevel)),
+    calc(100% - var(--cv-bevel)) 100%,
+    var(--cv-bevel) 100%,
+    0 calc(100% - var(--cv-bevel))
+  );
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cv-band-name {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.cv-band-sub {
+  margin: 0.55rem 0 0;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.cv-band-pin {
+  position: relative;
+  height: 0;
+}
+.cv-band-pin span {
+  position: absolute;
+  left: 50%;
+  top: -0.45rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: var(--cv-burgund-dark);
+  transform: translateX(-50%) rotate(45deg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+@media (max-width: 640px) {
+  .cv-band {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Section label — diamond marker + uppercase caption                 */
+/* ------------------------------------------------------------------ */
+.cv-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--cv-accent);
+  margin: 0 0 0.7rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--cv-line-soft);
+}
+.cv-label::before {
+  content: "";
+  width: 0.42rem;
+  height: 0.42rem;
+  background: var(--cv-accent);
+  transform: rotate(45deg);
+  flex: none;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ------------------------------------------------------------------ */
+/* Pills — mini clip-path bevel, same idiom as the header band        */
+/* ------------------------------------------------------------------ */
+.cv-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.cv-pill {
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 0.32rem 0.5rem;
+  background: var(--cv-pill-bg);
+  color: var(--cv-accent-strong);
+  clip-path: polygon(
+    5px 0,
+    100% 0,
+    100% calc(100% - 5px),
+    calc(100% - 5px) 100%,
+    0 100%,
+    0 5px
+  );
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ------------------------------------------------------------------ */
+/* Diamond divider — homepage echo, stays visible in print            */
+/* ------------------------------------------------------------------ */
+.cv-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.cv-divider-line {
+  height: 1px;
+  width: 4rem;
+  background: var(--cv-accent);
+}
+.cv-divider-square {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--cv-accent);
+  transform: rotate(45deg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ------------------------------------------------------------------ */
+/* Print grundgerüst — white pages, band prints in colour, the site   */
+/* pattern is never part of the PDF output.                           */
+/* ------------------------------------------------------------------ */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    background: none !important;
+  }
+
+  .cv-root {
+    min-height: 0 !important;
+    background: transparent !important;
+    /* Force the light palette in print regardless of prefers-color-scheme */
+    --cv-accent: var(--cv-burgund);
+    --cv-accent-strong: var(--cv-burgund-dark);
+    --cv-anthrazit: #3b4245;
+    --cv-paper: #ffffff;
+    --cv-text: #1a1a1d;
+    --cv-text-muted: rgba(26, 26, 29, 0.65);
+    --cv-text-subtle: rgba(26, 26, 29, 0.5);
+    --cv-line: rgba(141, 29, 41, 0.25);
+    --cv-line-soft: rgba(141, 29, 41, 0.14);
+    --cv-pill-bg: rgba(141, 29, 41, 0.06);
+  }
+
+  .cv-actions {
+    display: none !important;
+  }
+
+  .pattern-wrap {
+    display: none !important;
+  }
+
+  .cv-paper {
+    max-width: none !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+}
