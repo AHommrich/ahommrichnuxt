@@ -521,17 +521,25 @@ onMounted(async () => {
     for (const entry of entries) {
       containerW = entry.contentRect.width;
       applyContainerHeight();
-      // Clamp icon positions to the new bounds so nothing escapes the container after resize
-      states.forEach((state) => {
-        state.x = Math.max(
-          ICON_HALF,
-          Math.min(containerW - ICON_HALF, state.x),
-        );
-        state.y = Math.max(
-          ICON_HALF,
-          Math.min(containerH - ICON_HALF, state.y),
-        );
-      });
+      if (infoMode.value) {
+        // Column count and card width may have changed with the new width —
+        // reposition every card instantly, otherwise cards stay at stale
+        // coordinates from the old grid and spill past the recalculated
+        // (often shorter) container height, getting clipped by overflow:hidden.
+        applyInfoLayoutInstant();
+      } else {
+        // Clamp icon positions to the new bounds so nothing escapes the container after resize
+        states.forEach((state) => {
+          state.x = Math.max(
+            ICON_HALF,
+            Math.min(containerW - ICON_HALF, state.x),
+          );
+          state.y = Math.max(
+            ICON_HALF,
+            Math.min(containerH - ICON_HALF, state.y),
+          );
+        });
+      }
     }
   });
   resizeObserver.observe(container.value);
