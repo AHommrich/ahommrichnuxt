@@ -24,6 +24,8 @@ export default defineNuxtConfig({
     "@fortawesome/fontawesome-svg-core/styles.css",
     // Global Tailwind entry point (imports @tailwind base/components/utilities)
     "~/assets/css/main.css",
+    // Shared tokens/primitives for the /lebenslauf and /anschreiben pages
+    "~/assets/css/document.css",
   ],
   modules: ["@nuxt/eslint"],
   nitro: {

@@ -110,27 +110,14 @@ function importJson() {
   input.click();
 }
 
-const isPdfLoading = ref(false);
+const { isPdfLoading, downloadPdf } = useDocumentPdf("anschreiben.pdf");
 
-async function downloadPdf() {
-  isPdfLoading.value = true;
-  try {
-    const response = await fetch("/api/pdf/anschreiben", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(getContent()),
-    });
-    if (!response.ok) throw new Error("PDF-Generierung fehlgeschlagen");
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "anschreiben.pdf";
-    a.click();
-    URL.revokeObjectURL(url);
-  } finally {
-    isPdfLoading.value = false;
-  }
+async function generatePdf() {
+  await downloadPdf("/api/pdf/anschreiben", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(getContent()),
+  });
 }
 
 onMounted(() => {
@@ -169,41 +156,44 @@ onMounted(() => {
         type="button"
         class="cv-action-btn cv-action-btn--primary"
         :disabled="isPdfLoading"
-        @click="downloadPdf"
+        @click="generatePdf"
       >
         {{ isPdfLoading ? "Wird generiert…" : "Als PDF speichern" }}
       </button>
     </div>
 
-    <div class="cv-container">
-      <div class="letter-card">
-        <!-- Header: fixed sender block left, editable date right -->
-        <div class="letter-header">
-          <address class="letter-sender">
-            <strong>André Hommrich</strong><br />
-            Dernbacher Str. 26 · 56410 Montabaur<br />
-            <a href="mailto:andre-hommrich@web.de">andre-hommrich@web.de</a>
-            ·
-            <a
-              href="https://ahommrich.de"
-              target="_blank"
-              rel="noopener noreferrer"
-              >ahommrich.de</a
-            >
-          </address>
-          <div
-            ref="elDatum"
-            class="letter-field letter-date"
-            contenteditable="plaintext-only"
-            spellcheck="false"
-            @keydown.enter.prevent
-          />
+    <!-- Document paper — floats over the site pattern -->
+    <div class="cv-paper">
+      <!-- SIGNATURE: same header band as /lebenslauf, contact block right -->
+      <header class="cv-band">
+        <div>
+          <p class="cv-band-name">André Hommrich</p>
+          <p class="cv-band-sub">Fullstack-Webentwickler</p>
         </div>
+        <address class="cv-band-contact">
+          Dernbacher Str. 26 · 56410 Montabaur<br />
+          <a href="mailto:andre-hommrich@web.de">andre-hommrich@web.de</a>
+          ·
+          <a
+            href="https://ahommrich.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            >ahommrich.de</a
+          >
+        </address>
+      </header>
+      <div class="cv-band-pin" aria-hidden="true"><span /></div>
 
-        <div class="letter-sep" aria-hidden="true" />
+      <div class="letter">
+        <div
+          ref="elDatum"
+          class="letter-field letter-date"
+          contenteditable="plaintext-only"
+          spellcheck="false"
+          @keydown.enter.prevent
+        />
 
-        <!-- Recipient block -->
-        <div class="letter-recipient">
+        <address class="letter-recipient">
           <div
             ref="elFirma"
             class="letter-field"
@@ -228,9 +218,8 @@ onMounted(() => {
             contenteditable="plaintext-only"
             @keydown.enter.prevent
           />
-        </div>
+        </address>
 
-        <!-- Subject -->
         <div
           ref="elStelle"
           class="letter-field letter-subject"
@@ -238,7 +227,6 @@ onMounted(() => {
           @keydown.enter.prevent
         />
 
-        <!-- Salutation -->
         <div
           ref="elAnrede"
           class="letter-field letter-anrede"
@@ -281,11 +269,13 @@ onMounted(() => {
           />
 
           <div class="section-label" aria-hidden="true">⑤ Referenzen</div>
-          <div
-            ref="elReferenzen"
-            class="letter-field letter-section"
-            contenteditable="plaintext-only"
-          />
+          <div class="letter-refs">
+            <div
+              ref="elReferenzen"
+              class="letter-field letter-section"
+              contenteditable="plaintext-only"
+            />
+          </div>
 
           <div class="section-label" aria-hidden="true">⑥ Abschluss</div>
           <div
@@ -293,6 +283,13 @@ onMounted(() => {
             class="letter-field letter-section"
             contenteditable="plaintext-only"
           />
+        </div>
+
+        <!-- Diamond divider — brand echo, visible in print -->
+        <div class="cv-divider" aria-hidden="true">
+          <span class="cv-divider-line" />
+          <span class="cv-divider-square" />
+          <span class="cv-divider-line" />
         </div>
 
         <!-- Closing — fixed -->
@@ -311,160 +308,50 @@ onMounted(() => {
 
 <style scoped>
 /* ------------------------------------------------------------------ */
-/* Theme tokens (mirrored from lebenslauf.vue)                        */
+/* Header band — compact height, contact block replaces the diamonds  */
 /* ------------------------------------------------------------------ */
-.cv-root {
-  --cv-bg: #ffffff;
-  --cv-text: #1a1a1d;
-  --cv-text-muted: rgba(26, 26, 29, 0.65);
-  --cv-text-subtle: rgba(26, 26, 29, 0.5);
-  --cv-card-bg: #ffffff;
-  --cv-card-border: rgba(0, 0, 0, 0.1);
-  --cv-card-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-  --cv-action-bg: rgba(255, 255, 255, 0.9);
-  --cv-action-bg-hover: rgba(255, 255, 255, 1);
-  --cv-action-color: #1a1a1d;
-  --cv-action-border: rgba(0, 0, 0, 0.15);
-
-  position: relative;
-  min-height: 100vh;
-  background-color: var(--cv-bg);
-  color: var(--cv-text);
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-  overflow-x: hidden;
+.cv-band {
+  padding: 1.9rem 2.6rem 1.7rem;
+}
+.cv-band-name {
+  margin: 0;
+  font-size: 1.55rem;
+}
+.cv-band-sub {
+  font-size: 0.68rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .cv-root {
-    --cv-bg: #3b4245;
-    --cv-text: #e5e7eb;
-    --cv-text-muted: rgba(229, 231, 235, 0.75);
-    --cv-text-subtle: rgba(229, 231, 235, 0.5);
-    --cv-card-bg: #26262a;
-    --cv-card-border: rgba(229, 231, 235, 0.1);
-    --cv-card-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
-    --cv-action-bg: rgba(59, 66, 69, 0.85);
-    --cv-action-bg-hover: rgba(75, 85, 89, 0.95);
-    --cv-action-color: #e5e7eb;
-    --cv-action-border: rgba(229, 231, 235, 0.2);
+.cv-band-contact {
+  margin: 0;
+  text-align: right;
+  font-size: 0.74rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: normal;
+}
+.cv-band-contact a {
+  color: #fff;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .cv-band-contact {
+    text-align: left;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/* Action bar                                                          */
+/* Letter — classic anatomy, no more boxes                            */
 /* ------------------------------------------------------------------ */
-.cv-actions {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 50;
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.cv-action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--cv-action-bg);
-  color: var(--cv-action-color);
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border: 1px solid var(--cv-action-border);
-  transition:
-    background 0.2s,
-    transform 0.1s;
-  text-decoration: none;
-}
-.cv-action-btn:hover {
-  background: var(--cv-action-bg-hover);
-}
-.cv-action-btn:active {
-  transform: translateY(1px);
-}
-.cv-action-btn--primary {
-  background: rgba(141, 29, 41, 0.9);
-  border-color: rgba(229, 231, 235, 0.25);
-  color: #f5f5f5;
-}
-.cv-action-btn--primary:hover {
-  background: #8d1d29;
-}
-
-/* ------------------------------------------------------------------ */
-/* Layout                                                              */
-/* ------------------------------------------------------------------ */
-.cv-container {
-  position: relative;
-  z-index: 10;
-  max-width: 210mm;
-  margin: 0 auto;
-  padding: 3rem 1rem 2rem;
-}
-
-/* ------------------------------------------------------------------ */
-/* Letter card                                                         */
-/* ------------------------------------------------------------------ */
-.letter-card {
-  background: var(--cv-card-bg);
-  border: 1px solid var(--cv-card-border);
-  border-top: 3px solid #8d1d29;
-  box-shadow: var(--cv-card-shadow);
-  padding: 2rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
-.letter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.letter-sender {
-  font-size: 0.88rem;
-  line-height: 1.65;
-  color: var(--cv-text-muted);
-  font-style: normal;
-}
-.letter-sender strong {
-  display: block;
-  font-size: 0.95rem;
-  color: #8d1d29;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-.letter-sender a {
-  color: inherit;
-  text-decoration: underline;
+.letter {
+  padding: 2.4rem 2.6rem 2.8rem;
 }
 
 .letter-date {
   text-align: right;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--cv-text-muted);
-  white-space: nowrap;
-}
-
-.letter-sep {
-  height: 1px;
-  background: rgba(141, 29, 41, 0.2);
+  margin: 0 0 1.8rem;
 }
 
 .letter-recipient {
@@ -472,21 +359,55 @@ onMounted(() => {
   flex-direction: column;
   gap: 0.1rem;
   font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--cv-text);
+  margin: 0 0 2rem;
+  font-style: normal;
 }
 
 .letter-subject {
-  font-size: 1rem;
+  font-size: 1.02rem;
   font-weight: 700;
-  color: #8d1d29;
-  margin-top: 0.35rem;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+  color: var(--cv-accent);
+  margin: 0 0 1.4rem;
 }
 
-.letter-anrede {
-  font-size: 0.95rem;
+.letter-anrede,
+.letter-section {
+  font-size: 0.93rem;
+  line-height: 1.7;
+  color: var(--cv-text);
 }
 
+/* Reference block: indented with a burgund line — echoes the timeline
+   border used in the CV */
+.letter-refs {
+  border-left: 2px solid var(--cv-line-soft);
+  padding-left: 1.1rem;
+  margin: 0.65rem 0;
+}
+
+.letter-closing {
+  margin-top: 2rem;
+  font-size: 0.93rem;
+  line-height: 2;
+}
+.letter-closing p {
+  margin: 0 0 0.4rem;
+}
+.letter-name {
+  font-weight: 700;
+  color: var(--cv-accent-strong);
+  font-size: 0.98rem;
+}
+
+.cv-divider {
+  margin: 1.6rem 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Body — 6 structured fields, section labels are screen-only hints   */
+/* ------------------------------------------------------------------ */
 .letter-body {
   display: flex;
   flex-direction: column;
@@ -508,25 +429,8 @@ onMounted(() => {
 }
 
 .letter-section {
-  font-size: 0.95rem;
-  line-height: 1.75;
   white-space: pre-wrap;
   min-height: 1.4em;
-}
-
-.letter-closing {
-  font-size: 0.95rem;
-  line-height: 2;
-  margin-top: 0.25rem;
-}
-.letter-closing p {
-  margin: 0;
-}
-.letter-name {
-  font-weight: 700;
-  color: #8d1d29;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
 }
 
 /* ------------------------------------------------------------------ */
@@ -560,30 +464,11 @@ onMounted(() => {
 /* Mobile                                                              */
 /* ------------------------------------------------------------------ */
 @media (max-width: 640px) {
-  .cv-container {
-    padding: 3.5rem 0.5rem 1.5rem;
+  .cv-band {
+    padding: 1.5rem 1.2rem 1.3rem;
   }
-  .letter-card {
-    padding: 1.25rem 1rem;
-    gap: 0.85rem;
-  }
-  .letter-header {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .letter-date {
-    text-align: left;
-    white-space: normal;
-  }
-  .cv-actions {
-    top: 10px;
-    right: 10px;
-    gap: 6px;
-  }
-  .cv-action-btn {
-    font-size: 13px;
-    padding: 8px 12px;
-    border-radius: 6px;
+  .letter {
+    padding: 1.4rem 1.2rem 1.8rem;
   }
 }
 
@@ -591,58 +476,28 @@ onMounted(() => {
 /* Print                                                               */
 /* ------------------------------------------------------------------ */
 @media print {
-  @page {
-    size: A4;
-    margin: 15mm 20mm;
+  .cv-band {
+    padding: 12mm 20mm 9mm;
   }
-
-  .cv-root {
-    --cv-bg: #ffffff;
-    --cv-text: #1a1a1d;
-    --cv-text-muted: rgba(26, 26, 29, 0.65);
-    --cv-card-bg: #ffffff;
-    --cv-card-border: rgba(0, 0, 0, 0.15);
-    --cv-card-shadow: none;
-    min-height: 0 !important;
-    background-color: transparent !important;
+  .letter {
+    padding: 10mm 20mm 15mm;
+    /* Repeats the padding on every page fragment — without it, only the
+       first page gets top clearance and subsequent pages start flush
+       against the page edge. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
-
-  .cv-actions,
-  .letter-hint {
-    display: none !important;
-  }
-
-  :deep(.pattern-wrap) {
-    display: none !important;
-  }
-
-  .cv-container {
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  /* explicit print padding so box-decoration-break:clone repeats it on page 2 */
-  .letter-card {
-    padding: 12mm !important;
-  }
-
-  .letter-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    border-top: 3px solid #8d1d29 !important;
-    box-shadow: none !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    /* Repeat border + padding at every page break so each page gets the red top line */
-    -webkit-box-decoration-break: clone !important;
-    box-decoration-break: clone !important;
-  }
-
-  .letter-body {
+  .letter-anrede,
+  .letter-section {
     orphans: 4;
     widows: 4;
   }
+  .letter-refs,
+  .letter-closing {
+    break-inside: avoid;
+  }
 
+  .letter-hint,
   .section-label {
     display: none !important;
   }
@@ -651,14 +506,6 @@ onMounted(() => {
   .letter-field:focus {
     background: transparent !important;
     outline: none !important;
-  }
-
-  .letter-subject,
-  .letter-name,
-  .letter-sender strong {
-    color: #8d1d29 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
   }
 }
 </style>

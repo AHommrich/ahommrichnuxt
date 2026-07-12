@@ -20,15 +20,4 @@
     background-image: url("/img/bg-dots-dark.svg");
   }
 }
-
-@media print {
-  .pattern-wrap {
-    position: fixed !important;
-    inset: 0 !important;
-    background-color: #ffffff !important;
-    background-image: url("/img/bg-dots-light.svg") !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-}
 </style>
