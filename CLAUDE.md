@@ -55,7 +55,7 @@ assets/
   pattern-dark.svg
 public/
   img/                 # Portfolio-Fotos (8 JPGs)
-  icons/               # Simple Icons SVGs (24 Stück, alphabetisch)
+  icons/               # Simple Icons SVGs (27 Stück, alphabetisch)
 ```
 
 ## Design-System
@@ -92,12 +92,13 @@ public/
 - Labels: `v-show` (nicht `v-if`) um DOM-Mutation während Transition zu vermeiden
 - Container-Höhe wird dynamisch per JS gesetzt (grid-basiert)
 
-### Icons (24 Stück in `public/icons/`)
+### Icons (28 Stück in `public/icons/`)
 
-alphabetisch: anthropic, apple, bootstrap, css3, docker, git, github, gitlab, html5, javascript, jetbrains, laravel, linux, mariadb, mysql, nuxtdotjs, openai, php, symfony, tailwindcss, typescript, visualstudiocode, vite, vuedotjs
+alphabetisch: anthropic, apple, bootstrap, coolify, docker, expo, git, github, githubactions, gitlab, inertia, javascript, jetbrains, laravel, linux, mariadb, mysql, nuxtdotjs, openai, php, react, sentry, symfony, tailwindcss, typescript, visualstudiocode, vite, vuedotjs
 
 - Darstellung: `<img>` mit `filter: brightness(0) invert(1)` (weiß im Dark Mode)
 - `openai.svg` und `visualstudiocode.svg` kommen NICHT von simpleicons.org (dort entfernt) — aus Iconify-API bzw. vscode-material-icon-theme GitHub
+- `react.svg` steht auch für React Native (kein eigenes React-Native-Icon bei Simple Icons)
 - Apple-Label: "Apple Ecosystem" (Sonderfall)
 
 ## AppHeroSection — Mobile Subpixel-Gap-Fix
