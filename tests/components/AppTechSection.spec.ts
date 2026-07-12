@@ -19,7 +19,7 @@ describe("AppTechSection", () => {
     const imgs = wrapper.findAll("img.icon-white");
     // Must match the length of the iconNames array in AppTechSection.vue.
     // If icons are added or removed, update this expectation deliberately.
-    expect(imgs.length).toBe(24);
+    expect(imgs.length).toBe(28);
   });
 
   it("uses local /icons/*.svg paths for every icon (no CDN)", () => {
