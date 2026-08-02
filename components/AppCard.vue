@@ -48,13 +48,13 @@ onBeforeUnmount(() => {
   -->
   <div
     ref="cardEl"
-    :class="['card-group relative', groupClass, { 'is-in-view': isInView }]"
+    :class="['card-group chamfered relative', groupClass, { 'is-in-view': isInView }]"
   >
     <div
-      class="card-layer card-layer-back absolute inset-0 w-full border border-[#3b4245] bg-white opacity-80 dark:border-white dark:bg-[#3b4245]"
+      class="card-layer card-layer-back absolute inset-0 w-full opacity-80 [--card-border:#3b4245] [--card-fill:#fff] dark:[--card-border:#fff] dark:[--card-fill:#3b4245]"
     />
     <div
-      class="card-layer card-layer-front absolute inset-0 w-full border border-[#3b4245] bg-[#8D1D29] opacity-80 dark:border-white"
+      class="card-layer card-layer-front absolute inset-0 w-full opacity-80 [--card-border:#3b4245] [--card-fill:#8D1D29] dark:[--card-border:#fff]"
     />
     <div :class="['card-content relative z-10 flex flex-col', contentClass]">
       <slot />
@@ -63,6 +63,40 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/*
+  45° chamfered corners with a border that follows the bevel. A plain clip-path
+  would slice the CSS border off flat on the diagonals, so instead each layer is
+  drawn as two clipped octagons: the layer itself is the border colour, and a
+  ::before inset by the 1px border width carries the fill colour. The gap
+  between the two octagons reads as a 1px outline that traces every 45° cut.
+  Chamfer size lives in a single custom property — a one-line change.
+*/
+.chamfered {
+  --chamfer: 20px;
+}
+.chamfered .card-layer,
+.chamfered .card-layer::before {
+  clip-path: polygon(
+    var(--chamfer) 0,
+    calc(100% - var(--chamfer)) 0,
+    100% var(--chamfer),
+    100% calc(100% - var(--chamfer)),
+    calc(100% - var(--chamfer)) 100%,
+    var(--chamfer) 100%,
+    0 calc(100% - var(--chamfer)),
+    0 var(--chamfer)
+  );
+}
+.chamfered .card-layer {
+  background: var(--card-border);
+}
+.chamfered .card-layer::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--card-fill);
+}
+
 /*
   Both shadow layers and the content stack sit on top of each other by
   default and slide apart on hover (desktop) or when the card enters the
