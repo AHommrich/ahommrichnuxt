@@ -275,7 +275,10 @@ const profileBullets = [
         <!-- SIDEBAR -->
         <aside class="cv-sidebar">
           <div class="cv-portrait">
-            <img src="/img/andre.jpg" alt="Portraitfoto von André Hommrich" />
+            <img
+              src="/img/andre-lebenslauf.jpg"
+              alt="Portraitfoto von André Hommrich"
+            />
           </div>
 
           <section>
