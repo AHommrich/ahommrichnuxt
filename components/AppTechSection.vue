@@ -187,7 +187,7 @@ const iconNames = [
 
 // Human-readable display labels shown on info mode cards
 const iconLabels: Record<string, string> = {
-  anthropic: "Anthropic (Claude)",
+  anthropic: "Anthropic (Claude, Claude Code)",
   apple: "Apple Eco System",
   bootstrap: "Bootstrap",
   coolify: "Coolify",
@@ -205,7 +205,7 @@ const iconLabels: Record<string, string> = {
   mariadb: "MariaDB",
   mysql: "MySQL",
   nuxtdotjs: "Nuxt.js",
-  openai: "OpenAI (GPT)",
+  openai: "OpenAI (GPT, Codex)",
   php: "PHP",
   react: "React Native",
   sentry: "Sentry",
