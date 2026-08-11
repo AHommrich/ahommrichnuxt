@@ -30,11 +30,12 @@ const experience = [
     role: "PHP Webentwickler",
     current: true,
     bullets: [
+      "Weiterentwicklung und Betreuung von Software mit umfangreicher Geschäftslogik",
+      "Neue Funktionen von der Planung bis zur Auslieferung, gemeinsam im Entwicklungsteam",
       "Backend-Entwicklung mit Symfony und dazugehörigem Ökosystem (Doctrine etc.)",
       "Frontend-Entwicklung mit Twig, Bootstrap und einzelnen JavaScript-Packages nach ES6",
-      "CI/CD Konfigurationen",
-      "Umfangreiches Testing mit PHPUnit",
-      "KI-gestützte Softwareentwicklung (Claude Code & Junie)",
+      "CI/CD-Konfigurationen und umfangreiches Testing mit PHPUnit",
+      "Mitgestaltung der KI-gestützten Entwicklung (Claude Code, Codex & Junie) inkl. gemeinsamer Coding-Standards",
     ],
   },
   {
@@ -43,10 +44,10 @@ const experience = [
     location: "Montabaur",
     role: "Ausbildung Fachinformatiker für Anwendungsentwicklung",
     bullets: [
+      "Fullstack-Entwicklung komplexer Webanwendungen mit Laravel (inkl. Ökosystem wie Spatie), Vue.js und React",
+      "Erweiterung des firmeneigenen CRM um umfangreiche Geschäftslogik und interne Prozesse",
       "Frontend-Entwicklung mit Vue.js, React und modernen JavaScript-Bibliotheken",
-      "Backend-Entwicklung mit Laravel und dazugehörigem Ökosystem (Spatie etc.)",
-      "Containerisierung mit Docker",
-      "Hosting von Webapplikationen",
+      "Containerisierung mit Docker und Hosting von Webapplikationen",
       "Ausbildung und Betreuung von Azubis und Praktikanten",
     ],
   },
@@ -102,7 +103,7 @@ const projects = [
       "Docker",
     ],
     description:
-      "Vollständig selbst entwickelter Hochzeits- und Eventplaner als Progressive Web App mit nativer Begleiter-App für Gäste (React Native / Expo). Gäste authentifizieren sich per QR-Code ohne Passwort; der persönliche Event-Hub bietet Fotogalerie mit Upload, Fotospiel mit delta-basiertem Aufgabenmodell, Trinkspiel mit physiologisch motivierter Punktberechnung und tokengesicherter Beamer-Slideshow. Backend durch rund 200 automatisierte Pest-Tests abgedeckt, dreistufiger Deploy-Prozess (develop → staging → production) mit CI-Guard gegen Compose-Drift. Live unter eveplan.de.",
+      "Vollständig selbst entwickelter Hochzeits- und Eventplaner als Progressive Web App mit nativer Begleiter-App für Gäste (React Native / Expo), die über eine JSON-API an das Laravel-Backend angebunden ist. Gäste authentifizieren sich per QR-Code ohne Passwort; der persönliche Event-Hub bietet Fotogalerie mit Upload, Fotospiel mit delta-basiertem Aufgabenmodell, Trinkspiel mit physiologisch motivierter Punktberechnung und tokengesicherter Beamer-Slideshow. Backend durch rund 200 automatisierte Pest-Tests abgedeckt, dreistufiger Deploy-Prozess (develop → staging → production) mit CI-Guard gegen Compose-Drift. Live unter eveplan.de.",
   },
   {
     client: "Portfolio — hommri.ch",
