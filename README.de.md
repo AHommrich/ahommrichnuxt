@@ -32,7 +32,7 @@ Sortiert von „technisch interessant" nach „UX-Feinschliff". Jeder Punkt verl
 3. **Sticky Header mit `IntersectionObserver`-gesteuerter aktiver Section** — der Header hebt den aktuellen Abschnitt ohne Scroll-Listener hervor; der Slider unter der Navigation wurde in fünf Iterationen für Mobile perf-optimiert.
    → [`components/AppHeader.vue`](components/AppHeader.vue)
 
-4. **Null Third-Party-Runtime** — keine Analytics, kein CDN, keine Google Fonts, keine externen Scripts. FontAwesome ist lokal gebündelt und tree-shaken; die Tech-Section nutzt lokale Simple-Icons-SVGs. Bewusste DSGVO-Haltung, kein Zufall: die Datenschutzerklärung sagt „keine Cookies, kein Tracking", und der Code hält sich daran.
+4. **Keine Third-Party-Tracker, cookiefreie Reichweitenmessung** — kein CDN, keine Google Fonts, keine externen Marketing-Scripts. FontAwesome ist lokal gebündelt und tree-shaken; die Tech-Section nutzt lokale Simple-Icons-SVGs. Einziges externes Skript ist die selbst gehostete, cookiefreie Analyse-Software **Umami** (`analytics.hommrich.app`) — ohne Cookies, ohne Geräte-IDs, ohne Profilbildung, daher ohne Einwilligungsbanner (§&nbsp;25 TDDDG, Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO). Nur aktiv, wenn `NUXT_PUBLIC_UMAMI_*` gesetzt ist.
    → [`nuxt.config.ts`](nuxt.config.ts), [`plugins/fontawesome.client.js`](plugins/fontawesome.client.js)
 
 5. **Tailwind CSS 4 über `@tailwindcss/vite`** — keine `tailwind.config.js`; Theme-Tokens leben im CSS über `@theme`. Dark Mode durchgängig via `dark:`-Klassen.
@@ -107,7 +107,7 @@ Eine einzelne Nuxt-3-App im SSR-Modus mit Nitro-Preset `node-server`. Alle Seite
 
 ## DSGVO / Datenschutz
 
-- **Keine Cookies, kein Tracking, keine Analytics.** Bestätigt per Grep, nicht nur per Policy.
+- **Keine Cookies, keine Third-Party-Tracker.** Reichweitenmessung ausschließlich über selbst gehostetes, cookiefreies Umami (§ 25 TDDDG-konform, kein Einwilligungsbanner).
 - **Keine Third-Party-Runtime-Assets.** FontAwesome + Simple Icons sind lokal gebündelt.
 - Impressum unter [`/impressum`](https://ahommrich.de/impressum) (§ 5 TMG)
 - Datenschutzerklärung unter [`/datenschutz`](https://ahommrich.de/datenschutz) (Art. 13 DSGVO)

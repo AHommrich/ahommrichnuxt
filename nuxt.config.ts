@@ -28,6 +28,17 @@ export default defineNuxtConfig({
     "~/assets/css/document.css",
   ],
   modules: ["@nuxt/eslint"],
+  runtimeConfig: {
+    public: {
+      // Self-hosted Umami (cookiefrei). Werte via NUXT_PUBLIC_UMAMI_WEBSITE_ID
+      // und NUXT_PUBLIC_UMAMI_API_HOST setzen. Ohne beide Werte wird kein
+      // Analytics-Skript geladen (siehe app.vue).
+      umami: {
+        websiteId: "",
+        apiHost: "",
+      },
+    },
+  },
   nitro: {
     // puppeteer-core must not be bundled by Rollup — it relies on dynamic
     // requires and a native Chromium binary resolved at runtime.

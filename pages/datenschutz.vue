@@ -58,16 +58,39 @@ useSeoMeta({
       </p>
     </AppCard>
 
-    <!-- 3. Cookies & Tracking -->
+    <!-- 3. Cookies & Reichweitenmessung -->
     <AppCard>
       <h3 class="text-lg font-semibold text-gray-200">
-        3. Cookies und Tracking
+        3. Cookies und Reichweitenmessung
       </h3>
       <p class="text-gray-200 text-sm leading-relaxed">
-        Diese Website verwendet <strong>keine Cookies</strong> und setzt
-        <strong>kein Tracking oder Analytics</strong> ein. Es werden keine
-        Nutzungsprofile erstellt und keine Daten an Drittanbieter wie Google
-        Analytics oder ähnliche Dienste übermittelt.
+        Diese Website verwendet <strong>keine Cookies</strong> und übermittelt
+        keine Daten an Drittanbieter wie Google Analytics oder ähnliche Dienste.
+      </p>
+      <p class="text-gray-200 text-sm leading-relaxed mt-4">
+        Zur Reichweitenmessung nutzen wir die selbst gehostete, datensparsame
+        Analyse-Software <strong>Umami</strong>. Umami arbeitet ohne Cookies,
+        ohne geräteübergreifende Kennungen und ohne die Bildung persönlicher
+        Profile. Es werden ausschließlich anonymisierte Nutzungsdaten
+        (z.&nbsp;B. aufgerufene Seiten, ungefähre Herkunft auf Länderebene,
+        verwendeter Browsertyp) erhoben; ein Rückschluss auf einzelne Personen
+        ist dabei nicht möglich, und die Daten verlassen unsere eigene, in
+        Deutschland gehostete Serverumgebung nicht. Ihre IP-Adresse wird dabei
+        nur kurzzeitig serverseitig verarbeitet, um wiederkehrende Aufrufe zu
+        erkennen und die ungefähre Herkunft zu bestimmen; sie wird nicht
+        gespeichert, sondern fließt lediglich in einen täglich wechselnden,
+        nicht umkehrbaren Kennwert ein. Die so erhobenen statistischen Daten
+        werden für höchstens 14 Monate aufbewahrt und anschließend gelöscht.
+        Rechtsgrundlage ist unser berechtigtes Interesse an einer statistischen
+        Auswertung und Verbesserung des Angebots gemäß Art.&nbsp;6 Abs.&nbsp;1
+        lit.&nbsp;f DSGVO.
+      </p>
+      <p class="text-gray-200 text-sm leading-relaxed mt-4">
+        Da diese Website selbst keinerlei Cookies oder sonstige Daten auf Ihrem
+        Endgerät speichert oder ausliest, die nicht für den Betrieb der Seite
+        unbedingt erforderlich sind, ist hierfür weder ein Einwilligungsbanner
+        noch eine Einwilligung nach
+        <strong>§&nbsp;25 TDDDG</strong> erforderlich.
       </p>
     </AppCard>
 
@@ -139,6 +162,6 @@ useSeoMeta({
       </p>
     </AppCard>
 
-    <p class="text-gray-400 text-xs italic text-right">Stand: Juli 2026</p>
+    <p class="text-gray-400 text-xs italic text-right">Stand: August 2026</p>
   </div>
 </template>

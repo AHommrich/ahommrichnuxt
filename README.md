@@ -32,7 +32,7 @@ Sorted from "engineering-interesting" to "UX polish". Each item links to the fil
 3. **Sticky header with `IntersectionObserver`-driven active section** — the header highlights the current section without scroll listeners; the slider under the nav has been perf-tuned across five iterations for mobile.
    → [`components/AppHeader.vue`](components/AppHeader.vue)
 
-4. **Zero third-party runtime** — no analytics, no CDN, no Google Fonts, no external scripts. FontAwesome is bundled locally and tree-shaken; the tech section uses local Simple Icons SVGs. This is a deliberate GDPR posture, not an accident: the privacy page states no cookies and no tracking are used, and the code matches.
+4. **No third-party trackers, cookieless analytics** — no CDN, no Google Fonts, no external marketing scripts. FontAwesome is bundled locally and tree-shaken; the tech section uses local Simple Icons SVGs. The only external script is the self-hosted, cookieless analytics tool **Umami** (`analytics.hommrich.app`) — no cookies, no device IDs, no profiling, hence no consent banner (§&nbsp;25 TDDDG, Art.&nbsp;6(1)(f) GDPR). Only active when `NUXT_PUBLIC_UMAMI_*` is set.
    → [`nuxt.config.ts`](nuxt.config.ts), [`plugins/fontawesome.client.js`](plugins/fontawesome.client.js)
 
 5. **Tailwind CSS 4 via `@tailwindcss/vite`** — no `tailwind.config.js`; theme tokens live in the CSS via `@theme`. Dark mode via Tailwind's `dark:` classes throughout.
@@ -107,7 +107,7 @@ Single Nuxt 3 app in SSR mode with the `node-server` Nitro preset. Pages are sta
 
 ## GDPR / data protection
 
-- **No cookies, no tracking, no analytics.** Confirmed by grep, not just by policy.
+- **No cookies, no third-party trackers.** Analytics exclusively via self-hosted, cookieless Umami (§ 25 TDDDG compliant, no consent banner).
 - **No third-party runtime assets.** FontAwesome + Simple Icons are bundled locally.
 - Imprint at [`/impressum`](https://ahommrich.de/impressum) (TMG § 5)
 - Privacy policy at [`/datenschutz`](https://ahommrich.de/datenschutz) (Art. 13 GDPR)
