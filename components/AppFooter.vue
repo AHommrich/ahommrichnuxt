@@ -22,14 +22,14 @@ defineProps<{
       />
 
       <div
-        class="relative z-10 mx-auto flex w-full transform justify-between px-12 py-2 shadow-lg"
+        class="relative z-10 mx-auto flex w-full transform items-center justify-between gap-3 px-4 py-2 shadow-lg sm:px-12"
       >
         <img
-          src="/img/hommri-logo.png"
+          src="/img/hommri-logo.svg"
           alt="hommri.ch"
-          class="h-12 w-auto self-center sm:h-14"
+          class="h-8 w-auto shrink-0 self-center sm:h-14"
         />
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-4 text-sm sm:gap-6 sm:text-base">
           <NuxtLink :to="'impressum'"> Impressum </NuxtLink>
           <NuxtLink :to="'datenschutz'"> Datenschutz </NuxtLink>
         </div>

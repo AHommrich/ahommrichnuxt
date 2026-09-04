@@ -20,6 +20,24 @@ const SECTION_IDS = [
 // not per frame).
 const activeSection = ref<string>("home");
 
+// Navigationspunkte (eine Quelle für Desktop-Inline-Nav und mobiles Dropdown).
+// Reihenfolge = SECTION_IDS.
+const navItems = [
+  { id: "home", label: "Home" },
+  { id: "ueber-mich", label: "Über mich" },
+  { id: "was-ich-mache", label: "Aktuell" },
+  { id: "technologien", label: "Skills" },
+  { id: "kontakt", label: "Kontakt" },
+] as const;
+
+// Mobiles Menü (Hamburger). Nur unterhalb des sm-Breakpoints sichtbar; das
+// Desktop-Inline-Nav samt Slider bleibt unberührt.
+const mobileOpen = ref(false);
+const handleMobileNav = (id: string) => {
+  scrollToSection(id);
+  mobileOpen.value = false;
+};
+
 // Template ref on the sliding underline. The rAF loop writes the slider's
 // transform straight to el.style instead of through Vue reactivity — same
 // pattern as AppTechSection's icon positioning loop. Slider is desktop only
@@ -259,56 +277,48 @@ onBeforeUnmount(() => {
       <!-- Logo — links back to the homepage -->
       <div class="text-lg font-bold">
         <NuxtLink to="/" class="text-lg font-bold">
-          <img src="/img/hommri-logo.png" alt="hommri.ch" class="h-10 w-auto" />
+          <img
+            src="/img/hommri-logo.svg"
+            alt="hommri.ch"
+            class="h-9 w-auto sm:h-10"
+          />
         </NuxtLink>
       </div>
 
-      <nav class="relative flex gap-6">
-        <!-- On the homepage: show section anchor links with active-state underline -->
+      <nav class="relative flex items-center">
         <template v-if="route.path === '/'">
-          <a
-            class="nav-link mb-2 cursor-pointer text-gray-200"
-            :class="{ 'is-active': activeSection === 'home' }"
-            @click.prevent="scrollToSection('home')"
-          >
-            Home
-          </a>
-          <a
-            class="nav-link mb-2 cursor-pointer text-gray-200"
-            :class="{ 'is-active': activeSection === 'ueber-mich' }"
-            @click.prevent="scrollToSection('ueber-mich')"
-          >
-            Über mich
-          </a>
-          <a
-            class="nav-link mb-2 cursor-pointer text-gray-200"
-            :class="{ 'is-active': activeSection === 'was-ich-mache' }"
-            @click.prevent="scrollToSection('was-ich-mache')"
-          >
-            Aktuell
-          </a>
-          <a
-            class="nav-link mb-2 cursor-pointer text-gray-200"
-            :class="{ 'is-active': activeSection === 'technologien' }"
-            @click.prevent="scrollToSection('technologien')"
-          >
-            Skills
-          </a>
-          <a
-            class="nav-link mb-2 cursor-pointer text-gray-200"
-            :class="{ 'is-active': activeSection === 'kontakt' }"
-            @click.prevent="scrollToSection('kontakt')"
-          >
-            Kontakt
-          </a>
+          <!-- Desktop: inline anchor links with sliding underline (sm and up) -->
+          <div class="relative hidden gap-6 sm:flex">
+            <a
+              v-for="item in navItems"
+              :key="item.id"
+              class="nav-link mb-2 cursor-pointer text-gray-200"
+              :class="{ 'is-active': activeSection === item.id }"
+              @click.prevent="scrollToSection(item.id)"
+            >
+              {{ item.label }}
+            </a>
 
-          <!-- Sliding underline — desktop only; mobile uses the static per-tab
-               underline on .nav-link.is-active (see <style>). transform written
-               directly by the rAF loop. -->
-          <div
-            ref="sliderEl"
-            class="sliding-line pointer-events-none absolute bottom-0 hidden h-[2px] bg-gray-200 sm:block"
-          />
+            <!-- Sliding underline — desktop only; transform written by the rAF loop. -->
+            <div
+              ref="sliderEl"
+              class="sliding-line pointer-events-none absolute bottom-0 hidden h-[2px] bg-gray-200 sm:block"
+            />
+          </div>
+
+          <!-- Mobile: hamburger toggle (below sm) -->
+          <button
+            type="button"
+            class="mobile-toggle flex flex-col justify-center sm:hidden"
+            :class="{ 'is-open': mobileOpen }"
+            :aria-expanded="mobileOpen"
+            aria-label="Menü"
+            @click="mobileOpen = !mobileOpen"
+          >
+            <span class="bar" />
+            <span class="bar" />
+            <span class="bar" />
+          </button>
         </template>
 
         <!-- On all other pages (e.g. Impressum): show a back link instead -->
@@ -317,6 +327,24 @@ onBeforeUnmount(() => {
             Zurück
           </NuxtLink>
         </template>
+      </nav>
+    </div>
+
+    <!-- Mobile dropdown menu (below sm, homepage only) -->
+    <div
+      v-if="route.path === '/' && mobileOpen"
+      class="relative z-10 sm:hidden"
+    >
+      <nav class="flex flex-col gap-1 px-4 pb-4 pt-1">
+        <a
+          v-for="item in navItems"
+          :key="item.id"
+          class="mobile-link cursor-pointer text-gray-200"
+          :class="{ 'mobile-link-active': activeSection === item.id }"
+          @click.prevent="handleMobileNav(item.id)"
+        >
+          {{ item.label }}
+        </a>
       </nav>
     </div>
   </header>
@@ -349,5 +377,53 @@ onBeforeUnmount(() => {
     box-shadow: none;
     transition: none;
   }
+}
+
+/* Mobile hamburger toggle: three bars that morph into an X when open.
+   Display/visibility is controlled by Tailwind (flex + sm:hidden) so it never
+   leaks onto desktop — the scoped rules only handle sizing and the bars. */
+.mobile-toggle {
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+.mobile-toggle .bar {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 2px;
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+.mobile-toggle.is-open .bar:nth-child(1) {
+  transform: translateY(8.5px) rotate(45deg);
+}
+.mobile-toggle.is-open .bar:nth-child(2) {
+  opacity: 0;
+}
+.mobile-toggle.is-open .bar:nth-child(3) {
+  transform: translateY(-8.5px) rotate(-45deg);
+}
+
+/* Mobile dropdown links */
+.mobile-link {
+  display: block;
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 1.05rem;
+}
+.mobile-link:last-child {
+  border-bottom: 0;
+}
+.mobile-link-active {
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 #e5e7eb;
+  padding-left: 12px;
 }
 </style>
