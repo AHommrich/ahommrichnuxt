@@ -21,15 +21,21 @@ describe("AppHeader", () => {
     vi.mocked(useRoute).mockReset();
   });
 
-  it("renders the four section anchor links on the homepage", () => {
+  it("renders the five section anchor links on the homepage", () => {
     vi.mocked(useRoute).mockReturnValue({ path: "/" } as ReturnType<
       typeof useRoute
     >);
     const wrapper = mount(AppHeader, { global: { stubs: globalStubs } });
     const navLinks = wrapper.findAll(".nav-link");
-    expect(navLinks.length).toBe(4);
+    expect(navLinks.length).toBe(5);
     const labels = navLinks.map((l) => l.text());
-    expect(labels).toEqual(["Home", "Über mich", "Aktuell", "Skills"]);
+    expect(labels).toEqual([
+      "Home",
+      "Über mich",
+      "Aktuell",
+      "Skills",
+      "Kontakt",
+    ]);
   });
 
   it("shows the desktop sliding underline element on the homepage", () => {

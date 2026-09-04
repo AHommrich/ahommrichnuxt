@@ -22,12 +22,16 @@ describe("pages/impressum.vue", () => {
     expect(mailtos.length).toBeGreaterThan(0);
   });
 
-  it("declares the private-use / no-commercial-use disclaimer", () => {
-    // Content-agnostic guard: key phrases that would signal the disclaimer is gone.
+  it("declares a proper business imprint (§ 5 DDG, Kleinunternehmer § 19 UStG)", () => {
+    // Seit Gewerbeanmeldung + geschäftlichem Kontaktformular ist die Seite gewerblich.
+    // Die frühere „privat / keine gewerbliche Nutzung"-Aussage war damit falsch und
+    // wurde bewusst durch ein korrektes Gewerbe-Impressum ersetzt.
     const wrapper = mount(Impressum, { global: { stubs } });
     const text = wrapper.text();
-    expect(text).toMatch(/privat/i);
-    expect(text).toMatch(/keine gewerbliche/i);
+    expect(text).toMatch(/§\s*5\s*DDG/i);
+    expect(text).toMatch(/§\s*19\s*UStG/i);
+    // Die alte, nun unzutreffende Aussage darf NICHT mehr auftauchen.
+    expect(text).not.toMatch(/keine gewerbliche/i);
   });
 
   it("renders the Bildnachweise (photo credits) section", () => {

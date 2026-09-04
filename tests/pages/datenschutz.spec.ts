@@ -13,14 +13,15 @@ describe("pages/datenschutz.vue", () => {
     expect(wrapper.text()).toContain("Datenschutzerklärung");
   });
 
-  it("renders the five DSGVO sections in numbered order", () => {
+  it("renders the six DSGVO sections in numbered order", () => {
     const wrapper = mount(Datenschutz, { global: { stubs } });
     const text = wrapper.text();
     expect(text).toContain("1. Verantwortlicher");
     expect(text).toContain("2. Hosting");
-    expect(text).toContain("3. Cookies und Tracking");
+    expect(text).toContain("3. Cookies und Reichweitenmessung");
     expect(text).toContain("4. Externe Links");
-    expect(text).toContain("5. Ihre Rechte");
+    expect(text).toContain("5. Kontaktformular");
+    expect(text).toContain("6. Ihre Rechte");
   });
 
   it("names Hetzner as hosting provider with a German server location", () => {
@@ -32,11 +33,11 @@ describe("pages/datenschutz.vue", () => {
     expect(text).toMatch(/Nürnberg|Deutschland/);
   });
 
-  it("declares no cookies and no tracking", () => {
+  it("declares no cookies and no third-party tracking", () => {
     const wrapper = mount(Datenschutz, { global: { stubs } });
     const text = wrapper.text();
     expect(text).toMatch(/keine Cookies/i);
-    expect(text).toMatch(/kein Tracking/i);
+    expect(text).toMatch(/keine Daten an Drittanbieter|Google Analytics/i);
   });
 
   it("lists all six DSGVO subject-rights articles", () => {

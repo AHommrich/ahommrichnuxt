@@ -20,9 +20,7 @@ useSeoMeta({
         Dernbacher Str. 26<br />
         56410 Montabaur<br />
         E-Mail:
-        <a href="mailto:andre-hommrich@web.de" class="underline"
-          >andre-hommrich@web.de</a
-        >
+        <a href="mailto:info@hommri.ch" class="underline">info@hommri.ch</a>
       </p>
     </AppCard>
 
@@ -115,9 +113,53 @@ useSeoMeta({
       </p>
     </AppCard>
 
-    <!-- 5. Ihre Rechte -->
+    <!-- 5. Kontaktformular -->
     <AppCard>
-      <h3 class="text-lg font-semibold text-gray-200">5. Ihre Rechte</h3>
+      <h3 class="text-lg font-semibold text-gray-200">5. Kontaktformular</h3>
+      <p class="text-gray-200 text-sm leading-relaxed">
+        Wenn Sie das Kontaktformular nutzen, verarbeite ich die von Ihnen
+        angegebenen Daten (Vor- und Nachname, E-Mail-Adresse, optional
+        Telefonnummer, das gewählte Anliegen und Thema sowie Ihre Nachricht), um
+        Ihre Anfrage zu bearbeiten und zu beantworten. Zusätzlich werden der
+        Zeitpunkt und die Version des von Ihnen bestätigten Datenschutzhinweises
+        protokolliert, um Ihre Einwilligung nachweisen zu können.
+      </p>
+      <p class="text-gray-200 text-sm leading-relaxed mt-4">
+        Rechtsgrundlage ist bei Anfragen mit dem Ziel eines Vertrags- oder
+        Geschäftsverhältnisses Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO, im
+        Übrigen unser berechtigtes Interesse an der Beantwortung Ihrer Anfrage
+        gemäß Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO.
+      </p>
+      <p class="text-gray-200 text-sm leading-relaxed mt-4">
+        Für die technische Entgegennahme und die zuverlässige Zustellung der
+        Formularnachricht per E-Mail nutze ich einen von mir selbst betriebenen,
+        zentralen Zustelldienst („hommrich-hub"), der auf derselben in
+        Deutschland gehosteten Serverinfrastruktur (Hetzner, siehe
+        Ziffer&nbsp;2) läuft. Der eigentliche E-Mail-Versand erfolgt über den
+        Dienstleister
+        <strong>Brevo (Sendinblue GmbH)</strong>, Köpenicker Straße 126, 10179
+        Berlin, der als Auftragsverarbeiter auf Grundlage eines Vertrags nach
+        Art.&nbsp;28 DSGVO tätig ist. Datenschutzerklärung von Brevo:
+        <a
+          href="https://www.brevo.com/de/legal/privacypolicy/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline"
+        >
+          brevo.com/de/legal/privacypolicy
+        </a>
+      </p>
+      <p class="text-gray-200 text-sm leading-relaxed mt-4">
+        Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage
+        verwendet und nicht zu Werbezwecken genutzt. Ich lösche die Daten,
+        sobald die Bearbeitung Ihrer Anfrage abgeschlossen ist und keine
+        gesetzlichen Aufbewahrungspflichten entgegenstehen.
+      </p>
+    </AppCard>
+
+    <!-- 6. Ihre Rechte -->
+    <AppCard>
+      <h3 class="text-lg font-semibold text-gray-200">6. Ihre Rechte</h3>
       <p class="text-gray-200 text-sm leading-relaxed">
         Sie haben gegenüber dem Verantwortlichen folgende Rechte:
       </p>
@@ -143,8 +185,8 @@ useSeoMeta({
       </ul>
       <p class="text-gray-200 text-sm leading-relaxed">
         Zur Ausübung Ihrer Rechte wenden Sie sich bitte per E-Mail an:
-        <a href="mailto:andre-hommrich@web.de" class="underline text-gray-200"
-          >andre-hommrich@web.de</a
+        <a href="mailto:info@hommri.ch" class="underline text-gray-200"
+          >info@hommri.ch</a
         >
       </p>
       <p class="text-gray-200 text-sm leading-relaxed">

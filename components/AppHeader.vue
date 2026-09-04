@@ -11,6 +11,7 @@ const SECTION_IDS = [
   "ueber-mich",
   "was-ich-mache",
   "technologien",
+  "kontakt",
 ] as const;
 
 // Active section id — drives the mobile per-tab underline. On desktop the
@@ -258,7 +259,7 @@ onBeforeUnmount(() => {
       <!-- Logo — links back to the homepage -->
       <div class="text-lg font-bold">
         <NuxtLink to="/" class="text-lg font-bold">
-          <img src="@/assets/logo-white.svg" alt="Logo" class="h-10 w-auto" />
+          <img src="/img/hommri-logo.png" alt="hommri.ch" class="h-10 w-auto" />
         </NuxtLink>
       </div>
 
@@ -292,6 +293,13 @@ onBeforeUnmount(() => {
             @click.prevent="scrollToSection('technologien')"
           >
             Skills
+          </a>
+          <a
+            class="nav-link mb-2 cursor-pointer text-gray-200"
+            :class="{ 'is-active': activeSection === 'kontakt' }"
+            @click.prevent="scrollToSection('kontakt')"
+          >
+            Kontakt
           </a>
 
           <!-- Sliding underline — desktop only; mobile uses the static per-tab

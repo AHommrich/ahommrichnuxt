@@ -12,16 +12,26 @@ useSeoMeta({
     <!-- Contact info card -->
     <AppCard>
       <h2 class="text-2xl font-bold text-gray-200 sm:text-3xl">Impressum</h2>
+      <p class="text-gray-200 text-sm">Angaben gemäß § 5 DDG</p>
       <p class="text-gray-200">André Hommrich</p>
       <p class="text-gray-200">Dernbacher Str. 26</p>
       <p class="text-gray-200">56410 Montabaur</p>
-      <a href="mailto:andre-hommrich@web.de" class="text-gray-200 underline"
-        >andre-hommrich@web.de</a
+
+      <p class="text-gray-200 mt-4">Kontakt:</p>
+      <a href="mailto:info@hommri.ch" class="text-gray-200 underline"
+        >info@hommri.ch</a
       >
+      <a href="tel:+4915257415832" class="text-gray-200 underline"
+        >0152 57415832</a
+      >
+
       <p class="text-gray-200 text-sm mt-4">
-        Diese Website ist ein privat betriebenes Portfolio zur beruflichen
-        Selbstdarstellung. Es findet keine gewerbliche Nutzung statt; eine
-        Umsatzsteuer-Identifikationsnummer ist daher nicht vergeben.
+        Kleinunternehmer gemäß § 19 UStG: Es wird keine Umsatzsteuer ausgewiesen
+        und daher keine Umsatzsteuer-Identifikationsnummer geführt.
+      </p>
+      <p class="text-gray-200 text-sm mt-4">
+        Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV: André Hommrich
+        (Anschrift wie oben).
       </p>
     </AppCard>
 
@@ -44,24 +54,6 @@ useSeoMeta({
           auf
           <a
             href="https://unsplash.com/de/fotos/schwarzer-laptop-computer-mit-blauem-bildschirm-eingeschaltet-N5bT5RctFZ8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="underline"
-            >Unsplash</a
-          >
-        </li>
-        <li class="text-gray-200 text-sm">
-          Foto von
-          <a
-            href="https://unsplash.com/de/@marcsm?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="underline"
-            >Marc Sendra Martorell</a
-          >
-          auf
-          <a
-            href="https://unsplash.com/de/fotos/mann-im-schwarzen-hemd-fahrt-auf-schwarzem-mountainbike-YACP3Ldw57M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
             rel="noopener noreferrer"
             class="underline"

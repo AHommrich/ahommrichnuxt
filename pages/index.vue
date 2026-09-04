@@ -55,5 +55,6 @@ useHead({
     <AppAboutSection />
     <AppCurrentlySection />
     <AppTechSection />
+    <AppContactSection />
   </div>
 </template>
