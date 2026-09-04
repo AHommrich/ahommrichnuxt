@@ -50,7 +50,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Von Elektrotechnik bis Software Entwicklung.
+                Vom Elektrohandwerk zur Softwareentwicklung.
               </p>
             </div>
           </div>
@@ -79,7 +79,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Leidenschaftlich Lösungen finden.
+                Lösungen finden, die halten.
               </p>
             </div>
           </div>
@@ -137,7 +137,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Mit Begeisterung Wissen teilen und dazulernen.
+                Wissen teilen und dazulernen.
               </p>
             </div>
           </div>
@@ -279,7 +279,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Leidenschaftlich Lösungen finden.
+                  Lösungen finden, die halten.
                 </p>
               </div>
             </div>
@@ -306,7 +306,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Mit Begeisterung Wissen teilen und dazulernen.
+                  Wissen teilen und dazulernen.
                 </p>
               </div>
             </div>
@@ -335,7 +335,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Von Elektrotechnik bis Software Entwicklung.
+                  Vom Elektrohandwerk zur Softwareentwicklung.
                 </p>
               </div>
             </div>

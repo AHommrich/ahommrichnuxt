@@ -30,24 +30,25 @@
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              Mein Schwerpunkt liegt in der PHP Backend-Entwicklung – beruflich
-              mit Symfony, privat mit Laravel. Im Frontend setze ich primär auf
-              Vue.js, ergänzt durch TypeScript und CSS-Frameworks wie Tailwind
-              CSS und Bootstrap. Für mobile Anwendungen bringe ich zudem
-              Erfahrung mit React Native mit. Diese Kombination ermöglicht es
-              mir, Projekte ganzheitlich zu denken und als Fullstack-Entwickler
-              umzusetzen. KI-Tools wie Claude Code setze ich dabei bewusst als
-              Kooperationspartner ein – nicht als Ersatz für eigenes Denken,
-              sondern um effizienter und zielgerichteter zu arbeiten.
+              Mein Schwerpunkt ist die Backend-Entwicklung mit PHP, beruflich
+              mit Symfony, privat mit Laravel. Im Frontend arbeite ich vor allem
+              mit Vue.js, React und TypeScript, für das Styling mit Tailwind CSS
+              und Bootstrap. Für mobile Anwendungen bringe ich Erfahrung mit
+              React Native mit. So setze ich ein Projekt vom Datenbankmodell bis
+              zur Oberfläche selbst um. KI-Werkzeuge wie Claude Code nutze ich
+              dabei ganz bewusst. Sie nehmen mir Routine ab und machen mich
+              schneller. Die Entscheidungen und das Verständnis bleiben bei mir.
             </p>
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              Containerisierung mit Docker, Versionskontrolle mit Git,
-              CI/CD-Pipelines und Datenbankarbeit mit MySQL gehören für mich zum
-              Alltag. Ich halte mich ständig auf dem neuesten Stand – ob neue
-              Frameworks, Deployment-Konzepte oder moderne
-              Entwicklungsworkflows.
+              Docker, Git, CI/CD-Pipelines und Datenbanken mit MySQL oder
+              MariaDB gehören für mich zum Alltag. Wenn ich mehrere Websites
+              betreue, laufen sie bei mir über eine gemeinsame, selbst gehostete
+              Infrastruktur zusammen, sodass ich Wartung und Betrieb an einer
+              Stelle im Griff habe und nicht überall einzeln nachbessern muss.
+              Neue Frameworks und Werkzeuge sehe ich mir an, sobald sie bei
+              echten Aufgaben weiterhelfen, und nicht, weil sie gerade neu sind.
             </p>
           </div>
 

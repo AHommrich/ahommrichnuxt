@@ -186,8 +186,10 @@ const inputClass =
         <p
           class="mt-3 max-w-2xl text-sm leading-relaxed text-gray-200/90 md:text-base"
         >
-          Ob konkrete Projektidee, Zusammenarbeit oder einfach eine Frage —
-          schildern Sie kurz Ihr Anliegen. Ich melde mich persönlich bei Ihnen.
+          Haben Sie ein Website-Vorhaben oder eine technische Frage? Oder
+          möchten Sie sich einfach unverbindlich austauschen? Schreiben Sie mir
+          kurz, worum es geht. Ich melde mich persönlich bei Ihnen und gebe
+          Ihnen eine ehrliche Einschätzung.
         </p>
 
         <!-- Erfolgsmeldung -->

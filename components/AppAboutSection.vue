@@ -22,18 +22,20 @@ import { getCurrentAge } from "~/utils/age";
         >
           <!-- Age is computed at render time so it stays accurate without manual updates -->
           Mein Name ist André Hommrich. Ich bin {{ getCurrentAge() }} Jahre alt
-          und stamme aus dem wunderschönen Westerwald. Menschen beschreiben mich
-          als freundlich, hilfsbereit und leidenschaftlich darin, mein Wissen
-          und meine Begeisterung für Technik mit anderen zu teilen.
+          und komme aus dem Westerwald. Am meisten treibt mich die Frage an,
+          warum Dinge so funktionieren, wie sie funktionieren. Ich gebe mich
+          selten mit einer Antwort zufrieden, bevor ich sie wirklich verstanden
+          habe.
         </p>
         <p
           class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
         >
-          Besonders spannend finde ich es, mich in technische Herausforderungen
-          zu vertiefen und diese mit einem Hang zur Perfektion zu lösen. Mein
-          logisches Denken und technisches Verständnis ziehen sich wie ein roter
-          Faden durch mein Leben – die ideale Kombination für komplexe Projekte,
-          die Genauigkeit und Kreativität verlangen.
+          Angefangen habe ich im Handwerk, als Elektroniker für Energie- und
+          Gebäudetechnik. Schon dort wollte ich immer verstehen, was hinter
+          einer Aufgabe steckt, statt sie nur abzuarbeiten. In der
+          Softwareentwicklung ist dieses Nachfragen zu meinem wichtigsten
+          Werkzeug geworden. Hier zahlt es sich aus, ein Problem erst ganz zu
+          durchdringen, bevor man es löst.
         </p>
         <!-- Inline photo shown only on mobile/tablet (hidden on lg and above) -->
         <img
@@ -44,15 +46,12 @@ import { getCurrentAge } from "~/utils/age";
         <p
           class="pt-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
         >
-          Meine berufliche Laufbahn begann im Handwerk – als ausgebildeter
-          Elektroniker m.F. Energie u. Gebäudetechnik konnte ich früh
-          Projekterfahrung in der Praxis sammeln und verstehen, wie moderne
-          Arbeitsprozesse funktionieren. Heute arbeite ich als ausgebildeter
-          Fachinformatiker für Anwendungsentwicklung aktiv an realen
-          Kundenprojekten und bewege mich dabei täglich mit modernen
-          Technologien und Konzepten. Entwicklung ist nicht nur mein Beruf,
-          sondern meine Leidenschaft – weshalb ich mich ständig privat
-          weiterbilde und eigene Projekte umsetze.
+          Heute arbeite ich hauptberuflich als Fachinformatiker für
+          Anwendungsentwicklung an realen Projekten. Daneben entwickle ich
+          Websites für kleinere Unternehmen und lokale Betriebe oder Vereine
+          sowie private Anwendungen für mich selbst, von der ersten Idee bis in
+          den laufenden Betrieb. Was mich dabei antreibt, ist immer derselbe
+          Anspruch: verstehen, bevor man baut, und bauen, dass es hält.
         </p>
       </AppCard>
 

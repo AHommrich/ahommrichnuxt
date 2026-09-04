@@ -15,7 +15,7 @@ const MODULES: ReadonlyArray<SceneModule> = [
   {
     key: "frontend",
     title: "Website (Frontend)",
-    text: "Alles, was du im Browser siehst und anklickst: Texte, Bilder, Buttons, Formulare. Die sichtbare Oberfläche des Produkts — geladen aus dem Netz, ohne Installation, direkt im Browser nutzbar.",
+    text: "Alles, was Sie im Browser sehen und anklicken: Texte, Bilder, Buttons und Formulare. Die sichtbare Oberfläche der Anwendung. Sie wird aus dem Netz geladen und läuft ohne Installation direkt im Browser.",
   },
   {
     key: "mobile",
@@ -25,12 +25,12 @@ const MODULES: ReadonlyArray<SceneModule> = [
   {
     key: "backend",
     title: "Backend (Maschinenraum)",
-    text: "Der unsichtbare Motor. Hier wird gerechnet, geprüft und entschieden: Anmeldungen, Berechtigungen, Abläufe — und Hintergrund-Aufgaben wie Mails oder Schnittstellen. Nutzer sehen ihn nie, ohne ihn läuft aber nichts.",
+    text: "Der unsichtbare Motor. Hier wird gerechnet, geprüft und entschieden, etwa Anmeldungen, Berechtigungen und Abläufe. Dazu kommen Hintergrund-Aufgaben wie Mails oder Schnittstellen. Nutzer sehen ihn nie, ohne ihn läuft aber nichts.",
   },
   {
     key: "db",
     title: "Datenbank (Archiv)",
-    text: "Der sichere Ort, an dem alle Daten dauerhaft liegen: Konten, Inhalte, Einstellungen. Beim nächsten Login ist alles wieder da — auch nach Neustart, Update oder von einem anderen Gerät aus.",
+    text: "Der sichere Ort, an dem alle Daten dauerhaft liegen: Konten, Inhalte und Einstellungen. Beim nächsten Login ist alles wieder da, auch nach einem Neustart, einem Update oder von einem anderen Gerät aus.",
   },
   {
     key: "ops",

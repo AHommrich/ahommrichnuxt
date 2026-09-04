@@ -30,20 +30,21 @@
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              Als Fullstack-Webentwickler arbeite ich täglich an realen
-              Projekten – von der Planung über die Umsetzung bis hin zur
-              Wartung. In meiner Ausbildungszeit und darüber hinaus habe ich ein
-              breites technisches Fundament aufgebaut, das ich seitdem
-              kontinuierlich erweitere.
+              Als Fullstack-Webentwickler begleite ich eine Anwendung von der
+              ersten Planung bis in den laufenden Betrieb. Vieles, was ich baue,
+              betreibe ich danach auch selbst. Deshalb achte ich schon beim
+              Entwickeln darauf, dass es später zuverlässig läuft. Ich prüfe zum
+              Beispiel, ob sich ein Backup im Ernstfall wirklich wiederherstellen
+              lässt, und behandle Datenschutz als festen Teil der Technik und
+              nicht als etwas, das man am Ende dazusetzt.
             </p>
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              In meiner Zeit als Entwickler habe ich gemerkt, wie gut der Beruf
-              zu mir passt. Er verbindet das, was mich sowieso antreibt —
-              Neugier, logisches Denken und technisches Verständnis. Komplexe
-              Probleme zu lösen und dabei ständig dazuzulernen ist im Alltag
-              genau das, was mir an dem Job am meisten Spaß macht.
+              In den Jahren als Entwickler habe ich gemerkt, wie gut der Beruf
+              zu mir passt: Ich lerne ständig dazu und darf an Problemen
+              tüfteln, die sich mit der ersten naheliegenden Lösung nicht
+              erledigen. Das macht mir an der Arbeit am meisten Spaß.
             </p>
           </div>
         </div>
