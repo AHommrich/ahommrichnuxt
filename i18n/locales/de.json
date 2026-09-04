@@ -1,0 +1,385 @@
+{
+  "nav": {
+    "home": "Home",
+    "ueber-mich": "Über mich",
+    "was-ich-mache": "Aktuell",
+    "technologien": "Skills",
+    "kontakt": "Kontakt"
+  },
+  "common": {
+    "back": "Zurück",
+    "switchLanguage": "Sprache wechseln",
+    "menu": "Menü"
+  },
+  "seo": {
+    "home": {
+      "title": "André Hommrich — Fullstack-Entwickler",
+      "description": "Portfolio von André Hommrich — Fullstack-Entwickler aus dem Westerwald. Symfony, Laravel, Vue.js, TypeScript und Docker."
+    },
+    "impressum": {
+      "title": "Impressum — André Hommrich"
+    },
+    "datenschutz": {
+      "title": "Datenschutzerklärung — André Hommrich"
+    }
+  },
+  "hero": {
+    "hallo": "Hallo",
+    "name": "Ich bin André",
+    "captions": {
+      "elektro": "Vom Elektrohandwerk zur Softwareentwicklung.",
+      "loesungen": "Lösungen finden, die halten.",
+      "musik": "Mit Musik durch den Tag.",
+      "wissen": "Wissen teilen und dazulernen.",
+      "freizeit": "Freizeit zu Fuß und mit vier Pfoten."
+    }
+  },
+  "about": {
+    "heading": "Wer bin ich?",
+    "photoAlt": "André bei der Arbeit",
+    "p1": "Mein Name ist André Hommrich. Ich bin {age} Jahre alt und komme aus dem Westerwald. Am meisten treibt mich die Frage an, warum Dinge so funktionieren, wie sie funktionieren. Ich gebe mich selten mit einer Antwort zufrieden, bevor ich sie wirklich verstanden habe.",
+    "p2": "Angefangen habe ich im Handwerk, als Elektroniker für Energie- und Gebäudetechnik. Schon dort wollte ich immer verstehen, was hinter einer Aufgabe steckt, statt sie nur abzuarbeiten. In der Softwareentwicklung ist dieses Nachfragen zu meinem wichtigsten Werkzeug geworden. Hier zahlt es sich aus, ein Problem erst ganz zu durchdringen, bevor man es löst.",
+    "p3": "Heute arbeite ich hauptberuflich als Fachinformatiker für Anwendungsentwicklung an realen Projekten. Daneben entwickle ich Websites für kleinere Unternehmen und lokale Betriebe oder Vereine sowie private Anwendungen für mich selbst, von der ersten Idee bis in den laufenden Betrieb. Was mich dabei antreibt, ist immer derselbe Anspruch: verstehen, bevor man baut, und bauen, dass es hält."
+  },
+  "currently": {
+    "heading": "Was ich aktuell mache?",
+    "p1": "Als Fullstack-Webentwickler begleite ich eine Anwendung von der ersten Planung bis in den laufenden Betrieb. Vieles, was ich baue, betreibe ich danach auch selbst. Deshalb achte ich schon beim Entwickeln darauf, dass es später zuverlässig läuft. Ich prüfe zum Beispiel, ob sich ein Backup im Ernstfall wirklich wiederherstellen lässt, und behandle Datenschutz als festen Teil der Technik und nicht als etwas, das man am Ende dazusetzt.",
+    "p2": "In den Jahren als Entwickler habe ich gemerkt, wie gut der Beruf zu mir passt: Ich lerne ständig dazu und darf an Problemen tüfteln, die sich mit der ersten naheliegenden Lösung nicht erledigen. Das macht mir an der Arbeit am meisten Spaß."
+  },
+  "tech": {
+    "heading": "Womit ich arbeite",
+    "p1": "Mein Schwerpunkt ist die Backend-Entwicklung mit PHP, beruflich mit Symfony, privat mit Laravel. Im Frontend arbeite ich vor allem mit Vue.js, React und TypeScript, für das Styling mit Tailwind CSS und Bootstrap. Für mobile Anwendungen bringe ich Erfahrung mit React Native mit. So setze ich ein Projekt vom Datenbankmodell bis zur Oberfläche selbst um. KI-Werkzeuge wie Claude Code nutze ich dabei ganz bewusst. Sie nehmen mir Routine ab und machen mich schneller. Die Entscheidungen und das Verständnis bleiben bei mir.",
+    "p2": "Docker, Git, CI/CD-Pipelines und Datenbanken mit MySQL oder MariaDB gehören für mich zum Alltag. Wenn ich mehrere Websites betreue, laufen sie bei mir über eine gemeinsame, selbst gehostete Infrastruktur zusammen, sodass ich Wartung und Betrieb an einer Stelle im Griff habe und nicht überall einzeln nachbessern muss. Neue Frameworks und Werkzeuge sehe ich mir an, sobald sie bei echten Aufgaben weiterhelfen, und nicht, weil sie gerade neu sind.",
+    "toggle": {
+      "animation": "Animation",
+      "technologien": "Technologien"
+    },
+    "aria": {
+      "startAnimation": "Animation starten",
+      "showTech": "Technologien anzeigen"
+    },
+    "disclaimer": "Eine Auswahl an Tools & Technologien, die ich regelmäßig einsetze."
+  },
+  "scene": {
+    "modules": {
+      "frontend": {
+        "title": "Website (Frontend)",
+        "text": "Alles, was Sie im Browser sehen und anklicken: Texte, Bilder, Buttons und Formulare. Die sichtbare Oberfläche der Anwendung. Sie wird aus dem Netz geladen und läuft ohne Installation direkt im Browser."
+      },
+      "mobile": {
+        "title": "App (Mobile)",
+        "text": "Wird direkt aufs Smartphone installiert: Touch-Bedienung, kleine Bildschirme, Zugriff auf Kamera, GPS und Sensoren. Funktioniert auch ohne Internet und liegt jederzeit griffbereit auf dem Homescreen."
+      },
+      "backend": {
+        "title": "Backend (Maschinenraum)",
+        "text": "Der unsichtbare Motor. Hier wird gerechnet, geprüft und entschieden, etwa Anmeldungen, Berechtigungen und Abläufe. Dazu kommen Hintergrund-Aufgaben wie Mails oder Schnittstellen. Nutzer sehen ihn nie, ohne ihn läuft aber nichts."
+      },
+      "db": {
+        "title": "Datenbank (Archiv)",
+        "text": "Der sichere Ort, an dem alle Daten dauerhaft liegen: Konten, Inhalte und Einstellungen. Beim nächsten Login ist alles wieder da, auch nach einem Neustart, einem Update oder von einem anderen Gerät aus."
+      },
+      "ops": {
+        "title": "Deployment, Hosting & Versionierung",
+        "text": "Liegt über allem: Code wird versioniert (jederzeit zurück zu früheren Ständen), auf Servern betrieben (Hosting) und ohne Ausfall live geschaltet (Deployment). So bleibt das System erreichbar und veränderbar."
+      }
+    },
+    "svg": {
+      "aria": "Interaktive Darstellung eines Fullstack-Systems: Website, App, Backend, Datenbank und Deployment-/Hosting-Schicht",
+      "overall": "FULLSTACK-ENTWICKLUNG",
+      "backButton": "Zurück zur Übersicht",
+      "tags": {
+        "frontend": "Frontend",
+        "backend": "Backend"
+      },
+      "ops": {
+        "aria": "Deployment, Hosting und Versionierung",
+        "label": "Deployment, Hosting & Versionierung"
+      },
+      "frontend": {
+        "aria": "Website im Browser",
+        "label": "Website"
+      },
+      "mobile": {
+        "aria": "App fürs Smartphone",
+        "label": "App"
+      },
+      "backend": {
+        "aria": "Backend, der Maschinenraum",
+        "label": "Serveranwendung / API"
+      },
+      "db": {
+        "aria": "Datenbank, das Archiv",
+        "label": "Datenbank"
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "heading": "Schreiben Sie mir",
+    "intro": "Haben Sie ein Website-Vorhaben oder eine technische Frage? Oder möchten Sie sich einfach unverbindlich austauschen? Schreiben Sie mir kurz, worum es geht. Ich melde mich persönlich bei Ihnen und gebe Ihnen eine ehrliche Einschätzung.",
+    "success": {
+      "title": "Vielen Dank für Ihre Nachricht!",
+      "body": "Ich habe Ihre Anfrage erhalten und melde mich zeitnah bei Ihnen.",
+      "again": "Weitere Nachricht schreiben"
+    },
+    "errorsSummary": "Bitte prüfen Sie Ihre Angaben:",
+    "legend": "Worum geht es?",
+    "intents": {
+      "projekt": {
+        "label": "Projekt & Website",
+        "topicLabel": "Worum geht es bei Ihrem Projekt?"
+      },
+      "allgemein": {
+        "label": "Allgemeine Anfrage",
+        "topicLabel": "Wie kann ich helfen?"
+      }
+    },
+    "topics": {
+      "neuer-webauftritt": "Neuer Webauftritt",
+      "website-ueberarbeiten": "Bestehende Website überarbeiten",
+      "hosting-betreuung": "Hosting & Betreuung",
+      "unverbindlich-austauschen": "Erst mal unverbindlich austauschen",
+      "allgemeine-frage": "Allgemeine Frage",
+      "feedback": "Feedback",
+      "allgemein-sonstiges": "Sonstiges"
+    },
+    "fields": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "optional": "(optional)",
+      "message": "Ihre Nachricht"
+    },
+    "honeypot": "Website (bitte leer lassen)",
+    "consent": {
+      "pre": "Ich habe den",
+      "link": "Datenschutzhinweis",
+      "post": "zur Kenntnis genommen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden."
+    },
+    "submit": {
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet …"
+    },
+    "validation": {
+      "firstName": "Bitte geben Sie Ihren Vornamen an.",
+      "lastName": "Bitte geben Sie Ihren Nachnamen an.",
+      "emailRequired": "Bitte geben Sie Ihre E-Mail-Adresse an.",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
+      "message": "Bitte beschreiben Sie kurz Ihr Anliegen.",
+      "privacy": "Bitte bestätigen Sie die Kenntnisnahme des Datenschutzhinweises."
+    },
+    "sendError": "Die Nachricht konnte gerade nicht gesendet werden. Bitte versuchen Sie es später erneut oder schreiben Sie mir direkt an info{'@'}hommri.ch."
+  },
+  "footer": {
+    "githubAria": "GitHub-Profil von André Hommrich",
+    "impressum": "Impressum",
+    "datenschutz": "Datenschutz"
+  },
+  "cv": {
+    "seo": {
+      "title": "Lebenslauf — André Hommrich",
+      "description": "Lebenslauf von André Hommrich."
+    },
+    "jobTitle": "Fullstack-Webentwickler",
+    "portraitAlt": "Portraitfoto von André Hommrich",
+    "actions": {
+      "home": "← Zur Startseite",
+      "pdf": "Als PDF speichern",
+      "pdfLoading": "Wird generiert…"
+    },
+    "labels": {
+      "kontakt": "Kontakt",
+      "skillset": "Skillset",
+      "sprachen": "Sprachen",
+      "weiterbildung": "Weiterbildung",
+      "fuehrerschein": "Führerschein",
+      "berufserfahrung": "Berufserfahrung",
+      "projekthistorie": "Projekthistorie"
+    },
+    "skills": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databases": "Datenbanken",
+      "devops": "DevOps & Tooling",
+      "ai": "KI-Werkzeuge"
+    },
+    "languages": {
+      "german": { "name": "Deutsch", "level": "Muttersprache" },
+      "english": {
+        "name": "Englisch",
+        "level": "sicher im Verständnis, täglich im beruflichen Einsatz"
+      }
+    },
+    "training": {
+      "year": "2020",
+      "item": "Elektrofachkraft mit erweiterten Sicherheitskenntnissen"
+    },
+    "license": {
+      "b": "Klasse B",
+      "forklift": "Staplerführerschein"
+    },
+    "profileBullets": [
+      "Umfassende Erfahrung im Projektgeschäft",
+      "Leidenschaft für Wissensvermittlung und kontinuierliche Weiterbildung",
+      "Stark ausgeprägte Kunden- und Serviceorientierung",
+      "Fundierte Kenntnisse in der Fullstack-Webentwicklung",
+      "Begeisterung für komplexe Herausforderungen"
+    ],
+    "experience": {
+      "creavo": {
+        "period": "Seit 06.2025",
+        "role": "PHP Webentwickler",
+        "bullets": [
+          "Weiterentwicklung und Betreuung von Software mit umfangreicher Geschäftslogik",
+          "Neue Funktionen von der Planung bis zur Auslieferung, gemeinsam im Entwicklungsteam",
+          "Backend-Entwicklung mit Symfony und dazugehörigem Ökosystem (Doctrine etc.)",
+          "Frontend-Entwicklung mit Twig, Bootstrap und einzelnen JavaScript-Packages nach ES6",
+          "CI/CD-Konfigurationen und umfangreiches Testing mit PHPUnit",
+          "Mitgestaltung der KI-gestützten Entwicklung (Claude Code, Codex & Junie) inkl. gemeinsamer Coding-Standards"
+        ]
+      },
+      "awesome": {
+        "period": "08.2022 – 06.2025",
+        "role": "Ausbildung Fachinformatiker für Anwendungsentwicklung",
+        "bullets": [
+          "Fullstack-Entwicklung komplexer Webanwendungen mit Laravel (inkl. Ökosystem wie Spatie), Vue.js und React",
+          "Erweiterung des firmeneigenen CRM um umfangreiche Geschäftslogik und interne Prozesse",
+          "Frontend-Entwicklung mit Vue.js, React und modernen JavaScript-Bibliotheken",
+          "Containerisierung mit Docker und Hosting von Webapplikationen",
+          "Ausbildung und Betreuung von Azubis und Praktikanten"
+        ]
+      },
+      "prior1": {
+        "period": "09.2018 – 07.2022",
+        "role": "Servicetechniker",
+        "bullets": [
+          "Rechenzentrum- und Serverraum-Installationen",
+          "Netzwerk-Verkabelungen",
+          "Wartungen & Inbetriebnahmen",
+          "Vorarbeiter-Tätigkeiten"
+        ]
+      },
+      "modul": {
+        "period": "09.2017 – 08.2018",
+        "role": "Fertigung & Montage",
+        "bullets": [
+          "Elektro-Prüfungen und Fertigung von medizinischen Versorgungseinheiten",
+          "Installation der Produkte vor Ort"
+        ]
+      },
+      "bruch": {
+        "period": "08.2014 – 08.2017",
+        "role": "Ausbildung & Geselle — Elektriker für Energie- und Gebäudetechnik",
+        "bullets": [
+          "Rohbau-Installationen",
+          "Kundendienst",
+          "TV-Sat-Anlagen - KNX/EIB - Netzwerktechnik"
+        ],
+        "extra": "Abschluss: Sekundarabschluss I"
+      }
+    },
+    "projects": {
+      "eventplaner": {
+        "description": "Vollständig selbst entwickelter Hochzeits- und Eventplaner als Progressive Web App mit nativer Begleiter-App für Gäste (React Native / Expo), die über eine JSON-API an das Laravel-Backend angebunden ist. Gäste authentifizieren sich per QR-Code ohne Passwort; der persönliche Event-Hub bietet Fotogalerie mit Upload, Fotospiel mit delta-basiertem Aufgabenmodell, Trinkspiel mit physiologisch motivierter Punktberechnung und tokengesicherter Beamer-Slideshow. Backend durch rund 200 automatisierte Pest-Tests abgedeckt, dreistufiger Deploy-Prozess (develop → staging → production) mit CI-Guard gegen Compose-Drift. Live unter eveplan.de."
+      },
+      "portfolio": {
+        "description": "Persönliche Portfolio-Website ohne externe Runtime-Abhängigkeiten — kein CDN, kein Tracking, keine Analytics. Tech-Icon-Sektion mit eigenem requestAnimationFrame-Loop, Physics-Modell und Pointer-Flee-Verhalten. Hero-Sektion als rotiertes CSS-Grid. Deployed über Docker und Coolify. Live unter hommri.ch."
+      },
+      "grapeminds": {
+        "description": "Webapplikation mit ergänzender Smartphone-App zur Verwaltung von Weinbeständen und Bereitstellung von Informationen zu den vorhandenen Weinen. Als Frontend-Entwickler habe ich neue Features entwickelt, bestehende Komponenten optimiert und die Codebasis refaktoriert. Durch selbstständige Arbeitsweise wurden Entwicklungsprozesse effizienter und die Qualität der Anwendung kontinuierlich verbessert."
+      },
+      "crm": {
+        "description": "Erweiterung des internen CRM um eine Forecast-Funktion, die Vertriebsmitarbeitern Überblick über Mitarbeiter und Freiberufler bietet — inkl. Projektdauer, Austrittszeitpunkten und Umsatz-/Gewinnprognosen mit Zielvorgaben und optischem Feedback. Abwesenheiten werden in Umsatz- und Gewinnberechnungen automatisch berücksichtigt. Zusätzlich Implementierung eines systemweiten Aktivitäten-Logs, das jegliche Änderungen lückenlos nachvollziehbar dokumentiert."
+      },
+      "platform": {
+        "description": "Modernisierung der Firmenwebsite des Ausbildungsbetriebs und Erweiterung um eine Mitarbeiter- und Zeitmanagement-Plattform. Interne und externe Mitarbeiter verwalten ihre Profile, erfassen Arbeitszeiten und erhalten eine Gesamtübersicht über aktuelle Zeiten und Projektlaufzeiten."
+      },
+      "elade": {
+        "description": "Monitoring-System für die Wallboxen am Bürostandort, betrieben auf einem Raspberry Pi des Ausbildungsbetriebs. Echtzeit-Erfassung von Ladedaten, Stromverbrauch, Strompreisen und Netzbelastung. Berechnung von Ladeleistung, geladener Energie und Stromkosten sowie Überwachung der Phasenbelastung am Hausanschluss zur Vermeidung von Überlastungen. Visualisierung über einen zentral aufgestellten Monitor mit React-Frontend."
+      }
+    }
+  },
+  "letter": {
+    "seo": {
+      "title": "Anschreiben — André Hommrich"
+    },
+    "jobTitle": "Fullstack-Webentwickler",
+    "actions": {
+      "home": "← Zur Startseite",
+      "import": "Importieren",
+      "export": "Exportieren",
+      "pdf": "Als PDF speichern",
+      "pdfLoading": "Wird generiert…"
+    },
+    "sections": {
+      "interesse": "① Interesse am Job",
+      "aktuell": "② Aktuelle Jobposition",
+      "entwicklung": "③ Eigene Entwicklungssituation",
+      "geschichte": "④ Jobgeschichte",
+      "referenzen": "⑤ Referenzen",
+      "abschluss": "⑥ Abschluss"
+    },
+    "closing": {
+      "greeting": "Mit freundlichen Grüßen,"
+    },
+    "hint": "Felder sind direkt bearbeitbar — klicken zum Editieren",
+    "defaults": {
+      "datum": "Montabaur, den [Datum]",
+      "firma": "[Unternehmen]",
+      "zh": "z. H. [Ansprechpartner]",
+      "strasse": "[Straße Hausnummer]",
+      "ort": "[PLZ Ort]",
+      "stelle": "Bewerbung als [Jobtitel]",
+      "anrede": "Sehr geehrte Damen und Herren,",
+      "interesse": "[Wie Sie auf die Stelle aufmerksam wurden und was Sie am Unternehmen, Produkt oder der Branche konkret angesprochen hat.]",
+      "aktuell": "[Aktuelle Rolle, eingesetzte Technologien und Art der Projekte — was Sie täglich machen und welche Verantwortung Sie tragen.]",
+      "projekte": "Privat entwickle ich eigene Projekte Fullstack und betreibe sie selbst per Docker auf eigener Infrastruktur. Dadurch weiß ich aus eigener Erfahrung, was ein Backend liefern muss, damit Website und App gut damit arbeiten können. Eine ausführliche Übersicht der Technologien, mit denen ich bereits gearbeitet habe, finden Sie unter https://ahommrich.de/#technologien",
+      "geschichte": "Seit 2025 bin ich ausgebildeter Fachinformatiker für Anwendungsentwicklung. Davor war ich seit 2013 in der Elektrotechnik tätig, mit Abschluss als Elektriker 2017. Aus der Zeit habe ich mir eine praxisnahe Herangehensweise an technische Probleme mitgenommen und ein gutes Gespür dafür, wie Anwender Software im Alltag wirklich benutzen.",
+      "referenzen": "Damit Sie sich ein Bild von meiner Arbeitsweise machen können, habe ich drei eigene Referenzprojekte beigefügt:\n\nEvePlan – Selbst entwickelte Hochzeitssoftware für Planung, Einladungen, RSVP-Verwaltung und Event-Organisation.\nRepository: https://github.com/AHommrich/eventplaner\n\nEvePlan App – Die begleitende Smartphone-App für Gäste, angebunden an das EvePlan-System.\nRepository: https://github.com/AHommrich/eventplaner-app\n\nahommrich.de – Meine persönliche Website zu meinem Werdegang und meinen technischen Schwerpunkten.\nLive-Demo: https://ahommrich.de {'|'} Repository: https://github.com/AHommrich/ahommrichnuxt",
+      "abschluss": "Da ich mich aus einer ungekündigten Festanstellung heraus bewerbe, bitte ich um vertrauliche Behandlung meiner Bewerbung. Für den Erstkontakt erreichen Sie mich am besten per E-Mail. Gerne können wir darüber auch direkt einen Termin für ein erstes Telefonat oder einen Videocall ausmachen.\nIch freue mich, wenn wir ins Gespräch kommen."
+    }
+  },
+  "legal": {
+    "impressum": {
+      "title": "Impressum",
+      "tmg": "Angaben gemäß § 5 DDG",
+      "contactLabel": "Kontakt:",
+      "smallBusiness": "Kleinunternehmer gemäß § 19 UStG: Es wird keine Umsatzsteuer ausgewiesen und daher keine Umsatzsteuer-Identifikationsnummer geführt.",
+      "responsible": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV: André Hommrich (Anschrift wie oben).",
+      "creditsTitle": "Bildnachweise",
+      "creditsIntro": "Ein herzliches Dankeschön an die Creator der folgenden Fotos:",
+      "photoBy": "Foto von",
+      "photoOn": "auf"
+    },
+    "datenschutz": {
+      "title": "Datenschutzerklärung",
+      "controllerHeading": "1. Verantwortlicher",
+      "hostingHeading": "2. Hosting",
+      "hostingP1": "Diese Website wird gehostet bei der <strong>Hetzner Online GmbH</strong>, Industriestr. 25, 91710 Gunzenhausen. Der Serverstandort ist <strong>Nürnberg, Deutschland</strong>. Hetzner kann auf Infrastrukturebene (Netzwerk, Hypervisor) technische Verbindungsdaten verarbeiten. Informationen dazu finden sich in der Datenschutzerklärung von Hetzner: <a href=\"https://www.hetzner.com/de/legal/privacy-policy\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">hetzner.com/de/legal/privacy-policy</a>",
+      "hostingP2": "Als Reverse Proxy setzt der Server <strong>Traefik</strong> ein, verwaltet über die Deployment-Plattform <strong>Coolify</strong>. Zum technischen Betrieb kann Traefik kurzzeitig Verbindungsdaten wie IP-Adressen verarbeiten. Diese werden nicht dauerhaft gespeichert und dienen ausschließlich der Bereitstellung sowie der Betriebssicherheit der Website. Die Nuxt-Anwendung selbst schreibt <strong>keine Access-Logs</strong> und speichert keine personenbezogenen Nutzungsdaten.",
+      "cookiesHeading": "3. Cookies und Reichweitenmessung",
+      "cookiesP1": "Diese Website verwendet <strong>keine Cookies</strong> und übermittelt keine Daten an Drittanbieter wie Google Analytics oder ähnliche Dienste.",
+      "cookiesP2": "Zur Reichweitenmessung nutzen wir die selbst gehostete, datensparsame Analyse-Software <strong>Umami</strong>. Umami arbeitet ohne Cookies, ohne geräteübergreifende Kennungen und ohne die Bildung persönlicher Profile. Es werden ausschließlich anonymisierte Nutzungsdaten (z.&nbsp;B. aufgerufene Seiten, ungefähre Herkunft auf Länderebene, verwendeter Browsertyp) erhoben; ein Rückschluss auf einzelne Personen ist dabei nicht möglich, und die Daten verlassen unsere eigene, in Deutschland gehostete Serverumgebung nicht. Ihre IP-Adresse wird dabei nur kurzzeitig serverseitig verarbeitet, um wiederkehrende Aufrufe zu erkennen und die ungefähre Herkunft zu bestimmen; sie wird nicht gespeichert, sondern fließt lediglich in einen täglich wechselnden, nicht umkehrbaren Kennwert ein. Die so erhobenen statistischen Daten werden für höchstens 14 Monate aufbewahrt und anschließend gelöscht. Rechtsgrundlage ist unser berechtigtes Interesse an einer statistischen Auswertung und Verbesserung des Angebots gemäß Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO.",
+      "cookiesP3": "Da diese Website selbst keinerlei Cookies oder sonstige Daten auf Ihrem Endgerät speichert oder ausliest, die nicht für den Betrieb der Seite unbedingt erforderlich sind, ist hierfür weder ein Einwilligungsbanner noch eine Einwilligung nach <strong>§&nbsp;25 TDDDG</strong> erforderlich.",
+      "linksHeading": "4. Externe Links",
+      "linksP1": "Im Impressum dieser Website befinden sich Links zu <strong>unsplash.com</strong> zur Quellenangabe verwendeter Fotos. Beim Klick auf diese Links wird Ihre IP-Adresse sowie ein Referrer-Parameter an Unsplash übertragen. Auf diese Datenverarbeitung haben wir keinen Einfluss. Datenschutzerklärung von Unsplash: <a href=\"https://unsplash.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">unsplash.com/privacy</a>",
+      "contactFormHeading": "5. Kontaktformular",
+      "contactFormP1": "Wenn Sie das Kontaktformular nutzen, verarbeite ich die von Ihnen angegebenen Daten (Vor- und Nachname, E-Mail-Adresse, optional Telefonnummer, das gewählte Anliegen und Thema sowie Ihre Nachricht), um Ihre Anfrage zu bearbeiten und zu beantworten. Zusätzlich werden der Zeitpunkt und die Version des von Ihnen bestätigten Datenschutzhinweises protokolliert, um Ihre Einwilligung nachweisen zu können.",
+      "contactFormP2": "Rechtsgrundlage ist bei Anfragen mit dem Ziel eines Vertrags- oder Geschäftsverhältnisses Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO, im Übrigen unser berechtigtes Interesse an der Beantwortung Ihrer Anfrage gemäß Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO.",
+      "contactFormP3": "Für die technische Entgegennahme und die zuverlässige Zustellung der Formularnachricht per E-Mail nutze ich einen von mir selbst betriebenen, zentralen Zustelldienst („hommrich-hub\"), der auf derselben in Deutschland gehosteten Serverinfrastruktur (Hetzner, siehe Ziffer&nbsp;2) läuft. Der eigentliche E-Mail-Versand erfolgt über den Dienstleister <strong>Brevo (Sendinblue GmbH)</strong>, Köpenicker Straße 126, 10179 Berlin, der als Auftragsverarbeiter auf Grundlage eines Vertrags nach Art.&nbsp;28 DSGVO tätig ist. Datenschutzerklärung von Brevo: <a href=\"https://www.brevo.com/de/legal/privacypolicy/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">brevo.com/de/legal/privacypolicy</a>",
+      "contactFormP4": "Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht zu Werbezwecken genutzt. Ich lösche die Daten, sobald die Bearbeitung Ihrer Anfrage abgeschlossen ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
+      "rightsHeading": "6. Ihre Rechte",
+      "rightsIntro": "Sie haben gegenüber dem Verantwortlichen folgende Rechte:",
+      "rightsAccess": "Recht auf Auskunft (Art. 15 DSGVO)",
+      "rightsRectification": "Recht auf Berichtigung (Art. 16 DSGVO)",
+      "rightsErasure": "Recht auf Löschung (Art. 17 DSGVO)",
+      "rightsRestriction": "Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)",
+      "rightsObjection": "Recht auf Widerspruch (Art. 21 DSGVO)",
+      "rightsPortability": "Recht auf Datenübertragbarkeit (Art. 20 DSGVO)",
+      "rightsContact": "Zur Ausübung Ihrer Rechte wenden Sie sich bitte per E-Mail an:",
+      "supervisoryAuthority": "Zudem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Die zuständige Behörde für Rheinland-Pfalz ist der <a href=\"https://www.datenschutz.rlp.de\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">Landesbeauftragte für den Datenschutz und die Informationsfreiheit Rheinland-Pfalz</a>.",
+      "lastUpdated": "Stand: August 2026"
+    }
+  }
+}

@@ -3,6 +3,11 @@ import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import { onMounted, ref } from "vue";
 
+// i18n-aware <head>: sets the html lang attribute and hreflang alternate links
+// per locale (auto-imported by @nuxtjs/i18n). Replaces the former static lang.
+const localeHead = useLocaleHead();
+useHead(localeHead);
+
 // Determines whether the footer should be fixed to the bottom of the viewport.
 // On short pages (e.g. Impressum) the content doesn't fill the screen, so the footer
 // would float in the middle of the page without this fix.

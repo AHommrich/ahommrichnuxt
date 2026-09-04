@@ -1,0 +1,388 @@
+{
+  "nav": {
+    "home": "Home",
+    "ueber-mich": "About",
+    "was-ich-mache": "Now",
+    "technologien": "Skills",
+    "kontakt": "Contact"
+  },
+  "common": {
+    "back": "Back",
+    "switchLanguage": "Switch language",
+    "menu": "Menu"
+  },
+  "seo": {
+    "home": {
+      "title": "André Hommrich — Full-Stack Developer",
+      "description": "Portfolio of André Hommrich, a full-stack developer from the Westerwald region in Germany. Symfony, Laravel, Vue.js, TypeScript and Docker."
+    },
+    "impressum": {
+      "title": "Legal Notice — André Hommrich"
+    },
+    "datenschutz": {
+      "title": "Privacy Policy — André Hommrich"
+    }
+  },
+  "hero": {
+    "hallo": "Hi",
+    "name": "I'm André",
+    "captions": {
+      "elektro": "From the electrical trade to software development.",
+      "loesungen": "Building solutions that last.",
+      "musik": "Getting through the day with music.",
+      "wissen": "Sharing knowledge and always learning.",
+      "freizeit": "Free time on foot and with four paws."
+    }
+  },
+  "about": {
+    "heading": "Who am I?",
+    "photoAlt": "André at work",
+    "p1": "My name is André Hommrich. I'm {age} years old and live in the Westerwald region of Germany. What drives me most is the question of why things work the way they do. I rarely settle for an answer before I have truly understood it.",
+    "p2": "I started out in the trades, as an electronics technician for energy and building technology. Even then I always wanted to understand what was behind a task rather than just work through it. In software development, that habit of asking questions has become my most important tool. Here it pays off to fully grasp a problem before solving it.",
+    "p3": "Today I work full-time as a software developer on real-world projects. Alongside that, I build websites for smaller companies, local businesses and clubs, as well as private applications for myself, from the first idea to running them in production. What drives me is always the same standard: understand before you build, and build to last."
+  },
+  "currently": {
+    "heading": "What I'm working on",
+    "p1": "As a full-stack web developer, I take an application from the first plan all the way into day-to-day operation. Much of what I build, I also run myself afterwards. That's why, even while developing, I make sure it will run reliably later on. For example, I check whether a backup can actually be restored when it matters, and I treat data protection as a fixed part of the technology, not as something you add at the end.",
+    "p2": "Over my years as a developer, I've noticed how well the job suits me: I'm constantly learning, and I get to work through problems that the first obvious solution doesn't settle. That's what I enjoy most about the work."
+  },
+  "tech": {
+    "heading": "What I work with",
+    "p1": "My focus is back-end development with PHP, professionally with Symfony and privately with Laravel. On the front end I mainly work with Vue.js, React and TypeScript, and for styling with Tailwind CSS and Bootstrap. For mobile applications I bring experience with React Native. That way I build a project myself, from the database model to the interface. I use AI tools like Claude Code deliberately. They take routine work off my hands and make me faster. The decisions and the understanding stay with me.",
+    "p2": "Docker, Git, CI/CD pipelines and databases with MySQL or MariaDB are part of my daily work. When I look after several websites, they run on a shared, self-hosted infrastructure, so I can handle maintenance and operation in one place instead of patching each one separately. I look at new frameworks and tools once they genuinely help with real tasks, not because they happen to be new.",
+    "toggle": {
+      "animation": "Animation",
+      "technologien": "Technologies"
+    },
+    "aria": {
+      "startAnimation": "Start animation",
+      "showTech": "Show technologies"
+    },
+    "disclaimer": "A selection of tools and technologies I use regularly."
+  },
+  "scene": {
+    "modules": {
+      "frontend": {
+        "title": "Website (front end)",
+        "text": "Everything you see and click in the browser: text, images, buttons and forms. The visible surface of the application. It's loaded from the web and runs directly in the browser, with no installation."
+      },
+      "mobile": {
+        "title": "App (mobile)",
+        "text": "Installed directly on the phone: touch controls, small screens, access to camera, GPS and sensors. Works even without internet and stays within reach on the home screen."
+      },
+      "backend": {
+        "title": "Back end (engine room)",
+        "text": "The invisible engine. This is where things are calculated, checked and decided, such as logins, permissions and workflows. On top of that come background jobs like emails or interfaces. Users never see it, but nothing runs without it."
+      },
+      "db": {
+        "title": "Database (archive)",
+        "text": "The safe place where all data lives permanently: accounts, content and settings. At the next login everything is there again, even after a restart, an update or from another device."
+      },
+      "ops": {
+        "title": "Deployment, hosting & versioning",
+        "text": "It sits above everything: code is versioned (roll back to earlier states at any time), run on servers (hosting) and put live without downtime (deployment). That keeps the system reachable and open to change."
+      }
+    },
+    "svg": {
+      "aria": "Interactive illustration of a full-stack system: website, app, back end, database and the deployment/hosting layer",
+      "overall": "FULL-STACK DEVELOPMENT",
+      "backButton": "Back to overview",
+      "tags": {
+        "frontend": "Front end",
+        "backend": "Back end"
+      },
+      "ops": {
+        "aria": "Deployment, hosting and versioning",
+        "label": "Deployment, hosting & versioning"
+      },
+      "frontend": {
+        "aria": "Website in the browser",
+        "label": "Website"
+      },
+      "mobile": {
+        "aria": "App for the smartphone",
+        "label": "App"
+      },
+      "backend": {
+        "aria": "Back end, the engine room",
+        "label": "Server application / API"
+      },
+      "db": {
+        "aria": "Database, the archive",
+        "label": "Database"
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "heading": "Write to me",
+    "intro": "Do you have a website project in mind or a technical question? Or would you simply like to have an informal chat? Send me a short note about what it's about. I'll get back to you personally and give you an honest assessment.",
+    "success": {
+      "title": "Thank you for your message!",
+      "body": "I've received your enquiry and will get back to you shortly.",
+      "again": "Write another message"
+    },
+    "errorsSummary": "Please check your details:",
+    "legend": "What's it about?",
+    "intents": {
+      "projekt": {
+        "label": "Project & website",
+        "topicLabel": "What's your project about?"
+      },
+      "allgemein": {
+        "label": "General enquiry",
+        "topicLabel": "How can I help?"
+      }
+    },
+    "topics": {
+      "neuer-webauftritt": "New website",
+      "website-ueberarbeiten": "Revamp an existing website",
+      "hosting-betreuung": "Hosting & maintenance",
+      "unverbindlich-austauschen": "Just an informal chat first",
+      "allgemeine-frage": "General question",
+      "feedback": "Feedback",
+      "allgemein-sonstiges": "Something else"
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "optional": "(optional)",
+      "message": "Your message"
+    },
+    "honeypot": "Website (please leave empty)",
+    "consent": {
+      "pre": "I have read the",
+      "link": "privacy notice",
+      "post": "and agree that my details may be processed to handle my enquiry."
+    },
+    "submit": {
+      "send": "Send message",
+      "sending": "Sending …"
+    },
+    "validation": {
+      "firstName": "Please enter your first name.",
+      "lastName": "Please enter your last name.",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "Please enter a valid email address.",
+      "message": "Please briefly describe your enquiry.",
+      "privacy": "Please confirm that you've read the privacy notice."
+    },
+    "sendError": "The message couldn't be sent right now. Please try again later or write to me directly at info{'@'}hommri.ch."
+  },
+  "footer": {
+    "githubAria": "André Hommrich's GitHub profile",
+    "impressum": "Legal notice",
+    "datenschutz": "Privacy"
+  },
+  "cv": {
+    "seo": {
+      "title": "CV — André Hommrich",
+      "description": "Curriculum vitae of André Hommrich."
+    },
+    "jobTitle": "Full-stack web developer",
+    "portraitAlt": "Portrait photo of André Hommrich",
+    "actions": {
+      "home": "← Back to homepage",
+      "pdf": "Save as PDF",
+      "pdfLoading": "Generating…"
+    },
+    "labels": {
+      "kontakt": "Contact",
+      "skillset": "Skill set",
+      "sprachen": "Languages",
+      "weiterbildung": "Further training",
+      "fuehrerschein": "Driving licence",
+      "berufserfahrung": "Work experience",
+      "projekthistorie": "Project history"
+    },
+    "skills": {
+      "frontend": "Front end",
+      "backend": "Back end",
+      "databases": "Databases",
+      "devops": "DevOps & tooling",
+      "ai": "AI tools"
+    },
+    "languages": {
+      "german": {
+        "name": "German",
+        "level": "Native speaker"
+      },
+      "english": {
+        "name": "English",
+        "level": "confident in comprehension, in professional use daily"
+      }
+    },
+    "training": {
+      "year": "2020",
+      "item": "Qualified electrician with extended safety expertise"
+    },
+    "license": {
+      "b": "Category B",
+      "forklift": "Forklift licence"
+    },
+    "profileBullets": [
+      "Extensive experience in project-based work",
+      "A passion for sharing knowledge and for continuous learning",
+      "Strong customer and service orientation",
+      "Solid knowledge of full-stack web development",
+      "Enthusiasm for complex challenges"
+    ],
+    "experience": {
+      "creavo": {
+        "period": "Since 06/2025",
+        "role": "PHP web developer",
+        "bullets": [
+          "Further development and maintenance of software with extensive business logic",
+          "New features from planning to delivery, together with the development team",
+          "Back-end development with Symfony and its ecosystem (Doctrine, etc.)",
+          "Front-end development with Twig, Bootstrap and individual JavaScript packages (ES6)",
+          "CI/CD configuration and extensive testing with PHPUnit",
+          "Helping shape AI-assisted development (Claude Code, Codex & Junie), including shared coding standards"
+        ]
+      },
+      "awesome": {
+        "period": "08/2022 – 06/2025",
+        "role": "Apprenticeship: IT specialist for application development",
+        "bullets": [
+          "Full-stack development of complex web applications with Laravel (incl. ecosystem such as Spatie), Vue.js and React",
+          "Extending the in-house CRM with extensive business logic and internal processes",
+          "Front-end development with Vue.js, React and modern JavaScript libraries",
+          "Containerisation with Docker and hosting of web applications",
+          "Training and mentoring apprentices and interns"
+        ]
+      },
+      "prior1": {
+        "period": "09/2018 – 07/2022",
+        "role": "Service technician",
+        "bullets": [
+          "Data centre and server room installations",
+          "Network cabling",
+          "Maintenance & commissioning",
+          "Lead-technician duties"
+        ]
+      },
+      "modul": {
+        "period": "09/2017 – 08/2018",
+        "role": "Manufacturing & assembly",
+        "bullets": [
+          "Electrical testing and manufacturing of medical supply units",
+          "On-site installation of the products"
+        ]
+      },
+      "bruch": {
+        "period": "08/2014 – 08/2017",
+        "role": "Apprenticeship & journeyman — electrician for energy and building technology",
+        "bullets": [
+          "Shell-construction installations",
+          "Customer service",
+          "TV/satellite systems - KNX/EIB - network technology"
+        ],
+        "extra": "Qualification: German Secondary School Certificate (Sekundarabschluss I)"
+      }
+    },
+    "projects": {
+      "eventplaner": {
+        "description": "A wedding and event planner I built entirely myself as a progressive web app, with a native companion app for guests (React Native / Expo) connected to the Laravel back end via a JSON API. Guests authenticate by QR code without a password; the personal event hub offers a photo gallery with upload, a photo game with a delta-based task model, a drinking game with physiologically motivated scoring and a token-secured projector slideshow. The back end is covered by around 200 automated Pest tests, with a three-stage deploy process (develop → staging → production) and a CI guard against compose drift. Live at eveplan.de."
+      },
+      "portfolio": {
+        "description": "A personal portfolio website with no external runtime dependencies — no CDN, no tracking, no analytics. Tech-icon section with its own requestAnimationFrame loop, physics model and pointer-flee behaviour. Hero section as a rotated CSS grid. Deployed via Docker and Coolify. Live at hommri.ch."
+      },
+      "grapeminds": {
+        "description": "A web application with a companion smartphone app for managing wine stocks and providing information about the available wines. As a front-end developer, I built new features, optimised existing components and refactored the code base. Working independently made the development process more efficient and steadily improved the quality of the application."
+      },
+      "crm": {
+        "description": "Extending the internal CRM with a forecast feature that gives sales staff an overview of employees and freelancers — including project duration, departure dates and revenue/profit forecasts with targets and visual feedback. Absences are automatically taken into account in revenue and profit calculations. In addition, a system-wide activity log that documents every change in a fully traceable way."
+      },
+      "platform": {
+        "description": "Modernising the company website of the training company and extending it with an employee and time-management platform. Internal and external staff manage their profiles, record working hours and get an overall overview of current hours and project timelines."
+      },
+      "elade": {
+        "description": "A monitoring system for the wall boxes at the office location, running on a Raspberry Pi at the training company. Real-time capture of charging data, power consumption, electricity prices and grid load. Calculation of charging power, energy charged and electricity costs, plus monitoring of phase load at the house connection to prevent overloads. Visualised on a centrally placed monitor with a React front end."
+      }
+    }
+  },
+  "letter": {
+    "seo": {
+      "title": "Cover Letter — André Hommrich"
+    },
+    "jobTitle": "Full-stack web developer",
+    "actions": {
+      "home": "← Back to homepage",
+      "import": "Import",
+      "export": "Export",
+      "pdf": "Save as PDF",
+      "pdfLoading": "Generating…"
+    },
+    "sections": {
+      "interesse": "① Interest in the role",
+      "aktuell": "② Current position",
+      "entwicklung": "③ My own development",
+      "geschichte": "④ Career history",
+      "referenzen": "⑤ References",
+      "abschluss": "⑥ Closing"
+    },
+    "closing": {
+      "greeting": "Kind regards,"
+    },
+    "hint": "Fields are editable directly — click to edit",
+    "defaults": {
+      "datum": "Montabaur, [date]",
+      "firma": "[Company]",
+      "zh": "attn. [contact person]",
+      "strasse": "[Street and number]",
+      "ort": "[Postcode and city]",
+      "stelle": "Application for [job title]",
+      "anrede": "Dear Sir or Madam,",
+      "interesse": "[How you came across the position and what specifically appealed to you about the company, product or industry.]",
+      "aktuell": "[Current role, technologies used and the kind of projects — what you do day to day and what you are responsible for.]",
+      "projekte": "In my own time I build my own projects full-stack and run them myself with Docker on my own infrastructure. That gives me first-hand knowledge of what a back end has to deliver so that a website and app can work well with it. You can find a detailed overview of the technologies I have already worked with at https://ahommrich.de/#technologien",
+      "geschichte": "Since 2025 I have been a qualified IT specialist for application development. Before that, I worked in electrical engineering from 2013, qualifying as an electrician in 2017. From that time I have kept a hands-on approach to technical problems and a good sense of how people actually use software in everyday life.",
+      "referenzen": "So that you can get a picture of how I work, I have attached three of my own reference projects:\n\nEvePlan – Wedding software I built myself for planning, invitations, RSVP management and event organisation.\nRepository: https://github.com/AHommrich/eventplaner\n\nEvePlan App – The companion smartphone app for guests, connected to the EvePlan system.\nRepository: https://github.com/AHommrich/eventplaner-app\n\nahommrich.de – My personal website about my career and my technical focus.\nLive demo: https://ahommrich.de {'|'} Repository: https://github.com/AHommrich/ahommrichnuxt",
+      "abschluss": "As I am applying from a permanent position that has not been terminated, I would ask you to treat my application confidentially. For initial contact, email is the best way to reach me. I'm also happy to arrange a first phone or video call directly.\nI would be glad to get into conversation with you."
+    }
+  },
+  "legal": {
+    "impressum": {
+      "title": "Legal Notice",
+      "tmg": "Information pursuant to § 5 DDG (German Digital Services Act)",
+      "contactLabel": "Contact:",
+      "smallBusiness": "Small business under § 19 of the German VAT Act (UStG): no VAT is shown and therefore no VAT identification number is held.",
+      "responsible": "Responsible for the content pursuant to § 18 (2) MStV (German State Media Treaty): André Hommrich (address as above).",
+      "creditsTitle": "Image credits",
+      "creditsIntro": "A warm thank you to the creators of the following photos:",
+      "photoBy": "Photo by",
+      "photoOn": "on"
+    },
+    "datenschutz": {
+      "title": "Privacy Policy",
+      "controllerHeading": "1. Controller",
+      "hostingHeading": "2. Hosting",
+      "hostingP1": "This website is hosted by <strong>Hetzner Online GmbH</strong>, Industriestr. 25, 91710 Gunzenhausen, Germany. The server location is <strong>Nuremberg, Germany</strong>. At the infrastructure level (network, hypervisor), Hetzner may process technical connection data. Information on this can be found in Hetzner's privacy policy: <a href=\"https://www.hetzner.com/de/legal/privacy-policy\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">hetzner.com/de/legal/privacy-policy</a>",
+      "hostingP2": "As a reverse proxy, the server uses <strong>Traefik</strong>, managed via the deployment platform <strong>Coolify</strong>. For technical operation, Traefik may briefly process connection data such as IP addresses. These are not stored permanently and serve solely to provide the website and ensure its operational security. The Nuxt application itself writes <strong>no access logs</strong> and stores no personal usage data.",
+      "cookiesHeading": "3. Cookies and analytics",
+      "cookiesP1": "This website uses <strong>no cookies</strong> and transmits no data to third-party providers such as Google Analytics or similar services.",
+      "cookiesP2": "For analytics we use the self-hosted, data-minimising software <strong>Umami</strong>. Umami works without cookies, without cross-device identifiers and without building personal profiles. Only anonymised usage data is collected (e.g. pages visited, approximate origin at country level, browser type used); it is not possible to draw conclusions about individual people, and the data does not leave our own server environment hosted in Germany. Your IP address is only processed briefly on the server side to recognise repeat visits and determine the approximate origin; it is not stored, but merely fed into a daily-changing, irreversible key value. The statistical data collected in this way is kept for a maximum of 14 months and then deleted. The legal basis is our legitimate interest in the statistical analysis and improvement of our offering pursuant to Art. 6(1)(f) GDPR.",
+      "cookiesP3": "Since this website itself neither stores nor reads any cookies or other data on your device that are not strictly necessary for operating the site, no consent banner and no consent under <strong>§ 25 TDDDG</strong> is required for this.",
+      "linksHeading": "4. External links",
+      "linksP1": "The legal notice of this website contains links to <strong>unsplash.com</strong> to credit the photos used. When you click these links, your IP address and a referrer parameter are transmitted to Unsplash. We have no influence over this data processing. Unsplash privacy policy: <a href=\"https://unsplash.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">unsplash.com/privacy</a>",
+      "contactFormHeading": "5. Contact form",
+      "contactFormP1": "When you use the contact form, I process the data you provide (first and last name, email address, optionally phone number, the selected intent and topic, and your message) in order to handle and answer your enquiry. In addition, the time and the version of the privacy notice you confirmed are logged so that your consent can be evidenced.",
+      "contactFormP2": "The legal basis for enquiries aimed at a contractual or business relationship is Art. 6(1)(b) GDPR, and otherwise our legitimate interest in answering your enquiry pursuant to Art. 6(1)(f) GDPR.",
+      "contactFormP3": "For the technical receipt and reliable delivery of the form message by email, I use a central delivery service I operate myself (\"hommrich-hub\"), running on the same server infrastructure hosted in Germany (Hetzner, see section 2). The actual email dispatch is handled by the provider <strong>Brevo (Sendinblue GmbH)</strong>, Köpenicker Straße 126, 10179 Berlin, Germany, acting as a processor on the basis of a contract pursuant to Art. 28 GDPR. Brevo privacy policy: <a href=\"https://www.brevo.com/de/legal/privacypolicy/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">brevo.com/de/legal/privacypolicy</a>",
+      "contactFormP4": "Your details are used exclusively to handle your enquiry and are not used for advertising purposes. I delete the data as soon as your enquiry has been dealt with and no statutory retention obligations prevent this.",
+      "rightsHeading": "6. Your rights",
+      "rightsIntro": "You have the following rights vis-à-vis the controller:",
+      "rightsAccess": "Right of access (Art. 15 GDPR)",
+      "rightsRectification": "Right to rectification (Art. 16 GDPR)",
+      "rightsErasure": "Right to erasure (Art. 17 GDPR)",
+      "rightsRestriction": "Right to restriction of processing (Art. 18 GDPR)",
+      "rightsObjection": "Right to object (Art. 21 GDPR)",
+      "rightsPortability": "Right to data portability (Art. 20 GDPR)",
+      "rightsContact": "To exercise your rights, please contact me by email at:",
+      "supervisoryAuthority": "You also have the right to lodge a complaint with a data protection supervisory authority. The authority responsible for Rhineland-Palatinate is the <a href=\"https://www.datenschutz.rlp.de\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">State Commissioner for Data Protection and Freedom of Information of Rhineland-Palatinate</a>.",
+      "lastUpdated": "Last updated: August 2026"
+    }
+  }
+}

@@ -11,7 +11,7 @@
         <h3
           class="self-center pb-3 text-center text-2xl text-gray-200 sm:text-3xl md:text-4xl lg:text-5xl"
         >
-          Womit ich arbeite
+          {{ $t("tech.heading") }}
         </h3>
 
         <!--
@@ -30,25 +30,12 @@
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              Mein Schwerpunkt ist die Backend-Entwicklung mit PHP, beruflich
-              mit Symfony, privat mit Laravel. Im Frontend arbeite ich vor allem
-              mit Vue.js, React und TypeScript, für das Styling mit Tailwind CSS
-              und Bootstrap. Für mobile Anwendungen bringe ich Erfahrung mit
-              React Native mit. So setze ich ein Projekt vom Datenbankmodell bis
-              zur Oberfläche selbst um. KI-Werkzeuge wie Claude Code nutze ich
-              dabei ganz bewusst. Sie nehmen mir Routine ab und machen mich
-              schneller. Die Entscheidungen und das Verständnis bleiben bei mir.
+              {{ $t("tech.p1") }}
             </p>
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
             >
-              Docker, Git, CI/CD-Pipelines und Datenbanken mit MySQL oder
-              MariaDB gehören für mich zum Alltag. Wenn ich mehrere Websites
-              betreue, laufen sie bei mir über eine gemeinsame, selbst gehostete
-              Infrastruktur zusammen, sodass ich Wartung und Betrieb an einer
-              Stelle im Griff habe und nicht überall einzeln nachbessern muss.
-              Neue Frameworks und Werkzeuge sehe ich mir an, sobald sie bei
-              echten Aufgaben weiterhelfen, und nicht, weil sie gerade neu sind.
+              {{ $t("tech.p2") }}
             </p>
           </div>
 
@@ -91,7 +78,9 @@
                     'pulse-hint': pulseHint,
                   }"
                   :aria-label="
-                    infoMode ? 'Animation starten' : 'Technologien anzeigen'
+                    infoMode
+                      ? $t('tech.aria.startAnimation')
+                      : $t('tech.aria.showTech')
                   "
                   @click="toggleInfoMode"
                 >
@@ -113,13 +102,14 @@
                     <line x1="12" y1="12" x2="12" y2="16" />
                   </svg>
                   <span class="info-btn-label">{{
-                    infoMode ? "Animation" : "Technologien"
+                    infoMode
+                      ? $t("tech.toggle.animation")
+                      : $t("tech.toggle.technologien")
                   }}</span>
                 </button>
-                <span v-show="infoMode" class="info-disclaimer"
-                  >Eine Auswahl an Tools &amp; Technologien, die ich regelmäßig
-                  einsetze.</span
-                >
+                <span v-show="infoMode" class="info-disclaimer">{{
+                  $t("tech.disclaimer")
+                }}</span>
               </div>
             </div>
           </div>

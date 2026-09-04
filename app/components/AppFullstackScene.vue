@@ -9,35 +9,39 @@ interface SceneModule {
   text: string;
 }
 
+// i18n (auto-imported by @nuxtjs/i18n). MODULES is a computed so the titles/
+// texts stay reactive to a language switch.
+const { t } = useI18n();
+
 // Master list — drives both render order in the SVG and the detail overlay
 // content. Keep keys identical to the <g> data-key attributes.
-const MODULES: ReadonlyArray<SceneModule> = [
+const MODULES = computed<ReadonlyArray<SceneModule>>(() => [
   {
     key: "frontend",
-    title: "Website (Frontend)",
-    text: "Alles, was Sie im Browser sehen und anklicken: Texte, Bilder, Buttons und Formulare. Die sichtbare Oberfläche der Anwendung. Sie wird aus dem Netz geladen und läuft ohne Installation direkt im Browser.",
+    title: t("scene.modules.frontend.title"),
+    text: t("scene.modules.frontend.text"),
   },
   {
     key: "mobile",
-    title: "App (Mobile)",
-    text: "Wird direkt aufs Smartphone installiert: Touch-Bedienung, kleine Bildschirme, Zugriff auf Kamera, GPS und Sensoren. Funktioniert auch ohne Internet und liegt jederzeit griffbereit auf dem Homescreen.",
+    title: t("scene.modules.mobile.title"),
+    text: t("scene.modules.mobile.text"),
   },
   {
     key: "backend",
-    title: "Backend (Maschinenraum)",
-    text: "Der unsichtbare Motor. Hier wird gerechnet, geprüft und entschieden, etwa Anmeldungen, Berechtigungen und Abläufe. Dazu kommen Hintergrund-Aufgaben wie Mails oder Schnittstellen. Nutzer sehen ihn nie, ohne ihn läuft aber nichts.",
+    title: t("scene.modules.backend.title"),
+    text: t("scene.modules.backend.text"),
   },
   {
     key: "db",
-    title: "Datenbank (Archiv)",
-    text: "Der sichere Ort, an dem alle Daten dauerhaft liegen: Konten, Inhalte und Einstellungen. Beim nächsten Login ist alles wieder da, auch nach einem Neustart, einem Update oder von einem anderen Gerät aus.",
+    title: t("scene.modules.db.title"),
+    text: t("scene.modules.db.text"),
   },
   {
     key: "ops",
-    title: "Deployment, Hosting & Versionierung",
-    text: "Liegt über allem: Code wird versioniert (jederzeit zurück zu früheren Ständen), auf Servern betrieben (Hosting) und ohne Ausfall live geschaltet (Deployment). So bleibt das System erreichbar und veränderbar.",
+    title: t("scene.modules.ops.title"),
+    text: t("scene.modules.ops.text"),
   },
-];
+]);
 
 const stageEl = ref<HTMLElement | null>(null);
 const moduleRefs = ref<Partial<Record<ModuleKey, SVGGElement>>>({});
@@ -59,7 +63,7 @@ const REVERSE_MS = 850;
 const isLive = ref(false);
 
 const activeModule = computed(
-  () => MODULES.find((m) => m.key === activeKey.value) ?? null,
+  () => MODULES.value.find((m) => m.key === activeKey.value) ?? null,
 );
 
 // Vue function-ref helper — records the SVGGElement for each module by key.
@@ -203,15 +207,11 @@ onBeforeUnmount(() => {
     @click="handleStageClick"
   >
     <div class="scene" :class="{ 'is-live': isLive }">
-      <svg
-        viewBox="0 0 1200 770"
-        role="img"
-        aria-label="Interaktive Darstellung eines Fullstack-Systems: Website, App, Backend, Datenbank und Deployment-/Hosting-Schicht"
-      >
+      <svg viewBox="0 0 1200 770" role="img" :aria-label="$t('scene.svg.aria')">
         <!-- Overall headline — marks the whole illustration as "Fullstack-
              Entwicklung". Sits in the empty band above the ops bar. -->
         <text class="overall-label" x="600" y="22" text-anchor="middle">
-          FULLSTACK-ENTWICKLUNG
+          {{ $t("scene.svg.overall") }}
         </text>
 
         <!-- Dashed droplines from the ops band down to frontend, backend, mobile -->
@@ -311,7 +311,7 @@ onBeforeUnmount(() => {
           :tabindex="activeKey !== null && activeKey !== 'ops' ? -1 : 0"
           :aria-expanded="activeKey === 'ops'"
           role="button"
-          aria-label="Deployment, Hosting und Versionierung"
+          :aria-label="$t('scene.svg.ops.aria')"
           @click="activate('ops')"
           @keydown.enter.prevent="activate('ops')"
           @keydown.space.prevent="activate('ops')"
@@ -351,7 +351,7 @@ onBeforeUnmount(() => {
           </circle>
           <circle class="commit-head" cx="270" cy="70" r="7" />
           <text x="700" y="78" text-anchor="middle" font-size="20">
-            Deployment, Hosting &amp; Versionierung
+            {{ $t("scene.svg.ops.label") }}
           </text>
         </g>
 
@@ -370,7 +370,7 @@ onBeforeUnmount(() => {
           :tabindex="activeKey !== null && activeKey !== 'frontend' ? -1 : 0"
           :aria-expanded="activeKey === 'frontend'"
           role="button"
-          aria-label="Website im Browser"
+          :aria-label="$t('scene.svg.frontend.aria')"
           @click="activate('frontend')"
           @keydown.enter.prevent="activate('frontend')"
           @keydown.space.prevent="activate('frontend')"
@@ -401,9 +401,11 @@ onBeforeUnmount(() => {
           <rect class="body2" x="155" y="284" width="180" height="10" rx="5" />
           <rect class="body2" x="155" y="302" width="150" height="10" rx="5" />
           <text x="250" y="380" text-anchor="middle" font-size="18">
-            Website
+            {{ $t("scene.svg.frontend.label") }}
           </text>
-          <text x="250" y="202" text-anchor="middle" class="tag">Frontend</text>
+          <text x="250" y="202" text-anchor="middle" class="tag">
+            {{ $t("scene.svg.tags.frontend") }}
+          </text>
         </g>
 
         <!-- MOBILE — smartphone silhouette -->
@@ -419,7 +421,7 @@ onBeforeUnmount(() => {
           :tabindex="activeKey !== null && activeKey !== 'mobile' ? -1 : 0"
           :aria-expanded="activeKey === 'mobile'"
           role="button"
-          aria-label="App fürs Smartphone"
+          :aria-label="$t('scene.svg.mobile.aria')"
           @click="activate('mobile')"
           @keydown.enter.prevent="activate('mobile')"
           @keydown.space.prevent="activate('mobile')"
@@ -444,8 +446,12 @@ onBeforeUnmount(() => {
           <rect class="body2" x="852" y="222" width="76" height="92" rx="8" />
           <rect class="body2" x="852" y="324" width="40" height="10" rx="5" />
           <circle class="stroke" cx="890" cy="350" r="7" />
-          <text x="890" y="395" text-anchor="middle" font-size="18">App</text>
-          <text x="890" y="192" text-anchor="middle" class="tag">Frontend</text>
+          <text x="890" y="395" text-anchor="middle" font-size="18">
+            {{ $t("scene.svg.mobile.label") }}
+          </text>
+          <text x="890" y="192" text-anchor="middle" class="tag">
+            {{ $t("scene.svg.tags.frontend") }}
+          </text>
         </g>
 
         <!-- BACKEND — interlocking gears -->
@@ -461,7 +467,7 @@ onBeforeUnmount(() => {
           :tabindex="activeKey !== null && activeKey !== 'backend' ? -1 : 0"
           :aria-expanded="activeKey === 'backend'"
           role="button"
-          aria-label="Backend, der Maschinenraum"
+          :aria-label="$t('scene.svg.backend.aria')"
           @click="activate('backend')"
           @keydown.enter.prevent="activate('backend')"
           @keydown.space.prevent="activate('backend')"
@@ -511,9 +517,11 @@ onBeforeUnmount(() => {
               <path d="M 651 505 h 8" />
             </g>
           </g>
-          <text x="600" y="402" text-anchor="middle" class="tag">Backend</text>
+          <text x="600" y="402" text-anchor="middle" class="tag">
+            {{ $t("scene.svg.tags.backend") }}
+          </text>
           <text x="600" y="575" text-anchor="middle" class="m-backend-label">
-            Serveranwendung / API
+            {{ $t("scene.svg.backend.label") }}
           </text>
         </g>
 
@@ -530,7 +538,7 @@ onBeforeUnmount(() => {
           :tabindex="activeKey !== null && activeKey !== 'db' ? -1 : 0"
           :aria-expanded="activeKey === 'db'"
           role="button"
-          aria-label="Datenbank, das Archiv"
+          :aria-label="$t('scene.svg.db.aria')"
           @click="activate('db')"
           @keydown.enter.prevent="activate('db')"
           @keydown.space.prevent="activate('db')"
@@ -554,9 +562,11 @@ onBeforeUnmount(() => {
           <path class="stroke" d="M 332 665 v 40 a 78 20 0 0 0 156 0 v -40" />
           <ellipse class="db-pulse" cx="410" cy="625" rx="78" ry="20" />
           <text x="410" y="755" text-anchor="middle" font-size="18">
-            Datenbank
+            {{ $t("scene.svg.db.label") }}
           </text>
-          <text x="410" y="597" text-anchor="middle" class="tag">Backend</text>
+          <text x="410" y="597" text-anchor="middle" class="tag">
+            {{ $t("scene.svg.tags.backend") }}
+          </text>
         </g>
       </svg>
     </div>
@@ -575,7 +585,7 @@ onBeforeUnmount(() => {
       v-if="activeKey !== null"
       class="back-btn"
       type="button"
-      aria-label="Zurück zur Übersicht"
+      :aria-label="$t('scene.svg.backButton')"
       @click.stop="reset"
     >
       <svg

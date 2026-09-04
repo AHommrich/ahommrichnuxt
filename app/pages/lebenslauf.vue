@@ -5,90 +5,95 @@ definePageMeta({
   layout: false,
 });
 
+// i18n (auto-imported by @nuxtjs/i18n).
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
+
 useSeoMeta({
-  title: "Lebenslauf — André Hommrich",
-  description: "Lebenslauf von André Hommrich.",
+  title: () => t("cv.seo.title"),
+  description: () => t("cv.seo.description"),
   robots: "noindex, nofollow, noarchive",
 });
 
-useHead({
-  htmlAttrs: { lang: "de", class: "cv-route" },
-});
+// html lang follows the active locale so the English PDF/HTML gets lang="en".
+useHead(() => ({
+  htmlAttrs: { lang: locale.value, class: "cv-route" },
+}));
 
-const { isPdfLoading, downloadPdf } = useDocumentPdf("lebenslauf.pdf");
+const { isPdfLoading, downloadPdf } = useDocumentPdf(
+  locale.value === "en" ? "cv.pdf" : "lebenslauf.pdf",
+);
 
 onMounted(() => {
   document.documentElement.setAttribute("data-ready", "1");
 });
 
-// Career history — most recent first.
-const experience = [
+// Builds a bullet-list from indexed i18n keys (base.0, base.1, …).
+const list = (base: string, count: number) =>
+  Array.from({ length: count }, (_, i) => t(`${base}.${i}`));
+
+type Job = {
+  period: string;
+  company: string;
+  location: string;
+  role: string;
+  current?: boolean;
+  bullets: string[];
+  extra?: string;
+};
+
+// Career history — most recent first. Company/location are proper nouns and
+// stay hard-coded; the localised strings come from the cv.experience.* keys.
+const experience = computed<Job[]>(() => [
   {
-    period: "Seit 06.2025",
+    period: t("cv.experience.creavo.period"),
     company: "Creavo Projekt GmbH",
     location: "Limburg",
-    role: "PHP Webentwickler",
+    role: t("cv.experience.creavo.role"),
     current: true,
-    bullets: [
-      "Weiterentwicklung und Betreuung von Software mit umfangreicher Geschäftslogik",
-      "Neue Funktionen von der Planung bis zur Auslieferung, gemeinsam im Entwicklungsteam",
-      "Backend-Entwicklung mit Symfony und dazugehörigem Ökosystem (Doctrine etc.)",
-      "Frontend-Entwicklung mit Twig, Bootstrap und einzelnen JavaScript-Packages nach ES6",
-      "CI/CD-Konfigurationen und umfangreiches Testing mit PHPUnit",
-      "Mitgestaltung der KI-gestützten Entwicklung (Claude Code, Codex & Junie) inkl. gemeinsamer Coding-Standards",
-    ],
+    bullets: list("cv.experience.creavo.bullets", 6),
   },
   {
-    period: "08.2022 – 06.2025",
+    period: t("cv.experience.awesome.period"),
     company: "AWESOME! Software GmbH",
     location: "Montabaur",
-    role: "Ausbildung Fachinformatiker für Anwendungsentwicklung",
-    bullets: [
-      "Fullstack-Entwicklung komplexer Webanwendungen mit Laravel (inkl. Ökosystem wie Spatie), Vue.js und React",
-      "Erweiterung des firmeneigenen CRM um umfangreiche Geschäftslogik und interne Prozesse",
-      "Frontend-Entwicklung mit Vue.js, React und modernen JavaScript-Bibliotheken",
-      "Containerisierung mit Docker und Hosting von Webapplikationen",
-      "Ausbildung und Betreuung von Azubis und Praktikanten",
-    ],
+    role: t("cv.experience.awesome.role"),
+    bullets: list("cv.experience.awesome.bullets", 5),
   },
   {
-    period: "09.2018 – 07.2022",
+    period: t("cv.experience.prior1.period"),
     company: "Prior1 GmbH",
     location: "Sankt Augustin",
-    role: "Servicetechniker",
-    bullets: [
-      "Rechenzentrum- und Serverraum-Installationen",
-      "Netzwerk-Verkabelungen",
-      "Wartungen & Inbetriebnahmen",
-      "Vorarbeiter-Tätigkeiten",
-    ],
+    role: t("cv.experience.prior1.role"),
+    bullets: list("cv.experience.prior1.bullets", 4),
   },
   {
-    period: "09.2017 – 08.2018",
+    period: t("cv.experience.modul.period"),
     company: "Modul-Technik GmbH",
     location: "Montabaur",
-    role: "Fertigung & Montage",
-    bullets: [
-      "Elektro-Prüfungen und Fertigung von medizinischen Versorgungseinheiten",
-      "Installation der Produkte vor Ort",
-    ],
+    role: t("cv.experience.modul.role"),
+    bullets: list("cv.experience.modul.bullets", 2),
   },
   {
-    period: "08.2014 – 08.2017",
+    period: t("cv.experience.bruch.period"),
     company: "Michael Bruch Elektrotechnik GmbH",
     location: "Helferskirchen",
-    role: "Ausbildung & Geselle — Elektriker für Energie- und Gebäudetechnik",
-    bullets: [
-      "Rohbau-Installationen",
-      "Kundendienst",
-      "TV-Sat-Anlagen - KNX/EIB - Netzwerktechnik",
-    ],
-    extra: "Abschluss: Sekundarabschluss I",
+    role: t("cv.experience.bruch.role"),
+    bullets: list("cv.experience.bruch.bullets", 3),
+    extra: t("cv.experience.bruch.extra"),
   },
-];
+]);
 
-// Project history — most recent first.
-const projects = [
+type Project = {
+  client: string;
+  role: string;
+  stack: string[];
+  description: string;
+};
+
+// Project history — most recent first. Client/role/stack are proper nouns and
+// stay hard-coded; the localised descriptions come from cv.projects.*.
+const projects = computed<Project[]>(() => [
   {
     client: "Eventplaner — eveplan.de",
     role: "Fullstack & Mobile",
@@ -102,8 +107,7 @@ const projects = [
       "Expo",
       "Docker",
     ],
-    description:
-      "Vollständig selbst entwickelter Hochzeits- und Eventplaner als Progressive Web App mit nativer Begleiter-App für Gäste (React Native / Expo), die über eine JSON-API an das Laravel-Backend angebunden ist. Gäste authentifizieren sich per QR-Code ohne Passwort; der persönliche Event-Hub bietet Fotogalerie mit Upload, Fotospiel mit delta-basiertem Aufgabenmodell, Trinkspiel mit physiologisch motivierter Punktberechnung und tokengesicherter Beamer-Slideshow. Backend durch rund 200 automatisierte Pest-Tests abgedeckt, dreistufiger Deploy-Prozess (develop → staging → production) mit CI-Guard gegen Compose-Drift. Live unter eveplan.de.",
+    description: t("cv.projects.eventplaner.description"),
   },
   {
     client: "Portfolio — hommri.ch",
@@ -116,8 +120,7 @@ const projects = [
       "Docker",
       "Coolify",
     ],
-    description:
-      "Persönliche Portfolio-Website ohne externe Runtime-Abhängigkeiten — kein CDN, kein Tracking, keine Analytics. Tech-Icon-Sektion mit eigenem requestAnimationFrame-Loop, Physics-Modell und Pointer-Flee-Verhalten. Hero-Sektion als rotiertes CSS-Grid. Deployed über Docker und Coolify. Live unter hommri.ch.",
+    description: t("cv.projects.portfolio.description"),
   },
   {
     client: "grapeminds GmbH",
@@ -131,8 +134,7 @@ const projects = [
       "Android Studio",
       "Chart.js",
     ],
-    description:
-      "Webapplikation mit ergänzender Smartphone-App zur Verwaltung von Weinbeständen und Bereitstellung von Informationen zu den vorhandenen Weinen. Als Frontend-Entwickler habe ich neue Features entwickelt, bestehende Komponenten optimiert und die Codebasis refaktoriert. Durch selbstständige Arbeitsweise wurden Entwicklungsprozesse effizienter und die Qualität der Anwendung kontinuierlich verbessert.",
+    description: t("cv.projects.grapeminds.description"),
   },
   {
     client: "AWESOME! Software — CRM",
@@ -146,8 +148,7 @@ const projects = [
       "HTML5",
       "CSS3",
     ],
-    description:
-      "Erweiterung des internen CRM um eine Forecast-Funktion, die Vertriebsmitarbeitern Überblick über Mitarbeiter und Freiberufler bietet — inkl. Projektdauer, Austrittszeitpunkten und Umsatz-/Gewinnprognosen mit Zielvorgaben und optischem Feedback. Abwesenheiten werden in Umsatz- und Gewinnberechnungen automatisch berücksichtigt. Zusätzlich Implementierung eines systemweiten Aktivitäten-Logs, das jegliche Änderungen lückenlos nachvollziehbar dokumentiert.",
+    description: t("cv.projects.crm.description"),
   },
   {
     client: "AWESOME! Software — Mitarbeiterplattform",
@@ -161,8 +162,7 @@ const projects = [
       "CSS3",
       "Docker",
     ],
-    description:
-      "Modernisierung der Firmenwebsite des Ausbildungsbetriebs und Erweiterung um eine Mitarbeiter- und Zeitmanagement-Plattform. Interne und externe Mitarbeiter verwalten ihre Profile, erfassen Arbeitszeiten und erhalten eine Gesamtübersicht über aktuelle Zeiten und Projektlaufzeiten.",
+    description: t("cv.projects.platform.description"),
   },
   {
     client: "Abschlussprojekt — eLade-Monitoring",
@@ -179,16 +179,16 @@ const projects = [
       "Axios",
       "Chart.js",
     ],
-    description:
-      "Monitoring-System für die Wallboxen am Bürostandort, betrieben auf einem Raspberry Pi des Ausbildungsbetriebs. Echtzeit-Erfassung von Ladedaten, Stromverbrauch, Strompreisen und Netzbelastung. Berechnung von Ladeleistung, geladener Energie und Stromkosten sowie Überwachung der Phasenbelastung am Hausanschluss zur Vermeidung von Überlastungen. Visualisierung über einen zentral aufgestellten Monitor mit React-Frontend.",
+    description: t("cv.projects.elade.description"),
   },
-];
+]);
 
 // Skills mirror the icon set rendered in AppTechSection on the homepage,
-// grouped by domain so the sidebar stays compact and scannable.
-const skillset = [
+// grouped by domain. Only the group labels are localised; the items are
+// product/technology names and stay hard-coded.
+const skillset = computed(() => [
   {
-    label: "Frontend",
+    label: t("cv.skills.frontend"),
     items: [
       "Vue.js",
       "Nuxt.js",
@@ -202,15 +202,15 @@ const skillset = [
     ],
   },
   {
-    label: "Backend",
+    label: t("cv.skills.backend"),
     items: ["PHP", "Laravel", "Inertia.js", "Symfony"],
   },
   {
-    label: "Datenbanken",
+    label: t("cv.skills.databases"),
     items: ["MySQL", "MariaDB"],
   },
   {
-    label: "DevOps & Tooling",
+    label: t("cv.skills.devops"),
     items: [
       "Docker",
       "Coolify",
@@ -226,18 +226,12 @@ const skillset = [
     ],
   },
   {
-    label: "KI-Werkzeuge",
+    label: t("cv.skills.ai"),
     items: ["Anthropic (Claude Code)", "OpenAI (Codex)"],
   },
-];
+]);
 
-const profileBullets = [
-  "Umfassende Erfahrung im Projektgeschäft",
-  "Leidenschaft für Wissensvermittlung und kontinuierliche Weiterbildung",
-  "Stark ausgeprägte Kunden- und Serviceorientierung",
-  "Fundierte Kenntnisse in der Fullstack-Webentwicklung",
-  "Begeisterung für komplexe Herausforderungen",
-];
+const profileBullets = computed(() => list("cv.profileBullets", 5));
 </script>
 
 <template>
@@ -247,14 +241,16 @@ const profileBullets = [
 
     <!-- Action bar — screen only -->
     <div class="cv-actions">
-      <NuxtLink to="/" class="cv-action-btn">← Zur Startseite</NuxtLink>
+      <NuxtLink :to="localePath('/')" class="cv-action-btn">{{
+        $t("cv.actions.home")
+      }}</NuxtLink>
       <button
         type="button"
         class="cv-action-btn cv-action-btn--primary"
         :disabled="isPdfLoading"
-        @click="downloadPdf('/api/pdf/lebenslauf')"
+        @click="downloadPdf(`/api/pdf/lebenslauf?locale=${locale}`)"
       >
-        {{ isPdfLoading ? "Wird generiert…" : "Als PDF speichern" }}
+        {{ isPdfLoading ? $t("cv.actions.pdfLoading") : $t("cv.actions.pdf") }}
       </button>
     </div>
 
@@ -264,7 +260,7 @@ const profileBullets = [
       <header class="cv-band">
         <div>
           <h1 class="cv-band-name">André Hommrich</h1>
-          <p class="cv-band-sub">Fullstack-Webentwickler</p>
+          <p class="cv-band-sub">{{ $t("cv.jobTitle") }}</p>
         </div>
         <div class="cv-band-diamonds" aria-hidden="true">
           <span /><span /><span />
@@ -276,14 +272,11 @@ const profileBullets = [
         <!-- SIDEBAR -->
         <aside class="cv-sidebar">
           <div class="cv-portrait">
-            <img
-              src="/img/andre-lebenslauf.jpg"
-              alt="Portraitfoto von André Hommrich"
-            />
+            <img src="/img/andre-lebenslauf.jpg" :alt="$t('cv.portraitAlt')" />
           </div>
 
           <section>
-            <h2 class="cv-label">Kontakt</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.kontakt") }}</h2>
             <ul class="cv-list">
               <li>André Hommrich</li>
               <li>Dernbacher Str. 26</li>
@@ -303,7 +296,7 @@ const profileBullets = [
           </section>
 
           <section>
-            <h2 class="cv-label">Skillset</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.skillset") }}</h2>
             <div
               v-for="group in skillset"
               :key="group.label"
@@ -319,31 +312,34 @@ const profileBullets = [
           </section>
 
           <section>
-            <h2 class="cv-label">Sprachen</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.sprachen") }}</h2>
             <ul class="cv-list">
-              <li><strong>Deutsch</strong> — Muttersprache</li>
               <li>
-                <strong>Englisch</strong> — sicher im Verständnis, täglich im
-                beruflichen Einsatz
+                <strong>{{ $t("cv.languages.german.name") }}</strong> —
+                {{ $t("cv.languages.german.level") }}
+              </li>
+              <li>
+                <strong>{{ $t("cv.languages.english.name") }}</strong> —
+                {{ $t("cv.languages.english.level") }}
               </li>
             </ul>
           </section>
 
           <section>
-            <h2 class="cv-label">Weiterbildung</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.weiterbildung") }}</h2>
             <ul class="cv-list">
               <li>
-                <strong>2020</strong> — Elektrofachkraft mit erweiterten
-                Sicherheitskenntnissen
+                <strong>{{ $t("cv.training.year") }}</strong> —
+                {{ $t("cv.training.item") }}
               </li>
             </ul>
           </section>
 
           <section>
-            <h2 class="cv-label">Führerschein</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.fuehrerschein") }}</h2>
             <ul class="cv-list">
-              <li>Klasse B</li>
-              <li>Staplerführerschein</li>
+              <li>{{ $t("cv.license.b") }}</li>
+              <li>{{ $t("cv.license.forklift") }}</li>
             </ul>
           </section>
         </aside>
@@ -358,7 +354,7 @@ const profileBullets = [
 
           <!-- Berufserfahrung — timeline -->
           <section>
-            <h2 class="cv-label">Berufserfahrung</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.berufserfahrung") }}</h2>
             <div class="tl">
               <article
                 v-for="job in experience"
@@ -388,7 +384,7 @@ const profileBullets = [
 
           <!-- Projekthistorie -->
           <section>
-            <h2 class="cv-label">Projekthistorie</h2>
+            <h2 class="cv-label">{{ $t("cv.labels.projekthistorie") }}</h2>
             <article v-for="(p, i) in projects" :key="i" class="prj">
               <div class="prj-head">
                 <h3 class="prj-title">{{ p.client }}</h3>

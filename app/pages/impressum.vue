@@ -1,6 +1,8 @@
 <script setup lang="ts">
+const { t } = useI18n();
+
 useSeoMeta({
-  title: "Impressum — André Hommrich",
+  title: () => t("seo.impressum.title"),
   robots: "noindex, nofollow",
 });
 </script>
@@ -11,13 +13,15 @@ useSeoMeta({
   >
     <!-- Contact info card -->
     <AppCard>
-      <h2 class="text-2xl font-bold text-gray-200 sm:text-3xl">Impressum</h2>
-      <p class="text-gray-200 text-sm">Angaben gemäß § 5 DDG</p>
+      <h2 class="text-2xl font-bold text-gray-200 sm:text-3xl">
+        {{ $t("legal.impressum.title") }}
+      </h2>
+      <p class="text-gray-200 text-sm">{{ $t("legal.impressum.tmg") }}</p>
       <p class="text-gray-200">André Hommrich</p>
       <p class="text-gray-200">Dernbacher Str. 26</p>
       <p class="text-gray-200">56410 Montabaur</p>
 
-      <p class="text-gray-200 mt-4">Kontakt:</p>
+      <p class="text-gray-200 mt-4">{{ $t("legal.impressum.contactLabel") }}</p>
       <a href="mailto:info@hommri.ch" class="text-gray-200 underline"
         >info@hommri.ch</a
       >
@@ -26,24 +30,24 @@ useSeoMeta({
       >
 
       <p class="text-gray-200 text-sm mt-4">
-        Kleinunternehmer gemäß § 19 UStG: Es wird keine Umsatzsteuer ausgewiesen
-        und daher keine Umsatzsteuer-Identifikationsnummer geführt.
+        {{ $t("legal.impressum.smallBusiness") }}
       </p>
       <p class="text-gray-200 text-sm mt-4">
-        Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV: André Hommrich
-        (Anschrift wie oben).
+        {{ $t("legal.impressum.responsible") }}
       </p>
     </AppCard>
 
     <!-- Photo credits card -->
     <AppCard>
-      <h3 class="text-xl font-semibold text-gray-200">Bildnachweise</h3>
+      <h3 class="text-xl font-semibold text-gray-200">
+        {{ $t("legal.impressum.creditsTitle") }}
+      </h3>
       <p class="text-gray-200 text-sm">
-        Ein herzliches Dankeschön an die Creator der folgenden Fotos:
+        {{ $t("legal.impressum.creditsIntro") }}
       </p>
       <ul class="list-inside list-decimal flex flex-col gap-2">
         <li class="text-gray-200 text-sm">
-          Foto von
+          {{ $t("legal.impressum.photoBy") }}
           <a
             href="https://unsplash.com/de/@afgprogrammer?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -51,7 +55,7 @@ useSeoMeta({
             class="underline"
             >Mohammad Rahmani</a
           >
-          auf
+          {{ $t("legal.impressum.photoOn") }}
           <a
             href="https://unsplash.com/de/fotos/schwarzer-laptop-computer-mit-blauem-bildschirm-eingeschaltet-N5bT5RctFZ8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -61,7 +65,7 @@ useSeoMeta({
           >
         </li>
         <li class="text-gray-200 text-sm">
-          Foto von
+          {{ $t("legal.impressum.photoBy") }}
           <a
             href="https://unsplash.com/de/@joeynicotra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -69,7 +73,7 @@ useSeoMeta({
             class="underline"
             >Joey Nicotra</a
           >
-          auf
+          {{ $t("legal.impressum.photoOn") }}
           <a
             href="https://unsplash.com/de/fotos/mann-spielt-gitarre-in-nahaufnahme-OZzu3Euverk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -79,7 +83,7 @@ useSeoMeta({
           >
         </li>
         <li class="text-gray-200 text-sm">
-          Foto von
+          {{ $t("legal.impressum.photoBy") }}
           <a
             href="https://unsplash.com/de/@hobiindustri?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -87,7 +91,7 @@ useSeoMeta({
             class="underline"
             >Hobi industri</a
           >
-          auf
+          {{ $t("legal.impressum.photoOn") }}
           <a
             href="https://unsplash.com/de/fotos/schwarz-gelbe-stromzange-NLBJ2I0lNr4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -97,7 +101,7 @@ useSeoMeta({
           >
         </li>
         <li class="text-gray-200 text-sm">
-          Foto von
+          {{ $t("legal.impressum.photoBy") }}
           <a
             href="https://unsplash.com/de/@campaign_creators?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"
@@ -105,7 +109,7 @@ useSeoMeta({
             class="underline"
             >Campaign Creators</a
           >
-          auf
+          {{ $t("legal.impressum.photoOn") }}
           <a
             href="https://unsplash.com/de/fotos/person-using-macbook-pro-OGOWDVLbMSc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
             target="_blank"

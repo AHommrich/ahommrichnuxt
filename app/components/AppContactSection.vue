@@ -14,6 +14,9 @@ import type {
   ContactSubmissionResponse,
 } from "~~/types/contact";
 
+// i18n (auto-imported by @nuxtjs/i18n) — für Validierungs-/Fehlertexte im Script.
+const { t } = useI18n();
+
 // FontAwesome ist ein client-only Plugin — Rendern auf dem Server erzeugt eine
 // Hydration-Mismatch. Dieser Flag gated alle <font-awesome-icon>-Nutzungen.
 const isClient = ref(false);
@@ -25,6 +28,9 @@ const iconFor: Record<ContactIconName, string> = {
   screen: "display",
   message: "comment-dots",
 };
+
+// Locale-aware link to the privacy page (auto-imported by @nuxtjs/i18n).
+const localePath = useLocalePath();
 
 // Formularzustand
 const intent = ref<ContactIntentId>(contactIntents[0].id);
@@ -83,21 +89,21 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const validate = () => {
   fieldErrors.firstName = firstName.value.trim()
     ? ""
-    : "Bitte geben Sie Ihren Vornamen an.";
+    : t("contact.validation.firstName");
   fieldErrors.lastName = lastName.value.trim()
     ? ""
-    : "Bitte geben Sie Ihren Nachnamen an.";
+    : t("contact.validation.lastName");
   fieldErrors.email = !email.value.trim()
-    ? "Bitte geben Sie Ihre E-Mail-Adresse an."
+    ? t("contact.validation.emailRequired")
     : emailPattern.test(email.value.trim())
       ? ""
-      : "Bitte geben Sie eine gültige E-Mail-Adresse an.";
+      : t("contact.validation.emailInvalid");
   fieldErrors.message = message.value.trim()
     ? ""
-    : "Bitte beschreiben Sie kurz Ihr Anliegen.";
+    : t("contact.validation.message");
   fieldErrors.privacyConsent = privacyConsent.value
     ? ""
-    : "Bitte bestätigen Sie die Kenntnisnahme des Datenschutzhinweises.";
+    : t("contact.validation.privacy");
 
   return (Object.keys(fieldErrors) as FieldKey[]).every(
     (key) => !fieldErrors[key],
@@ -149,8 +155,7 @@ const submitForm = async () => {
       privacyNoticeTimezone.value = "";
     }
   } catch {
-    errorMessage.value =
-      "Die Nachricht konnte gerade nicht gesendet werden. Bitte versuchen Sie es später erneut oder schreiben Sie mir direkt an info@hommri.ch.";
+    errorMessage.value = t("contact.sendError");
   } finally {
     isSubmitting.value = false;
   }
@@ -174,18 +179,15 @@ const inputClass =
         <p
           class="text-xs font-semibold uppercase tracking-[0.22em] text-white/70"
         >
-          Kontakt
+          {{ $t("contact.eyebrow") }}
         </p>
         <h2 class="mt-2 text-2xl text-gray-200 sm:text-3xl md:text-4xl">
-          Schreiben Sie mir
+          {{ $t("contact.heading") }}
         </h2>
         <p
           class="mt-3 max-w-2xl text-sm leading-relaxed text-gray-200/90 md:text-base"
         >
-          Haben Sie ein Website-Vorhaben oder eine technische Frage? Oder
-          möchten Sie sich einfach unverbindlich austauschen? Schreiben Sie mir
-          kurz, worum es geht. Ich melde mich persönlich bei Ihnen und gebe
-          Ihnen eine ehrliche Einschätzung.
+          {{ $t("contact.intro") }}
         </p>
 
         <!-- Erfolgsmeldung -->
@@ -196,17 +198,17 @@ const inputClass =
           aria-live="polite"
         >
           <p class="text-lg font-semibold text-gray-200">
-            Vielen Dank für Ihre Nachricht!
+            {{ $t("contact.success.title") }}
           </p>
           <p class="mt-2 text-sm text-gray-200/90">
-            Ich habe Ihre Anfrage erhalten und melde mich zeitnah bei Ihnen.
+            {{ $t("contact.success.body") }}
           </p>
           <button
             type="button"
             class="mt-5 inline-flex items-center gap-2 border border-white/40 px-4 py-2 text-sm text-gray-200 transition hover:bg-white/10"
             @click="formSubmitted = false"
           >
-            Weitere Nachricht schreiben
+            {{ $t("contact.success.again") }}
           </button>
         </div>
 
@@ -225,7 +227,7 @@ const inputClass =
             class="border border-white/40 bg-white/10 p-4 text-sm text-gray-200"
             role="alert"
           >
-            <p class="font-semibold">Bitte prüfen Sie Ihre Angaben:</p>
+            <p class="font-semibold">{{ $t("contact.errorsSummary") }}</p>
             <ul class="mt-2 list-inside list-disc">
               <li v-for="(msg, key) in fieldErrors" v-show="msg" :key="key">
                 {{ msg }}
@@ -236,7 +238,7 @@ const inputClass =
           <!-- Anliegen (neutraler Kontaktpunkt: „Worum geht es?") -->
           <fieldset>
             <legend class="mb-3 text-sm font-semibold text-gray-200">
-              Worum geht es?
+              {{ $t("contact.legend") }}
             </legend>
             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <label
@@ -260,7 +262,7 @@ const inputClass =
                   :icon="['fas', iconFor[option.icon]]"
                   class="h-4 w-4 shrink-0 text-white/80"
                 />
-                <span>{{ option.label }}</span>
+                <span>{{ $t(`contact.intents.${option.id}.label`) }}</span>
               </label>
             </div>
           </fieldset>
@@ -271,7 +273,7 @@ const inputClass =
               for="contact-topic"
               class="mb-2 block text-sm font-semibold text-gray-200"
             >
-              {{ activeIntent.topicLabel }}
+              {{ $t(`contact.intents.${activeIntent.id}.topicLabel`) }}
             </label>
             <select id="contact-topic" v-model="topic" :class="inputClass">
               <option
@@ -279,7 +281,7 @@ const inputClass =
                 :key="t.id"
                 :value="t.id"
               >
-                {{ t.label }}
+                {{ $t(`contact.topics.${t.id}`) }}
               </option>
             </select>
           </div>
@@ -291,7 +293,7 @@ const inputClass =
                 for="contact-first-name"
                 class="mb-2 block text-sm font-semibold text-gray-200"
               >
-                Vorname
+                {{ $t("contact.fields.firstName") }}
               </label>
               <input
                 id="contact-first-name"
@@ -308,7 +310,7 @@ const inputClass =
                 for="contact-last-name"
                 class="mb-2 block text-sm font-semibold text-gray-200"
               >
-                Nachname
+                {{ $t("contact.fields.lastName") }}
               </label>
               <input
                 id="contact-last-name"
@@ -329,7 +331,7 @@ const inputClass =
                 for="contact-email"
                 class="mb-2 block text-sm font-semibold text-gray-200"
               >
-                E-Mail
+                {{ $t("contact.fields.email") }}
               </label>
               <input
                 id="contact-email"
@@ -346,8 +348,10 @@ const inputClass =
                 for="contact-phone"
                 class="mb-2 block text-sm font-semibold text-gray-200"
               >
-                Telefon
-                <span class="font-normal text-gray-200/60">(optional)</span>
+                {{ $t("contact.fields.phone") }}
+                <span class="font-normal text-gray-200/60">{{
+                  $t("contact.fields.optional")
+                }}</span>
               </label>
               <input
                 id="contact-phone"
@@ -365,7 +369,7 @@ const inputClass =
               for="contact-message"
               class="mb-2 block text-sm font-semibold text-gray-200"
             >
-              Ihre Nachricht
+              {{ $t("contact.fields.message") }}
             </label>
             <textarea
               id="contact-message"
@@ -379,7 +383,7 @@ const inputClass =
 
           <!-- Honeypot: für Menschen unsichtbar, wird von Bots gern ausgefüllt. -->
           <div class="hidden" aria-hidden="true">
-            <label for="contact-website">Website (bitte leer lassen)</label>
+            <label for="contact-website">{{ $t("contact.honeypot") }}</label>
             <input
               id="contact-website"
               v-model="website"
@@ -403,12 +407,14 @@ const inputClass =
                 @change="handlePrivacyConsentChange"
               />
               <span>
-                Ich habe den
-                <NuxtLink to="/datenschutz" class="underline hover:text-white">
-                  Datenschutzhinweis
+                {{ $t("contact.consent.pre") }}
+                <NuxtLink
+                  :to="localePath('datenschutz')"
+                  class="underline hover:text-white"
+                >
+                  {{ $t("contact.consent.link") }}
                 </NuxtLink>
-                zur Kenntnis genommen und bin damit einverstanden, dass meine
-                Angaben zur Bearbeitung meiner Anfrage verarbeitet werden.
+                {{ $t("contact.consent.post") }}
               </span>
             </label>
           </div>
@@ -430,7 +436,11 @@ const inputClass =
                 :icon="['fas', isSubmitting ? 'spinner' : 'paper-plane']"
                 :class="['h-4 w-4', { 'animate-spin': isSubmitting }]"
               />
-              {{ isSubmitting ? "Wird gesendet …" : "Nachricht senden" }}
+              {{
+                isSubmitting
+                  ? $t("contact.submit.sending")
+                  : $t("contact.submit.send")
+              }}
             </button>
           </div>
         </form>

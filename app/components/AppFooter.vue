@@ -4,6 +4,9 @@ defineProps<{
   // Used on short pages (e.g. Impressum) where the content doesn't fill the screen height.
   isFooterFixed?: boolean;
 }>();
+
+// Locale-aware links so /en stays on /en/… (auto-imported by @nuxtjs/i18n).
+const localePath = useLocalePath();
 </script>
 
 <template>
@@ -34,7 +37,7 @@ defineProps<{
             href="https://github.com/AHommrich"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub-Profil von André Hommrich"
+            :aria-label="$t('footer.githubAria')"
             class="transition-opacity hover:opacity-70"
           >
             <!-- GitHub mark (inline SVG, no external dependency) -->
@@ -49,8 +52,12 @@ defineProps<{
               />
             </svg>
           </a>
-          <NuxtLink :to="'impressum'"> Impressum </NuxtLink>
-          <NuxtLink :to="'datenschutz'"> Datenschutz </NuxtLink>
+          <NuxtLink :to="localePath('impressum')">{{
+            $t("footer.impressum")
+          }}</NuxtLink>
+          <NuxtLink :to="localePath('datenschutz')">{{
+            $t("footer.datenschutz")
+          }}</NuxtLink>
         </div>
       </div>
     </div>

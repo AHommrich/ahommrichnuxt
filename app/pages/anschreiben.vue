@@ -2,14 +2,19 @@
 // Standalone cover-letter page — no site layout so print output stays clean.
 definePageMeta({ layout: false });
 
+// i18n (auto-imported by @nuxtjs/i18n).
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
+
 useSeoMeta({
-  title: "Anschreiben — André Hommrich",
+  title: () => t("letter.seo.title"),
   robots: "noindex, nofollow, noarchive",
 });
 
-useHead({
-  htmlAttrs: { lang: "de", class: "cv-route" },
-});
+// html lang follows the active locale so the English PDF/HTML gets lang="en".
+useHead(() => ({
+  htmlAttrs: { lang: locale.value, class: "cv-route" },
+}));
 
 // DOM refs for every editable field
 const elDatum = ref<HTMLElement | null>(null);
@@ -42,27 +47,23 @@ const refsMap = {
   abschluss: elAbschluss,
 };
 
-const DEFAULTS = {
-  datum: "Montabaur, den [Datum]",
-  firma: "[Unternehmen]",
-  zh: "z. H. [Ansprechpartner]",
-  strasse: "[Straße Hausnummer]",
-  ort: "[PLZ Ort]",
-  stelle: "Bewerbung als [Jobtitel]",
-  anrede: "Sehr geehrte Damen und Herren,",
-  interesse:
-    "[Wie Sie auf die Stelle aufmerksam wurden und was Sie am Unternehmen, Produkt oder der Branche konkret angesprochen hat.]",
-  aktuell:
-    "[Aktuelle Rolle, eingesetzte Technologien und Art der Projekte — was Sie täglich machen und welche Verantwortung Sie tragen.]",
-  projekte:
-    "Privat entwickle ich eigene Projekte Fullstack und betreibe sie selbst per Docker auf eigener Infrastruktur. Dadurch weiß ich aus eigener Erfahrung, was ein Backend liefern muss, damit Website und App gut damit arbeiten können. Eine ausführliche Übersicht der Technologien, mit denen ich bereits gearbeitet habe, finden Sie unter https://ahommrich.de/#technologien",
-  geschichte:
-    "Seit 2025 bin ich ausgebildeter Fachinformatiker für Anwendungsentwicklung. Davor war ich seit 2013 in der Elektrotechnik tätig, mit Abschluss als Elektriker 2017. Aus der Zeit habe ich mir eine praxisnahe Herangehensweise an technische Probleme mitgenommen und ein gutes Gespür dafür, wie Anwender Software im Alltag wirklich benutzen.",
-  referenzen:
-    "Damit Sie sich ein Bild von meiner Arbeitsweise machen können, habe ich drei eigene Referenzprojekte beigefügt:\n\nEvePlan – Selbst entwickelte Hochzeitssoftware für Planung, Einladungen, RSVP-Verwaltung und Event-Organisation.\nRepository: https://github.com/AHommrich/eventplaner\n\nEvePlan App – Die begleitende Smartphone-App für Gäste, angebunden an das EvePlan-System.\nRepository: https://github.com/AHommrich/eventplaner-app\n\nahommrich.de – Meine persönliche Website zu meinem Werdegang und meinen technischen Schwerpunkten.\nLive-Demo: https://ahommrich.de | Repository: https://github.com/AHommrich/ahommrichnuxt",
-  abschluss:
-    "Da ich mich aus einer ungekündigten Festanstellung heraus bewerbe, bitte ich um vertrauliche Behandlung meiner Bewerbung. Für den Erstkontakt erreichen Sie mich am besten per E-Mail. Gerne können wir darüber auch direkt einen Termin für ein erstes Telefonat oder einen Videocall ausmachen.\nIch freue mich, wenn wir ins Gespräch kommen.",
-};
+// Editable field defaults come from the letter.defaults.* i18n keys so the
+// blank letter starts in the active language (German on /, English on /en).
+const DEFAULTS = computed<Record<string, string>>(() => ({
+  datum: t("letter.defaults.datum"),
+  firma: t("letter.defaults.firma"),
+  zh: t("letter.defaults.zh"),
+  strasse: t("letter.defaults.strasse"),
+  ort: t("letter.defaults.ort"),
+  stelle: t("letter.defaults.stelle"),
+  anrede: t("letter.defaults.anrede"),
+  interesse: t("letter.defaults.interesse"),
+  aktuell: t("letter.defaults.aktuell"),
+  projekte: t("letter.defaults.projekte"),
+  geschichte: t("letter.defaults.geschichte"),
+  referenzen: t("letter.defaults.referenzen"),
+  abschluss: t("letter.defaults.abschluss"),
+}));
 
 function getContent(): Record<string, string> {
   return Object.fromEntries(
@@ -110,10 +111,12 @@ function importJson() {
   input.click();
 }
 
-const { isPdfLoading, downloadPdf } = useDocumentPdf("anschreiben.pdf");
+const { isPdfLoading, downloadPdf } = useDocumentPdf(
+  locale.value === "en" ? "cover-letter.pdf" : "anschreiben.pdf",
+);
 
 async function generatePdf() {
-  await downloadPdf("/api/pdf/anschreiben", {
+  await downloadPdf(`/api/pdf/anschreiben?locale=${locale.value}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(getContent()),
@@ -133,7 +136,7 @@ onMounted(() => {
       // Invalid base64/JSON — fall through to defaults
     }
   } else {
-    setContent(DEFAULTS);
+    setContent(DEFAULTS.value);
   }
   document.documentElement.setAttribute("data-ready", "1");
 });
@@ -145,12 +148,14 @@ onMounted(() => {
 
     <!-- Action bar — screen only -->
     <div class="cv-actions">
-      <NuxtLink to="/" class="cv-action-btn">← Zur Startseite</NuxtLink>
+      <NuxtLink :to="localePath('/')" class="cv-action-btn">{{
+        $t("letter.actions.home")
+      }}</NuxtLink>
       <button type="button" class="cv-action-btn" @click="importJson">
-        Importieren
+        {{ $t("letter.actions.import") }}
       </button>
       <button type="button" class="cv-action-btn" @click="exportJson">
-        Exportieren
+        {{ $t("letter.actions.export") }}
       </button>
       <button
         type="button"
@@ -158,7 +163,11 @@ onMounted(() => {
         :disabled="isPdfLoading"
         @click="generatePdf"
       >
-        {{ isPdfLoading ? "Wird generiert…" : "Als PDF speichern" }}
+        {{
+          isPdfLoading
+            ? $t("letter.actions.pdfLoading")
+            : $t("letter.actions.pdf")
+        }}
       </button>
     </div>
 
@@ -168,7 +177,7 @@ onMounted(() => {
       <header class="cv-band">
         <div>
           <p class="cv-band-name">André Hommrich</p>
-          <p class="cv-band-sub">Fullstack-Webentwickler</p>
+          <p class="cv-band-sub">{{ $t("letter.jobTitle") }}</p>
         </div>
         <address class="cv-band-contact">
           Dernbacher Str. 26 · 56410 Montabaur<br />
@@ -236,7 +245,9 @@ onMounted(() => {
 
         <!-- Body: 6 structured paragraphs, labels are screen-only hints -->
         <div class="letter-body">
-          <div class="section-label" aria-hidden="true">① Interesse am Job</div>
+          <div class="section-label" aria-hidden="true">
+            {{ $t("letter.sections.interesse") }}
+          </div>
           <div
             ref="elInteresse"
             class="letter-field letter-section"
@@ -244,7 +255,7 @@ onMounted(() => {
           />
 
           <div class="section-label" aria-hidden="true">
-            ② Aktuelle Jobposition
+            {{ $t("letter.sections.aktuell") }}
           </div>
           <div
             ref="elAktuell"
@@ -253,7 +264,7 @@ onMounted(() => {
           />
 
           <div class="section-label" aria-hidden="true">
-            ③ Eigene Entwicklungssituation
+            {{ $t("letter.sections.entwicklung") }}
           </div>
           <div
             ref="elProjekte"
@@ -261,14 +272,18 @@ onMounted(() => {
             contenteditable="plaintext-only"
           />
 
-          <div class="section-label" aria-hidden="true">④ Jobgeschichte</div>
+          <div class="section-label" aria-hidden="true">
+            {{ $t("letter.sections.geschichte") }}
+          </div>
           <div
             ref="elGeschichte"
             class="letter-field letter-section"
             contenteditable="plaintext-only"
           />
 
-          <div class="section-label" aria-hidden="true">⑤ Referenzen</div>
+          <div class="section-label" aria-hidden="true">
+            {{ $t("letter.sections.referenzen") }}
+          </div>
           <div class="letter-refs">
             <div
               ref="elReferenzen"
@@ -277,7 +292,9 @@ onMounted(() => {
             />
           </div>
 
-          <div class="section-label" aria-hidden="true">⑥ Abschluss</div>
+          <div class="section-label" aria-hidden="true">
+            {{ $t("letter.sections.abschluss") }}
+          </div>
           <div
             ref="elAbschluss"
             class="letter-field letter-section"
@@ -294,13 +311,13 @@ onMounted(() => {
 
         <!-- Closing — fixed -->
         <div class="letter-closing">
-          <p>Mit freundlichen Grüßen,</p>
+          <p>{{ $t("letter.closing.greeting") }}</p>
           <p class="letter-name">André Hommrich</p>
         </div>
       </div>
 
       <p class="letter-hint">
-        Felder sind direkt bearbeitbar — klicken zum Editieren
+        {{ $t("letter.hint") }}
       </p>
     </div>
   </div>

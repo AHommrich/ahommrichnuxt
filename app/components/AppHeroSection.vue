@@ -50,7 +50,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Vom Elektrohandwerk zur Softwareentwicklung.
+                {{ $t("hero.captions.elektro") }}
               </p>
             </div>
           </div>
@@ -69,7 +69,7 @@ onMounted(() => {
             class="flex h-full w-full rotate-[-45deg] flex-col rounded-md p-3 text-center text-white"
           >
             <div
-              class="flex rotate-45 items-center justify-center self-center border-white md:h-8 md:w-8 md:border xl:h-12 xl:w-12"
+              class="flex h-8 w-8 rotate-45 items-center justify-center self-center border-white md:border xl:h-12 xl:w-12"
             >
               <font-awesome-icon
                 v-if="isClient"
@@ -79,7 +79,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Lösungen finden, die halten.
+                {{ $t("hero.captions.loesungen") }}
               </p>
             </div>
           </div>
@@ -108,7 +108,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Mit Musik durch den Tag.
+                {{ $t("hero.captions.musik") }}
               </p>
             </div>
           </div>
@@ -137,7 +137,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Wissen teilen und dazulernen.
+                {{ $t("hero.captions.wissen") }}
               </p>
             </div>
           </div>
@@ -166,7 +166,7 @@ onMounted(() => {
             </div>
             <div class="pt-2 md:pt-5 lg:pt-9">
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Freizeit zu Fuß und mit vier Pfoten.
+                {{ $t("hero.captions.freizeit") }}
               </p>
             </div>
           </div>
@@ -196,9 +196,11 @@ onMounted(() => {
               />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
-              <p class="text-sm lg:text-base xl:text-2xl">Hallo</p>
+              <p class="text-sm lg:text-base xl:text-2xl">
+                {{ $t("hero.hallo") }}
+              </p>
               <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                Ich bin André
+                {{ $t("hero.name") }}
               </p>
             </div>
           </div>
@@ -250,9 +252,11 @@ onMounted(() => {
                 />
               </div>
               <div class="pt-1 md:pt-5 lg:pt-9">
-                <p class="text-sm lg:text-base xl:text-2xl">Hallo</p>
+                <p class="text-sm lg:text-base xl:text-2xl">
+                  {{ $t("hero.hallo") }}
+                </p>
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Ich bin André
+                  {{ $t("hero.name") }}
                 </p>
               </div>
             </div>
@@ -279,7 +283,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Lösungen finden, die halten.
+                  {{ $t("hero.captions.loesungen") }}
                 </p>
               </div>
             </div>
@@ -306,7 +310,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Wissen teilen und dazulernen.
+                  {{ $t("hero.captions.wissen") }}
                 </p>
               </div>
             </div>
@@ -335,7 +339,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Vom Elektrohandwerk zur Softwareentwicklung.
+                  {{ $t("hero.captions.elektro") }}
                 </p>
               </div>
             </div>
@@ -364,7 +368,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Mit Musik durch den Tag.
+                  {{ $t("hero.captions.musik") }}
                 </p>
               </div>
             </div>
@@ -393,7 +397,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
-                  Freizeit zu Fuß und mit vier Pfoten.
+                  {{ $t("hero.captions.freizeit") }}
                 </p>
               </div>
             </div>

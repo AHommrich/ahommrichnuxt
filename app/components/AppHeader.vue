@@ -1,9 +1,26 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, onMounted, onBeforeUnmount, nextTick } from "vue";
+import {
+  ref,
+  computed,
+  watch,
+  onBeforeMount,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+} from "vue";
 import { useRoute } from "vue-router";
 import { lerp } from "~/utils/animation";
 
 const route = useRoute();
+
+// i18n: locale state for the language switcher (auto-imported by @nuxtjs/i18n).
+const { locale, locales } = useI18n();
+const switchLocalePath = useSwitchLocalePath();
+const localePath = useLocalePath();
+
+// Homepage check must be locale-aware: the localized home is "/" (de) or "/en".
+// A plain `route.path === '/'` would treat /en as a subpage and show the back link.
+const isHome = computed(() => route.path === localePath("/"));
 
 // Ordered nav sections — index matches the .nav-link DOM order in the template
 const SECTION_IDS = [
@@ -198,6 +215,18 @@ const onResize = () => {
   updateLinePosition();
 };
 
+// The header persists across a locale switch (same layout, no remount), so
+// onMounted does not run again. The nav labels change width between languages
+// (e.g. "Über mich" -> "About"), which would leave the sliding underline
+// measured against the old labels until the next scroll/resize. Re-measure as
+// soon as the locale — and therefore the labels — change.
+watch(locale, async () => {
+  await nextTick();
+  onResize();
+  // Re-measure once more after fonts/layout have settled.
+  setTimeout(onResize, 150);
+});
+
 // On hard reload (navigation type 1), scroll back to top so the page always starts at the hero
 onBeforeMount(() => {
   if (window.performance.navigation.type === 1) {
@@ -281,7 +310,7 @@ onBeforeUnmount(() => {
     >
       <!-- Logo — links back to the homepage -->
       <div class="text-lg font-bold">
-        <NuxtLink to="/" class="text-lg font-bold">
+        <NuxtLink :to="localePath('/')" class="text-lg font-bold">
           <img
             src="/img/hommri-logo.svg"
             alt="hommri.ch"
@@ -291,7 +320,7 @@ onBeforeUnmount(() => {
       </div>
 
       <nav class="relative flex items-center">
-        <template v-if="route.path === '/'">
+        <template v-if="isHome">
           <!-- Desktop: inline anchor links with sliding underline (sm and up) -->
           <div class="relative hidden gap-6 sm:flex">
             <a
@@ -301,7 +330,7 @@ onBeforeUnmount(() => {
               :class="{ 'is-active': activeSection === item.id }"
               @click.prevent="scrollToSection(item.id)"
             >
-              {{ item.label }}
+              {{ $t(`nav.${item.id}`) }}
             </a>
 
             <!-- Sliding underline — desktop only; transform written by the rAF loop. -->
@@ -328,18 +357,34 @@ onBeforeUnmount(() => {
 
         <!-- On all other pages (e.g. Impressum): show a back link instead -->
         <template v-else>
-          <NuxtLink to="/" class="mb-2 cursor-pointer text-gray-200">
-            Zurück
+          <NuxtLink
+            :to="localePath('/')"
+            class="mb-2 cursor-pointer text-gray-200"
+          >
+            {{ $t("common.back") }}
           </NuxtLink>
         </template>
+
+        <!-- Language switcher: DSGVO-clean, the target locale lives in the URL. -->
+        <div
+          class="ml-4 flex items-center gap-2 border-l border-gray-200/40 pl-4 text-sm"
+          :aria-label="$t('common.switchLanguage')"
+        >
+          <NuxtLink
+            v-for="loc in locales"
+            :key="loc.code"
+            :to="switchLocalePath(loc.code)"
+            class="uppercase transition-opacity hover:opacity-70"
+            :class="locale === loc.code ? 'font-bold' : 'opacity-60'"
+          >
+            {{ loc.code }}
+          </NuxtLink>
+        </div>
       </nav>
     </div>
 
     <!-- Mobile dropdown menu (below sm, homepage only) -->
-    <div
-      v-if="route.path === '/' && mobileOpen"
-      class="relative z-10 sm:hidden"
-    >
+    <div v-if="isHome && mobileOpen" class="relative z-10 sm:hidden">
       <nav class="flex flex-col gap-1 px-4 pb-4 pt-1">
         <a
           v-for="item in navItems"
@@ -348,7 +393,7 @@ onBeforeUnmount(() => {
           :class="{ 'mobile-link-active': activeSection === item.id }"
           @click.prevent="handleMobileNav(item.id)"
         >
-          {{ item.label }}
+          {{ $t(`nav.${item.id}`) }}
         </a>
       </nav>
     </div>

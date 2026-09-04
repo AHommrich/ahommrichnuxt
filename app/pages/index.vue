@@ -1,11 +1,11 @@
 <script setup lang="ts">
+const { t } = useI18n();
+
 useSeoMeta({
-  title: "André Hommrich — Fullstack-Entwickler",
-  description:
-    "Portfolio von André Hommrich — Fullstack-Entwickler aus dem Westerwald. Symfony, Laravel, Vue.js, TypeScript und Docker.",
-  ogTitle: "André Hommrich — Fullstack-Entwickler",
-  ogDescription:
-    "Portfolio von André Hommrich — Fullstack-Entwickler aus dem Westerwald. Symfony, Laravel, Vue.js, TypeScript und Docker.",
+  title: () => t("seo.home.title"),
+  description: () => t("seo.home.description"),
+  ogTitle: () => t("seo.home.title"),
+  ogDescription: () => t("seo.home.description"),
   ogImage: "https://ahommrich.de/img/andre-arbeit-3.jpg",
   ogUrl: "https://ahommrich.de",
   ogType: "website",
@@ -50,7 +50,7 @@ useHead({
   <div>
     <!-- Homepage: renders the main sections in order -->
     <!-- Visually hidden h1 for screen readers and SEO -->
-    <h1 class="sr-only">André Hommrich — Fullstack-Entwickler</h1>
+    <h1 class="sr-only">{{ $t("seo.home.title") }}</h1>
     <AppHeroSection />
     <AppAboutSection />
     <AppCurrentlySection />

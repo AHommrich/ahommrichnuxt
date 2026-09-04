@@ -5,6 +5,11 @@ export default defineEventHandler(async (event) => {
   const data = Buffer.from(JSON.stringify(body)).toString("base64");
   const port = process.env.PORT || 3000;
 
+  // Locale-aware: render the localized letter page so static parts (labels, date)
+  // match. The letter body itself comes from the posted data.
+  const locale = getQuery(event).locale === "en" ? "en" : "de";
+  const prefix = locale === "en" ? "/en" : "";
+
   const browser = await puppeteer.launch({
     executablePath: getChromiumPath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -13,9 +18,12 @@ export default defineEventHandler(async (event) => {
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 794, height: 1123 });
-    await page.goto(`http://localhost:${port}/anschreiben?data=${data}`, {
-      waitUntil: "networkidle0",
-    });
+    await page.goto(
+      `http://localhost:${port}${prefix}/anschreiben?data=${data}`,
+      {
+        waitUntil: "networkidle0",
+      },
+    );
     await page.waitForSelector("[data-ready]", { timeout: 10000 });
 
     await page.evaluate(() => {
@@ -59,7 +67,7 @@ export default defineEventHandler(async (event) => {
     setHeader(
       event,
       "Content-Disposition",
-      'attachment; filename="anschreiben.pdf"',
+      `attachment; filename="${locale === "en" ? "cover-letter" : "anschreiben"}.pdf"`,
     );
     return Buffer.from(pdf);
   } finally {

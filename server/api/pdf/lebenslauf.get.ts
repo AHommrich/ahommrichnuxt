@@ -3,6 +3,11 @@ import puppeteer from "puppeteer-core";
 export default defineEventHandler(async (event) => {
   const port = process.env.PORT || 3000;
 
+  // Locale-aware: render the localized page so the PDF matches the language the
+  // visitor is viewing. Puppeteer simply prints "/lebenslauf" or "/en/lebenslauf".
+  const locale = getQuery(event).locale === "en" ? "en" : "de";
+  const prefix = locale === "en" ? "/en" : "";
+
   const browser = await puppeteer.launch({
     executablePath: getChromiumPath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -11,7 +16,7 @@ export default defineEventHandler(async (event) => {
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 794, height: 1123 });
-    await page.goto(`http://localhost:${port}/lebenslauf`, {
+    await page.goto(`http://localhost:${port}${prefix}/lebenslauf`, {
       waitUntil: "networkidle0",
     });
     await page.waitForSelector("[data-ready]", { timeout: 10000 });
@@ -27,7 +32,7 @@ export default defineEventHandler(async (event) => {
     setHeader(
       event,
       "Content-Disposition",
-      'attachment; filename="lebenslauf.pdf"',
+      `attachment; filename="${locale === "en" ? "cv" : "lebenslauf"}.pdf"`,
     );
     return Buffer.from(pdf);
   } finally {
