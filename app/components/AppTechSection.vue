@@ -342,8 +342,11 @@ const toggleInfoMode = () => {
       el.style.transition = "transform 0.3s ease-out";
       el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
       // Sync physics state so resuming animation starts from the correct positions
-      states[index].x = tx + ICON_HALF;
-      states[index].y = ty + ICON_HALF;
+      const state = states[index];
+      if (state) {
+        state.x = tx + ICON_HALF;
+        state.y = ty + ICON_HALF;
+      }
     });
 
     // Step 4: show text labels after the current frame to avoid DOM mutation during transition
@@ -364,8 +367,10 @@ const toggleInfoMode = () => {
       // Randomise velocity directions so icons scatter from their grid positions
       iconNames.forEach((_, index) => {
         const angle = Math.random() * Math.PI * 2;
-        states[index].vx = Math.cos(angle) * BASE_SPEED;
-        states[index].vy = Math.sin(angle) * BASE_SPEED;
+        const state = states[index];
+        if (!state) return;
+        state.vx = Math.cos(angle) * BASE_SPEED;
+        state.vy = Math.sin(angle) * BASE_SPEED;
       });
       if (isVisible.value && rafId === null)
         rafId = requestAnimationFrame(tick);
@@ -486,14 +491,15 @@ let touchInContainer = false;
 /** Records touch start position and marks the touch as originating inside the container */
 const handleTouchStart = (e: TouchEvent) => {
   touchInContainer = true;
-  if (e.touches.length > 0)
-    getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
+  const touch = e.touches[0];
+  if (touch) getContainerPointerPos(touch.clientX, touch.clientY);
 };
 
 /** Tracks the first touch point as it moves — only while touch started inside the container */
 const handleTouchMove = (e: TouchEvent) => {
-  if (!touchInContainer || e.touches.length === 0) return;
-  getContainerPointerPos(e.touches[0].clientX, e.touches[0].clientY);
+  if (!touchInContainer) return;
+  const touch = e.touches[0];
+  if (touch) getContainerPointerPos(touch.clientX, touch.clientY);
 };
 
 /** Resets pointer when touch ends or is cancelled */

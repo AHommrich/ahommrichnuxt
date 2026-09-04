@@ -8,7 +8,7 @@ import {
   isContactTopicId,
   normalizeContactIntent,
   normalizeContactTopic,
-} from "~/data/contact";
+} from "~~/data/contact";
 
 describe("data/contact", () => {
   it("exposes exactly the two neutral contact intents", () => {

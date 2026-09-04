@@ -6,13 +6,17 @@ import { fileURLToPath } from "node:url";
 // support and happy-dom for a lightweight DOM. Nuxt's auto-imports aren't
 // available in tests — components/composables use explicit imports.
 const rootDir = fileURLToPath(new URL(".", import.meta.url));
+// Nuxt 4 srcDir is app/: "~" and "@" resolve there, "~~"/"@@" stay at rootDir.
+const srcDir = fileURLToPath(new URL("./app", import.meta.url));
 
 export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      "~": rootDir,
-      "@": rootDir,
+      "~": srcDir,
+      "@": srcDir,
+      "~~": rootDir,
+      "@@": rootDir,
     },
   },
   test: {

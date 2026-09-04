@@ -128,14 +128,18 @@ const updateLinePosition = () => {
   const last = sectionMidpoints.length - 1;
 
   // Before the first section midpoint → pin to first nav item
-  if (viewportCenter <= sectionMidpoints[0]) {
-    setSlider(navMetrics[0].left, navMetrics[0].width);
+  const firstMid = sectionMidpoints[0];
+  const firstNav = navMetrics[0];
+  if (firstMid !== undefined && firstNav && viewportCenter <= firstMid) {
+    setSlider(firstNav.left, firstNav.width);
     return;
   }
 
   // Past the last section midpoint → pin to last nav item
-  if (viewportCenter >= sectionMidpoints[last]) {
-    setSlider(navMetrics[last].left, navMetrics[last].width);
+  const lastMid = sectionMidpoints[last];
+  const lastNav = navMetrics[last];
+  if (lastMid !== undefined && lastNav && viewportCenter >= lastMid) {
+    setSlider(lastNav.left, lastNav.width);
     return;
   }
 
@@ -143,14 +147,15 @@ const updateLinePosition = () => {
   for (let i = 0; i < last; i++) {
     const a = sectionMidpoints[i];
     const b = sectionMidpoints[i + 1];
+    if (a === undefined || b === undefined) continue;
     if (viewportCenter >= a && viewportCenter < b) {
       const span = b - a;
       if (span <= 0) return;
       const t = (viewportCenter - a) / span;
-      setSlider(
-        lerp(navMetrics[i].left, navMetrics[i + 1].left, t),
-        lerp(navMetrics[i].width, navMetrics[i + 1].width, t),
-      );
+      const navA = navMetrics[i];
+      const navB = navMetrics[i + 1];
+      if (!navA || !navB) return;
+      setSlider(lerp(navA.left, navB.left, t), lerp(navA.width, navB.width, t));
       return;
     }
   }

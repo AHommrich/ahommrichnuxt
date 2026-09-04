@@ -47,8 +47,8 @@ useHead({
 </script>
 
 <template>
-  <!-- Homepage: renders the three main sections in order -->
   <div>
+    <!-- Homepage: renders the main sections in order -->
     <!-- Visually hidden h1 for screen readers and SEO -->
     <h1 class="sr-only">André Hommrich — Fullstack-Entwickler</h1>
     <AppHeroSection />

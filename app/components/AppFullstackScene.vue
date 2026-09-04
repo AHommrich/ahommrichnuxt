@@ -166,7 +166,7 @@ onMounted(() => {
   if (stageEl.value && typeof IntersectionObserver !== "undefined") {
     intersectionObserver = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           isLive.value = true;
           intersectionObserver?.disconnect();
         }

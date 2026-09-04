@@ -27,7 +27,7 @@ onMounted(() => {
   if (!cardEl.value || typeof IntersectionObserver === "undefined") return;
   observer = new IntersectionObserver(
     ([entry]) => {
-      isInView.value = entry.isIntersecting;
+      if (entry) isInView.value = entry.isIntersecting;
     },
     { threshold: 0.35 },
   );
@@ -48,7 +48,11 @@ onBeforeUnmount(() => {
   -->
   <div
     ref="cardEl"
-    :class="['card-group chamfered relative', groupClass, { 'is-in-view': isInView }]"
+    :class="[
+      'card-group chamfered relative',
+      groupClass,
+      { 'is-in-view': isInView },
+    ]"
   >
     <div
       class="card-layer card-layer-back absolute inset-0 w-full opacity-80 [--card-border:#3b4245] [--card-fill:#fff] dark:[--card-border:#fff] dark:[--card-fill:#3b4245]"

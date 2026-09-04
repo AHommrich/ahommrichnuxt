@@ -8,11 +8,11 @@ import {
   type ContactIconName,
   type ContactIntentId,
   type ContactTopicId,
-} from "~/data/contact";
+} from "~~/data/contact";
 import type {
   ContactFormPayload,
   ContactSubmissionResponse,
-} from "~/types/contact";
+} from "~~/types/contact";
 
 // FontAwesome ist ein client-only Plugin — Rendern auf dem Server erzeugt eine
 // Hydration-Mismatch. Dieser Flag gated alle <font-awesome-icon>-Nutzungen.
@@ -52,11 +52,7 @@ watch(intent, (next) => {
 });
 
 type FieldKey =
-  | "firstName"
-  | "lastName"
-  | "email"
-  | "message"
-  | "privacyConsent";
+  "firstName" | "lastName" | "email" | "message" | "privacyConsent";
 const fieldErrors = reactive<Record<FieldKey, string>>({
   firstName: "",
   lastName: "",

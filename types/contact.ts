@@ -1,4 +1,4 @@
-import type { ContactIntentId, ContactTopicId } from "~/data/contact";
+import type { ContactIntentId, ContactTopicId } from "~~/data/contact";
 
 export type ContactFormPayload = {
   firstName: string;

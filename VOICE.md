@@ -21,11 +21,11 @@ André führt ein Kleingewerbe (Websites), darf aber laut Arbeitsvertrag **keine
 Werbung machen**. Die Lösung ist eine sprachliche Regel: über sich selbst und
 sein Können sprechen, nie ein Angebot an den Leser richten.
 
-| Erlaubt (Selbstdarstellung) | Heikel (Werbung/Akquise) |
-|---|---|
-| Ich-Perspektive über André | "Sie"-Ansprache mit Angebot |
-| "Ich habe ... gebaut", "Ich entwickle ..." | "Ich erstelle Ihre Website" |
-| Können und Projekte als Fakt | Handlungsaufforderung, Preise, Pakete |
+| Erlaubt (Selbstdarstellung)                | Heikel (Werbung/Akquise)              |
+| ------------------------------------------ | ------------------------------------- |
+| Ich-Perspektive über André                 | "Sie"-Ansprache mit Angebot           |
+| "Ich habe ... gebaut", "Ich entwickle ..." | "Ich erstelle Ihre Website"           |
+| Können und Projekte als Fakt               | Handlungsaufforderung, Preise, Pakete |
 
 Faustregel: **Sprich über André, nie über ein Angebot an den Leser.** Keine
 Preise, keine Leistungspakete, kein "jetzt anfragen" in den Textsektionen.
@@ -59,6 +59,7 @@ Wort über Konflikte mit Vorgesetzten, kein "gescheitert". Die Eigenschaft, die 
 Handwerk im Weg stand, ist heute das wichtigste Werkzeug.
 
 Beispiel für die Haltung (keine Endfassung):
+
 > "Ich habe im Elektrohandwerk gelernt und dort früh gemerkt, dass ich Dinge
 > nicht nur ausführen, sondern verstehen will. Dieses Hinterfragen ist in der
 > Softwareentwicklung zu meinem wichtigsten Werkzeug geworden."

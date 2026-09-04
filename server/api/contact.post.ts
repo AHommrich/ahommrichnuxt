@@ -6,17 +6,18 @@ import {
   readRawBody,
   setResponseHeader,
 } from "h3";
+import type { H3Event } from "h3";
 import {
   contactPrivacyNoticeVersion,
   getContactIntent,
   getContactTopic,
   isContactIntentId,
   isContactTopicId,
-} from "~/data/contact";
+} from "~~/data/contact";
 import type {
   ContactFormPayload,
   ContactSubmissionResponse,
-} from "~/types/contact";
+} from "~~/types/contact";
 
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
@@ -47,7 +48,7 @@ const validTimezone = (value: unknown) => {
   }
 };
 
-const enforceRateLimit = (event: Parameters<typeof getRequestIP>[0]) => {
+const enforceRateLimit = (event: H3Event) => {
   // X-Forwarded-For wird bewusst vertraut: In Produktion läuft die App hinter dem
   // Traefik-/Coolify-Reverse-Proxy, der den Header setzt — nur so kommt die echte
   // Client-IP an. Ohne diesen Proxy (direkter Zugriff) wäre das spoofbar.
@@ -69,7 +70,7 @@ const enforceRateLimit = (event: Parameters<typeof getRequestIP>[0]) => {
     setResponseHeader(
       event,
       "retry-after",
-      Math.ceil(RATE_LIMIT_WINDOW_MS / 1000),
+      String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)),
     );
     throw createError({
       statusCode: 429,

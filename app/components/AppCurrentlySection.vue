@@ -34,9 +34,9 @@
               ersten Planung bis in den laufenden Betrieb. Vieles, was ich baue,
               betreibe ich danach auch selbst. Deshalb achte ich schon beim
               Entwickeln darauf, dass es später zuverlässig läuft. Ich prüfe zum
-              Beispiel, ob sich ein Backup im Ernstfall wirklich wiederherstellen
-              lässt, und behandle Datenschutz als festen Teil der Technik und
-              nicht als etwas, das man am Ende dazusetzt.
+              Beispiel, ob sich ein Backup im Ernstfall wirklich
+              wiederherstellen lässt, und behandle Datenschutz als festen Teil
+              der Technik und nicht als etwas, das man am Ende dazusetzt.
             </p>
             <p
               class="py-3 text-left text-xs text-gray-200 sm:text-sm md:text-base lg:text-xl"
