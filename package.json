@@ -40,5 +40,13 @@
     "prettier": "^3.5.1",
     "vitest": "^4.1.9",
     "vue-tsc": "^2.1.10"
+  },
+  "optionalDependencies": {
+    "@oxc-parser/binding-darwin-arm64": "0.128.0",
+    "@oxc-parser/binding-darwin-x64": "0.128.0",
+    "@oxc-parser/binding-linux-arm64-gnu": "0.128.0",
+    "@oxc-parser/binding-linux-arm64-musl": "0.128.0",
+    "@oxc-parser/binding-linux-x64-gnu": "0.128.0",
+    "@oxc-parser/binding-linux-x64-musl": "0.128.0"
   }
 }

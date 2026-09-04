@@ -1,5 +1,6 @@
 # Match the Node version declared in .nvmrc so local and container builds agree.
-FROM node:20-alpine
+# Nuxt 4 + the @nuxt/eslint toolchain require Node 22+ (Object.groupBy, engines).
+FROM node:22-alpine
 
 # Chromium and required system libraries for Puppeteer headless PDF generation.
 RUN apk add --no-cache \
@@ -15,10 +16,16 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 WORKDIR /app
 
 # Copy manifests first to keep the dependency layer cacheable between code-only changes.
-COPY package*.json ./
+# .npmrc carries legacy-peer-deps=true — required because the dependency graph trips
+# npm's ERESOLVE/edgesOut resolver bug otherwise.
+COPY package*.json .npmrc ./
 
-# `npm ci` fails fast on a lockfile drift and installs exactly what's pinned — reproducible builds.
-RUN npm ci
+# npm bug #4828: with a package-lock present, npm skips the optional native
+# bindings (oxc-parser/rolldown) and `nuxt build` fails with "Cannot find native
+# binding". Dropping the lock forces a fresh resolve that installs the matching
+# platform binding. The bindings are pinned in package.json optionalDependencies,
+# so the native layer stays deterministic despite the fresh resolve.
+RUN rm -f package-lock.json && npm install --no-audit --no-fund
 
 COPY . .
 

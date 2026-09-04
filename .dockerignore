@@ -1,0 +1,15 @@
+# Never copy host artifacts into the image — COPY . . would otherwise clobber the
+# container's freshly installed node_modules with the host's (wrong platform:
+# darwin binaries over linux), which breaks native bindings (oxc-parser).
+node_modules
+.nuxt
+.output
+.git
+.github
+*.log
+.DS_Store
+Dockerfile
+.dockerignore
+docker-compose.yml
+tests
+docs
