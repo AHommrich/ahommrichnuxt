@@ -438,6 +438,31 @@ onMounted(() => {
 }
 
 /*
+  Hover-Flicker-Fix:
+  Beim Hovern zoomt die Bild-Ebene (.bg-cover) von scale 1.5 → 1.75. Liegt die
+  darüberliegende Text-Raute (.z-10) auf derselben, nicht promoteten Ebene, muss
+  der Browser Bild + gedrehten Text in JEDEM Animationsframe gemeinsam neu rastern
+  — die -45° gedrehten Text-/Quadratkanten werden dabei laufend neu geglättet und
+  flackern sichtbar. Beide Schichten auf eigene Compositing-Layer heben trennt das:
+  nur das Bild transformiert auf der GPU, die Text-Raute wird einmal gerastert und
+  bloß wiederverwendet statt frameweise neu berechnet.
+  - translateZ(0)             → eigener GPU-Layer (rotate/scale sind in Tailwind v4
+                                separate CSS-Properties, transform bleibt hier frei)
+  - backface-visibility hidden→ verhindert Subpixel-Neurasterung der Kanten
+*/
+.bg-cover {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform, scale;
+}
+.z-10 {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/*
   Mobile subpixel gap fix:
   On real devices, adjacent overflow:hidden tiles rendered with fractional pixel
   coordinates develop white hairline gaps due to subpixel anti-aliasing. The
