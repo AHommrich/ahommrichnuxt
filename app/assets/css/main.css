@@ -18,6 +18,17 @@
   }
 }
 
+/* Solid base colour on the document root + body so that when mobile Safari
+   can't repaint the tall .bg-pattern background fast enough during a quick
+   scroll, the exposed canvas shows the SAME base colour (charcoal in dark,
+   white in light) instead of a bright white flash. The dot pattern itself
+   stays on .bg-pattern and is fully visible — this only fills the canvas
+   behind it so a lagging repaint is invisible rather than a white strobe. */
+html,
+body {
+  background-color: var(--bg-base);
+}
+
 .bg-pattern {
   background-color: var(--bg-base);
   background-image: var(--bg-dots);
