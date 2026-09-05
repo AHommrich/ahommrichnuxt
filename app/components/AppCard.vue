@@ -134,16 +134,24 @@ onBeforeUnmount(() => {
   }
 }
 
+/*
+  Touch devices: render the card in its final expanded state STATICALLY — no
+  slide-in, no transition, no IntersectionObserver dependency. The in-view
+  slide animation re-triggered on every scroll in/out, which on fast mobile
+  scrolling caused the card to clip between states and stutter instead of
+  animating cleanly. Same end result as the reduced-motion branch, just always
+  applied on touch. Result: no per-card compositing churn while scrolling.
+*/
 @media (hover: none) {
-  .card-group.is-in-view .card-layer,
-  .card-group.is-in-view .card-content {
-    will-change: transform;
+  .card-layer,
+  .card-content {
+    transition: none;
   }
-  .card-group.is-in-view .card-layer-back {
+  .card-group .card-layer-back {
     transform: translate(0.375rem, 0.375rem);
   }
-  .card-group.is-in-view .card-layer-front,
-  .card-group.is-in-view .card-content {
+  .card-group .card-layer-front,
+  .card-group .card-content {
     transform: translate(-0.375rem, -0.375rem);
   }
 }
