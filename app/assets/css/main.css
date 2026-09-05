@@ -18,32 +18,9 @@
   }
 }
 
-/* Solid base colour on the document root so a fast scroll on mobile Safari
-   never flashes the white browser canvas before the pattern repaints. */
-html {
-  background-color: var(--bg-base);
-}
-
 .bg-pattern {
-  /* Solid fallback fill (matches the fixed layer below) — belt and braces so
-     nothing ever renders white, even mid-repaint. */
-  background-color: var(--bg-base);
-}
-
-/* The dot pattern is rendered on a viewport-fixed layer instead of on the tall
-   scrolling wrapper. A fixed layer is painted once and is NOT re-tiled while
-   scrolling, which removes the flashing / janky repaint seen on mobile when
-   the whole 2000×6000 pattern had to be re-painted on every scroll frame.
-   Note: a real position:fixed layer — NOT background-attachment:fixed, which
-   iOS Safari handles poorly. The pattern now stays still while content scrolls. */
-.bg-pattern::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
   background-color: var(--bg-base);
   background-image: var(--bg-dots);
   background-size: 2000px 6000px;
   background-repeat: repeat;
-  pointer-events: none;
 }
