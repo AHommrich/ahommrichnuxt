@@ -49,7 +49,9 @@ onMounted(() => {
               />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
-              <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+              <p
+                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+              >
                 {{ $t("hero.captions.elektro") }}
               </p>
             </div>
@@ -78,7 +80,9 @@ onMounted(() => {
               />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
-              <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+              <p
+                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+              >
                 {{ $t("hero.captions.loesungen") }}
               </p>
             </div>
@@ -107,7 +111,9 @@ onMounted(() => {
               />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
-              <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+              <p
+                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+              >
                 {{ $t("hero.captions.musik") }}
               </p>
             </div>
@@ -136,7 +142,9 @@ onMounted(() => {
               />
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
-              <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+              <p
+                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+              >
                 {{ $t("hero.captions.wissen") }}
               </p>
             </div>
@@ -165,7 +173,9 @@ onMounted(() => {
               />
             </div>
             <div class="pt-2 md:pt-5 lg:pt-9">
-              <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+              <p
+                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+              >
                 {{ $t("hero.captions.freizeit") }}
               </p>
             </div>
@@ -199,7 +209,9 @@ onMounted(() => {
               <p class="text-sm lg:text-base xl:text-2xl">
                 {{ $t("hero.hallo") }}
               </p>
-              <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+              <p
+                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+              >
                 {{ $t("hero.name") }}
               </p>
             </div>
@@ -255,7 +267,9 @@ onMounted(() => {
                 <p class="text-sm lg:text-base xl:text-2xl">
                   {{ $t("hero.hallo") }}
                 </p>
-                <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+                <p
+                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                >
                   {{ $t("hero.name") }}
                 </p>
               </div>
@@ -282,7 +296,9 @@ onMounted(() => {
                 />
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
-                <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+                <p
+                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                >
                   {{ $t("hero.captions.loesungen") }}
                 </p>
               </div>
@@ -309,7 +325,9 @@ onMounted(() => {
                 />
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
-                <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+                <p
+                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                >
                   {{ $t("hero.captions.wissen") }}
                 </p>
               </div>
@@ -338,7 +356,9 @@ onMounted(() => {
                 />
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
-                <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+                <p
+                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                >
                   {{ $t("hero.captions.elektro") }}
                 </p>
               </div>
@@ -367,7 +387,9 @@ onMounted(() => {
                 />
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
-                <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+                <p
+                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                >
                   {{ $t("hero.captions.musik") }}
                 </p>
               </div>
@@ -396,7 +418,9 @@ onMounted(() => {
                 />
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
-                <p class="text-[8px] md:text-[10px] lg:text-xs xl:text-base">
+                <p
+                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                >
                   {{ $t("hero.captions.freizeit") }}
                 </p>
               </div>

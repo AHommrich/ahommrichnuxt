@@ -27,11 +27,11 @@
     "hallo": "Hi",
     "name": "I'm André",
     "captions": {
-      "elektro": "From the electrical trade to software development.",
-      "loesungen": "Building solutions that last.",
-      "musik": "Getting through the day with music.",
-      "wissen": "Sharing knowledge and always learning.",
-      "freizeit": "Free time on foot and with four paws."
+      "elektro": "From the electrical trade\nto software development.",
+      "loesungen": "Building solutions\nthat last.",
+      "musik": "Getting through\nthe day with music.",
+      "wissen": "Sharing knowledge\nand always learning.",
+      "freizeit": "Free time on foot\nand with four paws."
     }
   },
   "about": {

@@ -27,11 +27,11 @@
     "hallo": "Hallo",
     "name": "Ich bin André",
     "captions": {
-      "elektro": "Vom Elektrohandwerk zur Softwareentwicklung.",
-      "loesungen": "Lösungen finden, die halten.",
-      "musik": "Mit Musik durch den Tag.",
-      "wissen": "Wissen teilen und dazulernen.",
-      "freizeit": "Freizeit zu Fuß und mit vier Pfoten."
+      "elektro": "Vom Elektrohandwerk\nzur Softwareentwicklung.",
+      "loesungen": "Lösungen finden,\ndie halten.",
+      "musik": "Mit Musik\ndurch den Tag.",
+      "wissen": "Wissen teilen\nund dazulernen.",
+      "freizeit": "Freizeit zu Fuß und\nmit vier Pfoten."
     }
   },
   "about": {

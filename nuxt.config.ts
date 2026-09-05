@@ -16,7 +16,23 @@ export default defineNuxtConfig({
             "Portfolio von André Hommrich — Fullstack-Entwickler aus dem Westerwald. Symfony, Laravel, Vue.js, TypeScript und Docker.",
         },
       ],
-      link: [{ rel: "icon", type: "image/png", href: "/favicon.ico" }],
+      link: [
+        // Favicon: the hommri.ch logo mark (icon only). SVG for modern browsers,
+        // multi-res .ico + PNG fallbacks, apple-touch-icon for iOS home screen.
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png",
+        },
+        { rel: "icon", href: "/favicon.ico", sizes: "any" },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
+      ],
     },
   },
   css: [
