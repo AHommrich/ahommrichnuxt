@@ -244,13 +244,19 @@ onMounted(async () => {
   // sole mechanism that highlights the current tab; on desktop it co-exists
   // with the sliding underline. The callback only fires on section change,
   // so it stays well off the scroll hot path.
+  // Activation-line scroll-spy: a section counts as active when it crosses the
+  // vertical middle of the viewport. rootMargin shrinks the observer root to a
+  // thin band in the centre; whichever section overlaps that band is active.
+  // This works regardless of section height — the previous `threshold: 0.5`
+  // never fired for sections taller than 2× the viewport (all of them on
+  // mobile's short viewport), so the current tab was often wrong or stuck.
   sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) activeSection.value = entry.target.id;
       });
     },
-    { threshold: 0.5 },
+    { rootMargin: "-50% 0px -50% 0px", threshold: 0 },
   );
   SECTION_IDS.forEach((id) => {
     const el = document.getElementById(id);

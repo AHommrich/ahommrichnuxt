@@ -8,13 +8,17 @@
 
 :root {
   --bg-base: #ffffff;
-  --bg-dots: url("/img/bg-dots-light.svg");
+  /* PNG statt SVG: ein Pixel-Bild wird EINMAL dekodiert und beim Scrollen nur
+     noch billig kopiert. Das gekachelte <pattern>-SVG (rotate/scale, 57 <use>)
+     musste dagegen beim Scrollen laufend neu gerastert werden → auf Mobile
+     Frames bis 414 ms / FPS ~15. Optik identisch. */
+  --bg-dots: url("/img/bg-dots-light.png");
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-base: #3b4245;
-    --bg-dots: url("/img/bg-dots-dark.svg");
+    --bg-dots: url("/img/bg-dots-dark.png");
   }
 }
 
