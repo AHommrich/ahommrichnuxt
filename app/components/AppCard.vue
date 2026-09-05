@@ -109,10 +109,22 @@ onBeforeUnmount(() => {
 .card-layer,
 .card-content {
   transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
 }
 
+/*
+  will-change is applied ONLY while the card is actually animating (hovered on
+  desktop, in-view on touch) — never permanently. A permanent will-change forces
+  every card into its own GPU compositing layer for the whole page lifetime; on
+  memory-constrained mobile Safari those layer backing-stores get evicted when
+  scrolled off-screen and must be re-rasterised on the way back, which shows up
+  as content that "flashes / reloads" while scrolling. Scoping it keeps the
+  slide-apart smooth without leaving standing layers behind.
+*/
 @media (hover: hover) {
+  .card-group:hover .card-layer,
+  .card-group:hover .card-content {
+    will-change: transform;
+  }
   .card-group:hover .card-layer-back {
     transform: translate(0.375rem, 0.375rem);
   }
@@ -123,6 +135,10 @@ onBeforeUnmount(() => {
 }
 
 @media (hover: none) {
+  .card-group.is-in-view .card-layer,
+  .card-group.is-in-view .card-content {
+    will-change: transform;
+  }
   .card-group.is-in-view .card-layer-back {
     transform: translate(0.375rem, 0.375rem);
   }
