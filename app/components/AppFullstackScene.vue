@@ -170,10 +170,10 @@ onMounted(() => {
   if (stageEl.value && typeof IntersectionObserver !== "undefined") {
     intersectionObserver = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
-          isLive.value = true;
-          intersectionObserver?.disconnect();
-        }
+        // Toggle with visibility (instead of a one-shot) so the continuous SVG
+        // animations (spinning gears, conduits, travelling packets) pause while
+        // the scene is off-screen instead of painting forever after first view.
+        isLive.value = entry?.isIntersecting ?? false;
       },
       { threshold: 0.01 },
     );

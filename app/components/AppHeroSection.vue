@@ -50,7 +50,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p
-                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
               >
                 {{ $t("hero.captions.elektro") }}
               </p>
@@ -81,7 +81,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p
-                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
               >
                 {{ $t("hero.captions.loesungen") }}
               </p>
@@ -112,7 +112,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p
-                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
               >
                 {{ $t("hero.captions.musik") }}
               </p>
@@ -143,7 +143,7 @@ onMounted(() => {
             </div>
             <div class="pt-3 md:pt-5 lg:pt-9">
               <p
-                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
               >
                 {{ $t("hero.captions.wissen") }}
               </p>
@@ -174,7 +174,7 @@ onMounted(() => {
             </div>
             <div class="pt-2 md:pt-5 lg:pt-9">
               <p
-                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
               >
                 {{ $t("hero.captions.freizeit") }}
               </p>
@@ -210,7 +210,7 @@ onMounted(() => {
                 {{ $t("hero.hallo") }}
               </p>
               <p
-                class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
               >
                 {{ $t("hero.name") }}
               </p>
@@ -268,7 +268,7 @@ onMounted(() => {
                   {{ $t("hero.hallo") }}
                 </p>
                 <p
-                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                  class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
                 >
                   {{ $t("hero.name") }}
                 </p>
@@ -297,7 +297,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p
-                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                  class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
                 >
                   {{ $t("hero.captions.loesungen") }}
                 </p>
@@ -326,7 +326,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p
-                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                  class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
                 >
                   {{ $t("hero.captions.wissen") }}
                 </p>
@@ -357,7 +357,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p
-                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                  class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
                 >
                   {{ $t("hero.captions.elektro") }}
                 </p>
@@ -388,7 +388,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p
-                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                  class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
                 >
                   {{ $t("hero.captions.musik") }}
                 </p>
@@ -419,7 +419,7 @@ onMounted(() => {
               </div>
               <div class="pt-3 md:pt-5 lg:pt-9">
                 <p
-                  class="text-[8px] md:text-[10px] lg:text-xs xl:text-base whitespace-pre-line"
+                  class="text-[8px] md:text-[10px] lg:text-[11px] xl:text-sm whitespace-pre-line"
                 >
                   {{ $t("hero.captions.freizeit") }}
                 </p>
@@ -482,6 +482,12 @@ onMounted(() => {
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+/* will-change only while hovering (during the zoom), not permanently — otherwise
+   all 8 diamonds keep a standing GPU layer hint, which is costly on weak GPUs /
+   low-power mode. The layer itself stays promoted via translateZ(0) above, so the
+   hover-flicker fix remains intact. */
+.group:hover .bg-cover {
   will-change: transform, scale;
 }
 .z-10 {
