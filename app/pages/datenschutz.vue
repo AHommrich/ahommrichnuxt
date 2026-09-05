@@ -33,15 +33,13 @@ useSeoMeta({
       <h3 class="text-lg font-semibold text-gray-200">
         {{ $t("legal.datenschutz.hostingHeading") }}
       </h3>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed"
-        v-html="$t('legal.datenschutz.hostingP1')"
+        :html="$t('legal.datenschutz.hostingP1')"
       />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed"
-        v-html="$t('legal.datenschutz.hostingP2')"
+        :html="$t('legal.datenschutz.hostingP2')"
       />
     </AppCard>
 
@@ -50,20 +48,17 @@ useSeoMeta({
       <h3 class="text-lg font-semibold text-gray-200">
         {{ $t("legal.datenschutz.cookiesHeading") }}
       </h3>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed"
-        v-html="$t('legal.datenschutz.cookiesP1')"
+        :html="$t('legal.datenschutz.cookiesP1')"
       />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed mt-4"
-        v-html="$t('legal.datenschutz.cookiesP2')"
+        :html="$t('legal.datenschutz.cookiesP2')"
       />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed mt-4"
-        v-html="$t('legal.datenschutz.cookiesP3')"
+        :html="$t('legal.datenschutz.cookiesP3')"
       />
     </AppCard>
 
@@ -72,10 +67,9 @@ useSeoMeta({
       <h3 class="text-lg font-semibold text-gray-200">
         {{ $t("legal.datenschutz.linksHeading") }}
       </h3>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed"
-        v-html="$t('legal.datenschutz.linksP1')"
+        :html="$t('legal.datenschutz.linksP1')"
       />
     </AppCard>
 
@@ -84,25 +78,21 @@ useSeoMeta({
       <h3 class="text-lg font-semibold text-gray-200">
         {{ $t("legal.datenschutz.contactFormHeading") }}
       </h3>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed"
-        v-html="$t('legal.datenschutz.contactFormP1')"
+        :html="$t('legal.datenschutz.contactFormP1')"
       />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed mt-4"
-        v-html="$t('legal.datenschutz.contactFormP2')"
+        :html="$t('legal.datenschutz.contactFormP2')"
       />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed mt-4"
-        v-html="$t('legal.datenschutz.contactFormP3')"
+        :html="$t('legal.datenschutz.contactFormP3')"
       />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed mt-4"
-        v-html="$t('legal.datenschutz.contactFormP4')"
+        :html="$t('legal.datenschutz.contactFormP4')"
       />
     </AppCard>
 
@@ -140,10 +130,9 @@ useSeoMeta({
           >info@hommri.ch</a
         >
       </p>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p
+      <RichText
         class="text-gray-200 text-sm leading-relaxed"
-        v-html="$t('legal.datenschutz.supervisoryAuthority')"
+        :html="$t('legal.datenschutz.supervisoryAuthority')"
       />
     </AppCard>
 

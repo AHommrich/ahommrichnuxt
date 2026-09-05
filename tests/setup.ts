@@ -42,6 +42,17 @@ g.useLocalePath = () => (path: string) => path;
 
 config.global.mocks = { ...(config.global.mocks ?? {}), $t: t };
 
+// The RichText component is auto-imported by Nuxt at runtime but not resolvable
+// in these standalone specs. Register a global stub that renders the html prop,
+// so assertions on the legal pages' rich text keep seeing the real content.
+config.global.components = {
+  ...(config.global.components ?? {}),
+  RichText: {
+    props: ["html"],
+    template: '<p v-html="html" />',
+  },
+};
+
 // Minimal no-op stubs for browser observer APIs that happy-dom doesn't provide.
 // Components attach observers during onMounted; without these stubs the mount
 // throws and the test can't even render the initial state.

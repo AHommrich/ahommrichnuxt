@@ -277,11 +277,11 @@ const inputClass =
             </label>
             <select id="contact-topic" v-model="topic" :class="inputClass">
               <option
-                v-for="t in activeIntent.topics"
-                :key="t.id"
-                :value="t.id"
+                v-for="topicOption in activeIntent.topics"
+                :key="topicOption.id"
+                :value="topicOption.id"
               >
-                {{ $t(`contact.topics.${t.id}`) }}
+                {{ $t(`contact.topics.${topicOption.id}`) }}
               </option>
             </select>
           </div>
