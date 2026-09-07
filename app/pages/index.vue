@@ -6,11 +6,15 @@ useSeoMeta({
   description: () => t("seo.home.description"),
   ogTitle: () => t("seo.home.title"),
   ogDescription: () => t("seo.home.description"),
-  ogImage: "https://ahommrich.de/img/andre-arbeit-3.jpg",
+  ogImage: "https://ahommrich.de/og-image.png",
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: "hommri.ch — André Hommrich, Fullstack-Entwickler",
   ogUrl: "https://ahommrich.de",
   ogType: "website",
   ogLocale: "de_DE",
   twitterCard: "summary_large_image",
+  twitterImage: "https://ahommrich.de/og-image.png",
 });
 
 useHead({
