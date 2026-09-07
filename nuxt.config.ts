@@ -48,6 +48,7 @@ export default defineNuxtConfig({
     // Deutsch bleibt auf "/" (kein Präfix, kein SEO-Verlust), Englisch unter "/en".
     strategy: "prefix_except_default",
     defaultLocale: "de",
+    baseUrl: "https://hommri.ch",
     locales: [
       { code: "de", language: "de-DE", name: "Deutsch", file: "de.json" },
       { code: "en", language: "en-US", name: "English", file: "en.json" },

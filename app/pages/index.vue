@@ -6,19 +6,19 @@ useSeoMeta({
   description: () => t("seo.home.description"),
   ogTitle: () => t("seo.home.title"),
   ogDescription: () => t("seo.home.description"),
-  ogImage: "https://ahommrich.de/og-image.png",
+  ogImage: "https://hommri.ch/og-image.png",
   ogImageWidth: 1200,
   ogImageHeight: 630,
   ogImageAlt: "hommri.ch — André Hommrich, Fullstack-Entwickler",
-  ogUrl: "https://ahommrich.de",
+  ogUrl: "https://hommri.ch",
   ogType: "website",
   ogLocale: "de_DE",
   twitterCard: "summary_large_image",
-  twitterImage: "https://ahommrich.de/og-image.png",
+  twitterImage: "https://hommri.ch/og-image.png",
 });
 
 useHead({
-  link: [{ rel: "canonical", href: "https://ahommrich.de" }],
+  link: [{ rel: "canonical", href: "https://hommri.ch" }],
   script: [
     {
       type: "application/ld+json",
@@ -26,7 +26,7 @@ useHead({
         "@context": "https://schema.org",
         "@type": "Person",
         name: "André Hommrich",
-        url: "https://ahommrich.de",
+        url: "https://hommri.ch",
         jobTitle: "Fullstack-Entwickler",
         address: {
           "@type": "PostalAddress",

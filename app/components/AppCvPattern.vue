@@ -3,24 +3,18 @@
 </template>
 
 <style scoped>
-/* Identical to the homepage .bg-pattern setup — same PNG files, same background-size.
-   PNG statt SVG: das gekachelte <pattern>-SVG musste beim Scrollen laufend neu
-   gerastert werden (Frames bis 414 ms auf Mobile); ein PNG wird einmal dekodiert
-   und danach nur noch billig kopiert. Optik identisch. */
+/* Gleicher Circuit-Hintergrund wie die restliche Seite, aber nur die GRAUE
+   Ebene (ohne die roten Akzente) — ruhiger und dokumententauglich für den
+   Lebenslauf/das Anschreiben (die als layout:false eigenständig rendern).
+   Nutzt die globalen CSS-Variablen aus main.css: kein Daten-Duplikat, und
+   hell/dunkel schaltet automatisch über --bg-base/--bg-circuit. */
 .pattern-wrap {
   position: absolute;
   inset: 0;
-  background-color: #ffffff;
-  background-image: url("/img/bg-dots-light.png");
-  background-size: 2000px 6000px;
+  background-color: var(--bg-base);
+  background-image: var(--bg-circuit);
+  background-size: 456px 456px;
   background-repeat: repeat;
   pointer-events: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .pattern-wrap {
-    background-color: #3b4245;
-    background-image: url("/img/bg-dots-dark.png");
-  }
 }
 </style>

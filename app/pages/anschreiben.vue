@@ -184,10 +184,10 @@ onMounted(() => {
           <a href="mailto:andre-hommrich@web.de">andre-hommrich@web.de</a>
           ·
           <a
-            href="https://ahommrich.de"
+            href="https://hommri.ch"
             target="_blank"
             rel="noopener noreferrer"
-            >ahommrich.de</a
+            >hommri.ch</a
           >
         </address>
       </header>
