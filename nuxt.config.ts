@@ -74,6 +74,13 @@ export default defineNuxtConfig({
         websiteId: "",
         apiHost: "",
       },
+      // Self-hosted GlitchTip (Sentry-kompatibel). DSN via NUXT_PUBLIC_SENTRY_DSN,
+      // Umgebung via NUXT_PUBLIC_SENTRY_ENVIRONMENT. Ohne DSN wird KEIN Sentry
+      // initialisiert (consentless/guarded, wie Umami -> siehe plugins/sentry.client.ts).
+      sentry: {
+        dsn: "",
+        environment: "production",
+      },
     },
   },
   nitro: {
