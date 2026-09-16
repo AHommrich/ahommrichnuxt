@@ -241,12 +241,12 @@ const inputClass =
             <legend class="mb-3 text-sm font-semibold text-gray-200">
               {{ $t("contact.legend") }}
             </legend>
-            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <label
                 v-for="option in contactIntents"
                 :key="option.id"
                 :class="[
-                  'flex cursor-pointer items-center gap-3 border px-4 py-3 text-sm transition',
+                  'flex cursor-pointer items-center gap-3 border px-4 py-3 text-sm transition focus-within:ring-1 focus-within:ring-white/60',
                   intent === option.id
                     ? 'border-white bg-white/15 text-gray-200'
                     : 'border-white/25 text-gray-200/80 hover:border-white/60 hover:bg-white/5',
@@ -268,24 +268,32 @@ const inputClass =
             </div>
           </fieldset>
 
-          <!-- Thema (abhängig vom Anliegen) -->
-          <div>
-            <label
-              for="contact-topic"
-              class="mb-2 block text-sm font-semibold text-gray-200"
-            >
+          <!-- Thema (abhängig vom Anliegen) — gleiche Karten-/Pill-Sprache wie „Worum geht es?" -->
+          <fieldset>
+            <legend class="mb-3 text-sm font-semibold text-gray-200">
               {{ $t(`contact.intents.${activeIntent.id}.topicLabel`) }}
-            </label>
-            <select id="contact-topic" v-model="topic" :class="inputClass">
-              <option
+            </legend>
+            <div class="flex flex-wrap gap-2">
+              <label
                 v-for="topicOption in activeIntent.topics"
                 :key="topicOption.id"
-                :value="topicOption.id"
+                :class="[
+                  'flex cursor-pointer items-center border px-3.5 py-2 text-sm transition focus-within:ring-1 focus-within:ring-white/60',
+                  topic === topicOption.id
+                    ? 'border-white bg-white/15 text-gray-200'
+                    : 'border-white/25 text-gray-200/80 hover:border-white/60 hover:bg-white/5',
+                ]"
               >
-                {{ $t(`contact.topics.${topicOption.id}`) }}
-              </option>
-            </select>
-          </div>
+                <input
+                  v-model="topic"
+                  type="radio"
+                  :value="topicOption.id"
+                  class="sr-only"
+                />
+                <span>{{ $t(`contact.topics.${topicOption.id}`) }}</span>
+              </label>
+            </div>
+          </fieldset>
 
           <!-- Name -->
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
