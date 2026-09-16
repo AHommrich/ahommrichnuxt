@@ -132,6 +132,10 @@
       "allgemein": {
         "label": "Allgemeine Anfrage",
         "topicLabel": "Wie kann ich helfen?"
+      },
+      "support": {
+        "label": "Support",
+        "topicLabel": "Wobei brauchen Sie Support?"
       }
     },
     "topics": {
@@ -141,7 +145,10 @@
       "unverbindlich-austauschen": "Erst mal unverbindlich austauschen",
       "allgemeine-frage": "Allgemeine Frage",
       "feedback": "Feedback",
-      "allgemein-sonstiges": "Sonstiges"
+      "allgemein-sonstiges": "Sonstiges",
+      "support-stoerung": "Störung – etwas funktioniert nicht",
+      "support-aenderung": "Änderung oder Pflege",
+      "support-sonstiges": "Sonstiges"
     },
     "fields": {
       "firstName": "Vorname",

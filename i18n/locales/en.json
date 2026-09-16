@@ -132,6 +132,10 @@
       "allgemein": {
         "label": "General enquiry",
         "topicLabel": "How can I help?"
+      },
+      "support": {
+        "label": "Support",
+        "topicLabel": "What do you need support with?"
       }
     },
     "topics": {
@@ -141,7 +145,10 @@
       "unverbindlich-austauschen": "Just an informal chat first",
       "allgemeine-frage": "General question",
       "feedback": "Feedback",
-      "allgemein-sonstiges": "Something else"
+      "allgemein-sonstiges": "Something else",
+      "support-stoerung": "Something isn't working",
+      "support-aenderung": "Change or maintenance",
+      "support-sonstiges": "Something else"
     },
     "fields": {
       "firstName": "First name",

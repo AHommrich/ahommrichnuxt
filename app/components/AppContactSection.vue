@@ -27,6 +27,7 @@ onMounted(() => {
 const iconFor: Record<ContactIconName, string> = {
   screen: "display",
   message: "comment-dots",
+  support: "headset",
 };
 
 // Locale-aware link to the privacy page (auto-imported by @nuxtjs/i18n).

@@ -199,6 +199,9 @@ export default defineEventHandler(
           phone: body.phone,
           message: body.message,
           intent: intent.label,
+          // Stabile Anlass-ID fürs Hub-Routing (z. B. Support-Anfragen → FreeScout-Ticket),
+          // unabhängig vom Anzeige-Label `intent`.
+          intent_id: body.intent,
           topic: topic.label,
           consent_version: body.privacyNoticeVersion,
           consent_accepted_at: body.privacyNoticeAcceptedAt,

@@ -12,16 +12,19 @@ export type ContactTopicId =
   | "unverbindlich-austauschen"
   | "allgemeine-frage"
   | "feedback"
-  | "allgemein-sonstiges";
+  | "allgemein-sonstiges"
+  | "support-stoerung"
+  | "support-aenderung"
+  | "support-sonstiges";
 
 export type ContactTopic = {
   id: ContactTopicId;
   label: string;
 };
 
-export type ContactIntentId = "projekt" | "allgemein";
+export type ContactIntentId = "projekt" | "allgemein" | "support";
 
-export type ContactIconName = "screen" | "message";
+export type ContactIconName = "screen" | "message" | "support";
 
 export type ContactIntent = {
   id: ContactIntentId;
@@ -60,6 +63,17 @@ export const contactIntents = [
       { id: "allgemeine-frage", label: "Allgemeine Frage" },
       { id: "feedback", label: "Feedback" },
       { id: "allgemein-sonstiges", label: "Sonstiges" },
+    ],
+  },
+  {
+    id: "support",
+    label: "Support",
+    icon: "support",
+    topicLabel: "Wobei brauchen Sie Support?",
+    topics: [
+      { id: "support-stoerung", label: "Störung – etwas funktioniert nicht" },
+      { id: "support-aenderung", label: "Änderung oder Pflege" },
+      { id: "support-sonstiges", label: "Sonstiges" },
     ],
   },
 ] as const satisfies readonly ContactIntent[];

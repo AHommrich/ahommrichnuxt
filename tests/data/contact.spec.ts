@@ -11,13 +11,16 @@ import {
 } from "~~/data/contact";
 
 describe("data/contact", () => {
-  it("exposes exactly the two neutral contact intents", () => {
+  it("exposes exactly the three neutral contact intents", () => {
     // Bewusst neutraler Kontaktpunkt — kein Leistungskatalog. Ein „Zusammenarbeit"-/
     // Freelance-Anliegen wurde bewusst ENTFERNT (Arbeitgeber-Abgrenzung: kein
-    // Auftreten als Entwickler-für-Hire). Diese Liste zu ändern soll den Test brechen.
+    // Auftreten als Entwickler-für-Hire). „support" = Betreuung BESTEHENDER Website-Kunden
+    // (fällt unter Betrieb, nicht Entwickler-für-Hire; Anfragen laufen als FreeScout-Ticket).
+    // Diese Liste zu ändern soll den Test brechen.
     expect(contactIntents.map((intent) => intent.id)).toEqual([
       "projekt",
       "allgemein",
+      "support",
     ]);
   });
 
