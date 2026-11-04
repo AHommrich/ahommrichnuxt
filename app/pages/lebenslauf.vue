@@ -54,38 +54,49 @@ const experience = computed<Job[]>(() => [
     bullets: list("cv.experience.creavo.bullets", 6),
   },
   {
+    period: t("cv.experience.gewerbe.period"),
+    company: t("cv.experience.gewerbe.company"),
+    location: "Montabaur",
+    role: t("cv.experience.gewerbe.role"),
+    current: true,
+    bullets: list("cv.experience.gewerbe.bullets", 3),
+  },
+  {
     period: t("cv.experience.awesome.period"),
     company: "AWESOME! Software GmbH",
     location: "Montabaur",
     role: t("cv.experience.awesome.role"),
-    bullets: list("cv.experience.awesome.bullets", 5),
+    bullets: list("cv.experience.awesome.bullets", 4),
+    extra: t("cv.experience.awesome.extra"),
   },
   {
     period: t("cv.experience.prior1.period"),
     company: "Prior1 GmbH",
     location: "Sankt Augustin",
     role: t("cv.experience.prior1.role"),
-    bullets: list("cv.experience.prior1.bullets", 4),
+    bullets: [],
   },
   {
     period: t("cv.experience.modul.period"),
     company: "Modul-Technik GmbH",
     location: "Montabaur",
     role: t("cv.experience.modul.role"),
-    bullets: list("cv.experience.modul.bullets", 2),
+    bullets: [],
   },
   {
     period: t("cv.experience.bruch.period"),
     company: "Michael Bruch Elektrotechnik GmbH",
     location: "Helferskirchen",
     role: t("cv.experience.bruch.role"),
-    bullets: list("cv.experience.bruch.bullets", 3),
+    bullets: [],
     extra: t("cv.experience.bruch.extra"),
   },
 ]);
 
 type Project = {
   client: string;
+  url?: string;
+  repo?: string;
   role: string;
   stack: string[];
   description: string;
@@ -95,91 +106,46 @@ type Project = {
 // stay hard-coded; the localised descriptions come from cv.projects.*.
 const projects = computed<Project[]>(() => [
   {
+    client: "Kunden-Backend (Hub)",
+    role: "Backend",
+    stack: [
+      "Laravel 13",
+      "Filament",
+      "PHPUnit",
+      "Playwright",
+      "Docker",
+      "Coolify",
+    ],
+    description: t("cv.projects.hub.description"),
+  },
+  {
+    client: "hido-immo.de",
+    url: "https://hido-immo.de",
+    role: "Fullstack",
+    stack: [
+      "Nuxt 4",
+      "Vue 3",
+      "TypeScript",
+      "Tailwind CSS",
+      "Vitest",
+      "Docker",
+    ],
+    description: t("cv.projects.hido.description"),
+  },
+  {
     client: "Eventplaner — eveplan.de",
+    url: "https://eveplan.de",
+    repo: "github.com/AHommrich/eventplaner",
     role: "Fullstack & Mobile",
     stack: [
       "Laravel 12",
       "Vue 3",
-      "TypeScript",
       "Inertia.js",
-      "Tailwind CSS 4",
       "React Native",
-      "Expo",
-      "Docker",
+      "Pest",
+      "Playwright",
     ],
     description: t("cv.projects.eventplaner.description"),
-  },
-  {
-    client: "Portfolio — hommri.ch",
-    role: "Frontend",
-    stack: [
-      "Nuxt 3",
-      "Vue 3",
-      "TypeScript",
-      "Tailwind CSS 4",
-      "Docker",
-      "Coolify",
-    ],
-    description: t("cv.projects.portfolio.description"),
-  },
-  {
-    client: "grapeminds GmbH",
-    role: "Frontend",
-    stack: [
-      "Ionic",
-      "Vue 3",
-      "TypeScript",
-      "CSS3",
-      "Xcode",
-      "Android Studio",
-      "Chart.js",
-    ],
-    description: t("cv.projects.grapeminds.description"),
-  },
-  {
-    client: "AWESOME! Software — CRM",
-    role: "Fullstack",
-    stack: [
-      "Laravel",
-      "Vue 2",
-      "JavaScript ES6",
-      "MySQL",
-      "Docker",
-      "HTML5",
-      "CSS3",
-    ],
-    description: t("cv.projects.crm.description"),
-  },
-  {
-    client: "AWESOME! Software — Mitarbeiterplattform",
-    role: "Fullstack",
-    stack: [
-      "Nuxt 3",
-      "Vue 3",
-      "Tailwind CSS",
-      "Laravel",
-      "HTML5",
-      "CSS3",
-      "Docker",
-    ],
-    description: t("cv.projects.platform.description"),
-  },
-  {
-    client: "Abschlussprojekt — eLade-Monitoring",
-    role: "Fullstack",
-    stack: [
-      "Laravel",
-      "React",
-      "Inertia",
-      "PHP",
-      "TypeScript",
-      "JavaScript ES6",
-      "MySQL",
-      "Docker",
-      "Axios",
-      "Chart.js",
-    ],
-    description: t("cv.projects.elade.description"),
   },
 ]);
 
@@ -203,35 +169,32 @@ const skillset = computed(() => [
   },
   {
     label: t("cv.skills.backend"),
-    items: ["PHP", "Laravel", "Inertia.js", "Symfony"],
+    items: ["PHP", "Laravel", "Symfony", "Filament", "Statamic", "Inertia.js"],
   },
   {
     label: t("cv.skills.databases"),
     items: ["MySQL", "MariaDB"],
   },
   {
+    label: t("cv.skills.testing"),
+    items: ["Pest", "PHPUnit", "Vitest", "Playwright", "Jest"],
+  },
+  {
     label: t("cv.skills.devops"),
     items: [
       "Docker",
       "Coolify",
-      "Git",
       "GitHub",
       "GitHub Actions",
       "GitLab",
       "Sentry",
       "Linux",
-      "Apple Ecosystem",
-      "VS Code",
       "JetBrains",
+      "Claude Code",
+      "Codex",
     ],
   },
-  {
-    label: t("cv.skills.ai"),
-    items: ["Anthropic (Claude Code)", "OpenAI (Codex)"],
-  },
 ]);
-
-const profileBullets = computed(() => list("cv.profileBullets", 5));
 </script>
 
 <template>
@@ -292,6 +255,14 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
                   >hommri.ch</a
                 >
               </li>
+              <li>
+                <a
+                  href="https://github.com/AHommrich"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >github.com/AHommrich</a
+                >
+              </li>
             </ul>
           </section>
 
@@ -339,7 +310,6 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
             <h2 class="cv-label">{{ $t("cv.labels.fuehrerschein") }}</h2>
             <ul class="cv-list">
               <li>{{ $t("cv.license.b") }}</li>
-              <li>{{ $t("cv.license.forklift") }}</li>
             </ul>
           </section>
         </aside>
@@ -347,9 +317,7 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
         <!-- MAIN COLUMN -->
         <main class="cv-main">
           <section>
-            <ul class="cv-profile">
-              <li v-for="b in profileBullets" :key="b">{{ b }}</li>
-            </ul>
+            <p class="cv-intro">{{ $t("cv.intro") }}</p>
           </section>
 
           <!-- Berufserfahrung — timeline -->
@@ -367,7 +335,7 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
                   <span class="tl-date">{{ job.period }}</span>
                 </div>
                 <p class="tl-org">{{ job.company }} · {{ job.location }}</p>
-                <ul>
+                <ul v-if="job.bullets.length">
                   <li v-for="b in job.bullets" :key="b">{{ b }}</li>
                 </ul>
                 <p v-if="job.extra" class="tl-note">{{ job.extra }}</p>
@@ -375,19 +343,21 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
             </div>
           </section>
 
-          <!-- Diamond divider — echoes the homepage section divider -->
-          <div class="cv-divider" aria-hidden="true">
-            <span class="cv-divider-line" />
-            <span class="cv-divider-square" />
-            <span class="cv-divider-line" />
-          </div>
-
           <!-- Projekthistorie -->
           <section>
             <h2 class="cv-label">{{ $t("cv.labels.projekthistorie") }}</h2>
             <article v-for="(p, i) in projects" :key="i" class="prj">
               <div class="prj-head">
-                <h3 class="prj-title">{{ p.client }}</h3>
+                <h3 class="prj-title">
+                  <a
+                    v-if="p.url"
+                    :href="p.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >{{ p.client }}</a
+                  >
+                  <template v-else>{{ p.client }}</template>
+                </h3>
                 <span class="prj-role">{{ p.role }}</span>
               </div>
               <div class="cv-pills">
@@ -396,6 +366,15 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
                 }}</span>
               </div>
               <p>{{ p.description }}</p>
+              <p v-if="p.repo" class="prj-repo">
+                Code:
+                <a
+                  :href="`https://${p.repo}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >{{ p.repo }}</a
+                >
+              </p>
             </article>
           </section>
         </main>
@@ -478,6 +457,9 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
 }
 .cv-band-sub {
   font-size: 0.74rem;
+  /* Tighter than the shared 0.22em so PDF text extraction (ATS) keeps the
+     title as one word instead of single letters. */
+  letter-spacing: 0.12em;
 }
 
 .cv-list {
@@ -514,28 +496,13 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
 /* ------------------------------------------------------------------ */
 /* Main column                                                         */
 /* ------------------------------------------------------------------ */
-.cv-profile {
-  list-style: none;
+.cv-intro {
   margin: 0;
-  padding: 0;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--cv-accent);
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--cv-text-muted);
-}
-.cv-profile li {
-  position: relative;
-  padding-left: 1rem;
-  margin-bottom: 0.25rem;
-}
-.cv-profile li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.5em;
-  width: 0.32rem;
-  height: 0.32rem;
-  background: var(--cv-accent);
-  transform: rotate(45deg);
 }
 
 /* Timeline: border per entry instead of an absolute line → break-safe.
@@ -644,6 +611,15 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
   line-height: 1.55;
   color: var(--cv-text-muted);
 }
+.prj-title a,
+.prj-repo a {
+  color: inherit;
+}
+.prj .prj-repo {
+  margin-top: 0.25rem;
+  font-size: 0.74rem;
+  color: var(--cv-text-subtle);
+}
 
 /* ------------------------------------------------------------------ */
 /* Mobile                                                             */
@@ -677,16 +653,25 @@ const profileBullets = computed(() => list("cv.profileBullets", 5));
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
-  .tl-entry,
+  /* Long entries may split between bullets; keeping whole entries together
+     left half-empty pages. Heads stay attached to their first bullet. */
+  .tl-entry li,
   .prj,
   .cv-skill-group,
   .cv-portrait {
     break-inside: avoid;
   }
-  .cv-label {
+  .cv-label,
+  .tl-head,
+  .tl-org {
     break-after: avoid;
   }
-  .cv-profile li::before,
+  .tl-entry {
+    padding-bottom: 0.95rem;
+  }
+  .prj {
+    margin-bottom: 0.85rem;
+  }
   .tl-entry::before {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;

@@ -208,8 +208,8 @@
       "frontend": "Frontend",
       "backend": "Backend",
       "databases": "Datenbanken",
-      "devops": "DevOps & Tooling",
-      "ai": "KI-Werkzeuge"
+      "testing": "Testing",
+      "devops": "DevOps & Tooling"
     },
     "languages": {
       "german": { "name": "Deutsch", "level": "Muttersprache" },
@@ -223,87 +223,66 @@
       "item": "Elektrofachkraft mit erweiterten Sicherheitskenntnissen"
     },
     "license": {
-      "b": "Klasse B",
-      "forklift": "Staplerführerschein"
+      "b": "Klasse B"
     },
-    "profileBullets": [
-      "Umfassende Erfahrung im Projektgeschäft",
-      "Leidenschaft für Wissensvermittlung und kontinuierliche Weiterbildung",
-      "Stark ausgeprägte Kunden- und Serviceorientierung",
-      "Fundierte Kenntnisse in der Fullstack-Webentwicklung",
-      "Begeisterung für komplexe Herausforderungen"
-    ],
+    "intro": "Seit 2022 in der Webentwicklung, seit Juni 2025 als PHP-Webentwickler bei der Creavo Projekt GmbH. Dort entwickle ich Geschäftsprozesse und Schnittstellen für eine produktive Symfony-Anwendung. Nebenberuflich setze ich Websites für Kunden um und betreibe sie mit einem selbst entwickelten Laravel-Backend auf eigener Infrastruktur.",
     "experience": {
       "creavo": {
         "period": "Seit 06.2025",
         "role": "PHP Webentwickler",
         "bullets": [
-          "Weiterentwicklung und Betreuung von Software mit umfangreicher Geschäftslogik",
-          "Neue Funktionen von der Planung bis zur Auslieferung, gemeinsam im Entwicklungsteam",
-          "Backend-Entwicklung mit Symfony und dazugehörigem Ökosystem (Doctrine etc.)",
-          "Frontend-Entwicklung mit Twig, Bootstrap und einzelnen JavaScript-Packages nach ES6",
-          "CI/CD-Konfigurationen und umfangreiches Testing mit PHPUnit",
-          "Mitgestaltung der KI-gestützten Entwicklung (Claude Code, Codex & Junie) inkl. gemeinsamer Coding-Standards"
+          "Langfristige Weiterentwicklung einer produktiven Symfony-Anwendung (Doctrine, Twig, Bootstrap) mit umfangreicher Geschäftslogik",
+          "Neue Funktionen von der Anforderung bis zur Auslieferung, gemeinsam im Entwicklungsteam",
+          "Mehrstufige Geschäftsprozesse mit Symfony Workflow (State Machines)",
+          "Hintergrund-Jobs, automatisierte Abläufe und Anbindung externer APIs",
+          "Automatisierte Tests mit PHPUnit, Optimierung der CI-Laufzeiten, Fehleranalyse mit Sentry",
+          "Mitgestaltung der KI-gestützten Entwicklung im Team inkl. gemeinsamer Coding-Standards"
+        ]
+      },
+      "gewerbe": {
+        "period": "Seit 08.2026",
+        "company": "Nebenberuflich selbstständig",
+        "role": "Webentwicklung & Betrieb",
+        "bullets": [
+          "Websites und Webanwendungen für kleine Unternehmen, vom Erstgespräch über Angebot und Abnahme bis zum laufenden Hosting; Referenz: hido-immo.de",
+          "Eigenes Kunden-Backend und Betrieb der Server-Infrastruktur: Docker und Coolify, Backups mit Wiederherstellungstests, Fehler-Monitoring, zeitnahe Sicherheitsupdates",
+          "Barrierearme Umsetzung, orientiert an WCAG 2.2 (Tastaturbedienung, Kontraste, Screenreader), und datensparsame Seiten ohne Cookies und Drittanbieter-Tracking"
         ]
       },
       "awesome": {
         "period": "08.2022 – 06.2025",
-        "role": "Ausbildung Fachinformatiker für Anwendungsentwicklung",
+        "role": "Anwendungsentwickler",
         "bullets": [
-          "Fullstack-Entwicklung komplexer Webanwendungen mit Laravel (inkl. Ökosystem wie Spatie), Vue.js und React",
-          "Erweiterung des firmeneigenen CRM um umfangreiche Geschäftslogik und interne Prozesse",
-          "Frontend-Entwicklung mit Vue.js, React und modernen JavaScript-Bibliotheken",
-          "Containerisierung mit Docker und Hosting von Webapplikationen",
-          "Ausbildung und Betreuung von Azubis und Praktikanten"
-        ]
+          "Fullstack-Entwicklung mit Laravel (inkl. Spatie), Vue.js und React, u. a. im Kundenprojekt grapeminds (Ionic-App, Vue 3)",
+          "Firmeneigenes CRM: Umsatz- und Gewinnprognosen für den Vertrieb sowie ein systemweites Aktivitäten-Log",
+          "Zeiterfassungsplattform (Nuxt 3, Laravel); Abschlussprojekt: Lade-Monitoring für Wallboxen (React, Raspberry Pi)",
+          "Containerisierung mit Docker, Hosting sowie Betreuung von Azubis und Praktikanten"
+        ],
+        "extra": "Ausbildung zum Fachinformatiker (AE), Abschluss 06.2025"
       },
       "prior1": {
         "period": "09.2018 – 07.2022",
-        "role": "Servicetechniker",
-        "bullets": [
-          "Rechenzentrum- und Serverraum-Installationen",
-          "Netzwerk-Verkabelungen",
-          "Wartungen & Inbetriebnahmen",
-          "Vorarbeiter-Tätigkeiten"
-        ]
+        "role": "Servicetechniker"
       },
       "modul": {
         "period": "09.2017 – 08.2018",
-        "role": "Fertigung & Montage",
-        "bullets": [
-          "Elektro-Prüfungen und Fertigung von medizinischen Versorgungseinheiten",
-          "Installation der Produkte vor Ort"
-        ]
+        "role": "Fertigung & Montage"
       },
       "bruch": {
         "period": "08.2014 – 08.2017",
-        "role": "Ausbildung & Geselle — Elektriker für Energie- und Gebäudetechnik",
-        "bullets": [
-          "Rohbau-Installationen",
-          "Kundendienst",
-          "TV-Sat-Anlagen - KNX/EIB - Netzwerktechnik"
-        ],
-        "extra": "Abschluss: Sekundarabschluss I"
+        "role": "Ausbildung & Geselle — Elektriker",
+        "extra": "Gesellenprüfung: Drittbester im Innungskreis · Sekundarabschluss I"
       }
     },
     "projects": {
+      "hub": {
+        "description": "Damit Anfragen zuverlässig ankommen und Kunden sehen, was ihre Website bringt: mandantenfähiges Backend für alle Kundenseiten mit E-Mail-Zustellung samt Zustellprotokoll, Google-Bewertungen, Search-Console-Daten und einem Bericht je Kunde. Filament-Dashboard, über 250 automatisierte Tests."
+      },
+      "hido": {
+        "description": "Relaunch der Website eines Immobilienmaklers: Angebote direkt aus dem Makler-CRM (onOffice), Ortsseiten für die lokale Suche, Pflichtangaben zum Energieausweis, cookiefreie Reichweitenmessung und Fehler-Monitoring."
+      },
       "eventplaner": {
-        "description": "Vollständig selbst entwickelter Hochzeits- und Eventplaner als Progressive Web App mit nativer Begleiter-App für Gäste (React Native / Expo), die über eine JSON-API an das Laravel-Backend angebunden ist. Gäste authentifizieren sich per QR-Code ohne Passwort; der persönliche Event-Hub bietet Fotogalerie mit Upload, Fotospiel mit delta-basiertem Aufgabenmodell, Trinkspiel mit physiologisch motivierter Punktberechnung und tokengesicherter Beamer-Slideshow. Backend durch rund 200 automatisierte Pest-Tests abgedeckt, dreistufiger Deploy-Prozess (develop → staging → production) mit CI-Guard gegen Compose-Drift. Live unter eveplan.de."
-      },
-      "portfolio": {
-        "description": "Persönliche Portfolio-Website ohne externe Runtime-Abhängigkeiten — kein CDN, kein Tracking, keine Analytics. Tech-Icon-Sektion mit eigenem requestAnimationFrame-Loop, Physics-Modell und Pointer-Flee-Verhalten. Hero-Sektion als rotiertes CSS-Grid. Deployed über Docker und Coolify. Live unter hommri.ch."
-      },
-      "grapeminds": {
-        "description": "Webapplikation mit ergänzender Smartphone-App zur Verwaltung von Weinbeständen und Bereitstellung von Informationen zu den vorhandenen Weinen. Als Frontend-Entwickler habe ich neue Features entwickelt, bestehende Komponenten optimiert und die Codebasis refaktoriert. Durch selbstständige Arbeitsweise wurden Entwicklungsprozesse effizienter und die Qualität der Anwendung kontinuierlich verbessert."
-      },
-      "crm": {
-        "description": "Erweiterung des internen CRM um eine Forecast-Funktion, die Vertriebsmitarbeitern Überblick über Mitarbeiter und Freiberufler bietet — inkl. Projektdauer, Austrittszeitpunkten und Umsatz-/Gewinnprognosen mit Zielvorgaben und optischem Feedback. Abwesenheiten werden in Umsatz- und Gewinnberechnungen automatisch berücksichtigt. Zusätzlich Implementierung eines systemweiten Aktivitäten-Logs, das jegliche Änderungen lückenlos nachvollziehbar dokumentiert."
-      },
-      "platform": {
-        "description": "Modernisierung der Firmenwebsite des Ausbildungsbetriebs und Erweiterung um eine Mitarbeiter- und Zeitmanagement-Plattform. Interne und externe Mitarbeiter verwalten ihre Profile, erfassen Arbeitszeiten und erhalten eine Gesamtübersicht über aktuelle Zeiten und Projektlaufzeiten."
-      },
-      "elade": {
-        "description": "Monitoring-System für die Wallboxen am Bürostandort, betrieben auf einem Raspberry Pi des Ausbildungsbetriebs. Echtzeit-Erfassung von Ladedaten, Stromverbrauch, Strompreisen und Netzbelastung. Berechnung von Ladeleistung, geladener Energie und Stromkosten sowie Überwachung der Phasenbelastung am Hausanschluss zur Vermeidung von Überlastungen. Visualisierung über einen zentral aufgestellten Monitor mit React-Frontend."
+        "description": "Plattform für Hochzeiten und Events mit Gästeverwaltung, Zusagen, Fotos und Beamer-Slideshow, dazu eine React-Native-App mit QR-Code-Login für Gäste. Über 400 automatisierte Tests (Pest, Vitest), E2E-Tests mit Playwright, CI über GitHub Actions, dreistufiges Deployment."
       }
     }
   },

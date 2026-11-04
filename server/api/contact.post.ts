@@ -70,7 +70,7 @@ const enforceRateLimit = (event: H3Event) => {
     setResponseHeader(
       event,
       "retry-after",
-      String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)),
+      Math.ceil(RATE_LIMIT_WINDOW_MS / 1000),
     );
     throw createError({
       statusCode: 429,

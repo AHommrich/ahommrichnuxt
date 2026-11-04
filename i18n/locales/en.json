@@ -208,8 +208,8 @@
       "frontend": "Front end",
       "backend": "Back end",
       "databases": "Databases",
-      "devops": "DevOps & tooling",
-      "ai": "AI tools"
+      "testing": "Testing",
+      "devops": "DevOps & tooling"
     },
     "languages": {
       "german": {
@@ -226,87 +226,66 @@
       "item": "Qualified electrician with extended safety expertise"
     },
     "license": {
-      "b": "Category B",
-      "forklift": "Forklift licence"
+      "b": "Category B"
     },
-    "profileBullets": [
-      "Extensive experience in project-based work",
-      "A passion for sharing knowledge and for continuous learning",
-      "Strong customer and service orientation",
-      "Solid knowledge of full-stack web development",
-      "Enthusiasm for complex challenges"
-    ],
+    "intro": "In web development since 2022, and a PHP web developer at Creavo Projekt GmbH since June 2025, where I build business processes and integrations for a production Symfony application. On the side, I build websites for clients and run them on my own infrastructure with a Laravel back end I developed myself.",
     "experience": {
       "creavo": {
         "period": "Since 06/2025",
         "role": "PHP web developer",
         "bullets": [
-          "Further development and maintenance of software with extensive business logic",
-          "New features from planning to delivery, together with the development team",
-          "Back-end development with Symfony and its ecosystem (Doctrine, etc.)",
-          "Front-end development with Twig, Bootstrap and individual JavaScript packages (ES6)",
-          "CI/CD configuration and extensive testing with PHPUnit",
-          "Helping shape AI-assisted development (Claude Code, Codex & Junie), including shared coding standards"
+          "Long-term development of a production Symfony application (Doctrine, Twig, Bootstrap) with extensive business logic",
+          "New features from requirements to delivery, together with the development team",
+          "Multi-step business processes with Symfony Workflow (state machines)",
+          "Background jobs, automated processes and integration of external APIs",
+          "Automated testing with PHPUnit, optimising CI run times, debugging with Sentry",
+          "Helping shape AI-assisted development in the team, including shared coding standards"
+        ]
+      },
+      "gewerbe": {
+        "period": "Since 08/2026",
+        "company": "Self-employed (part-time)",
+        "role": "Web development & operations",
+        "bullets": [
+          "Websites and web applications for small businesses, from the first meeting through quote and acceptance to ongoing hosting; reference: hido-immo.de",
+          "My own client back end and server infrastructure: Docker and Coolify, backups with restore tests, error monitoring, timely security updates",
+          "Accessible implementation guided by WCAG 2.2 (keyboard use, contrast, screen readers), and privacy-friendly sites without cookies or third-party tracking"
         ]
       },
       "awesome": {
         "period": "08/2022 – 06/2025",
-        "role": "Apprenticeship: IT specialist for application development",
+        "role": "Application developer",
         "bullets": [
-          "Full-stack development of complex web applications with Laravel (incl. ecosystem such as Spatie), Vue.js and React",
-          "Extending the in-house CRM with extensive business logic and internal processes",
-          "Front-end development with Vue.js, React and modern JavaScript libraries",
-          "Containerisation with Docker and hosting of web applications",
-          "Training and mentoring apprentices and interns"
-        ]
+          "Full-stack development with Laravel (incl. Spatie), Vue.js and React, e.g. client project grapeminds (Ionic, Vue 3)",
+          "In-house CRM: revenue and profit projections for sales, plus a system-wide activity log",
+          "Time-tracking platform (Nuxt 3, Laravel); final project: charging monitor for wall boxes (React, Raspberry Pi)",
+          "Docker, hosting, mentoring apprentices and interns"
+        ],
+        "extra": "IT specialist apprenticeship, completed 06/2025"
       },
       "prior1": {
         "period": "09/2018 – 07/2022",
-        "role": "Service technician",
-        "bullets": [
-          "Data centre and server room installations",
-          "Network cabling",
-          "Maintenance & commissioning",
-          "Lead-technician duties"
-        ]
+        "role": "Service technician"
       },
       "modul": {
         "period": "09/2017 – 08/2018",
-        "role": "Manufacturing & assembly",
-        "bullets": [
-          "Electrical testing and manufacturing of medical supply units",
-          "On-site installation of the products"
-        ]
+        "role": "Manufacturing & assembly"
       },
       "bruch": {
         "period": "08/2014 – 08/2017",
-        "role": "Apprenticeship & journeyman — electrician for energy and building technology",
-        "bullets": [
-          "Shell-construction installations",
-          "Customer service",
-          "TV/satellite systems - KNX/EIB - network technology"
-        ],
-        "extra": "Qualification: German Secondary School Certificate (Sekundarabschluss I)"
+        "role": "Electrician (journeyman)",
+        "extra": "Journeyman's exam: third in the guild district · Secondary school"
       }
     },
     "projects": {
+      "hub": {
+        "description": "So that enquiries reliably arrive and clients can see what their website achieves: a multi-tenant back end for all client sites with email delivery and delivery log, Google reviews, Search Console data and a report per client. Filament dashboard, more than 250 automated tests."
+      },
+      "hido": {
+        "description": "Relaunch of a real estate agent's website: listings straight from the agent's CRM (onOffice), local landing pages for regional search, energy certificate details, cookie-free analytics and error monitoring."
+      },
       "eventplaner": {
-        "description": "A wedding and event planner I built entirely myself as a progressive web app, with a native companion app for guests (React Native / Expo) connected to the Laravel back end via a JSON API. Guests authenticate by QR code without a password; the personal event hub offers a photo gallery with upload, a photo game with a delta-based task model, a drinking game with physiologically motivated scoring and a token-secured projector slideshow. The back end is covered by around 200 automated Pest tests, with a three-stage deploy process (develop → staging → production) and a CI guard against compose drift. Live at eveplan.de."
-      },
-      "portfolio": {
-        "description": "A personal portfolio website with no external runtime dependencies — no CDN, no tracking, no analytics. Tech-icon section with its own requestAnimationFrame loop, physics model and pointer-flee behaviour. Hero section as a rotated CSS grid. Deployed via Docker and Coolify. Live at hommri.ch."
-      },
-      "grapeminds": {
-        "description": "A web application with a companion smartphone app for managing wine stocks and providing information about the available wines. As a front-end developer, I built new features, optimised existing components and refactored the code base. Working independently made the development process more efficient and steadily improved the quality of the application."
-      },
-      "crm": {
-        "description": "Extending the internal CRM with a forecast feature that gives sales staff an overview of employees and freelancers — including project duration, departure dates and revenue/profit forecasts with targets and visual feedback. Absences are automatically taken into account in revenue and profit calculations. In addition, a system-wide activity log that documents every change in a fully traceable way."
-      },
-      "platform": {
-        "description": "Modernising the company website of the training company and extending it with an employee and time-management platform. Internal and external staff manage their profiles, record working hours and get an overall overview of current hours and project timelines."
-      },
-      "elade": {
-        "description": "A monitoring system for the wall boxes at the office location, running on a Raspberry Pi at the training company. Real-time capture of charging data, power consumption, electricity prices and grid load. Calculation of charging power, energy charged and electricity costs, plus monitoring of phase load at the house connection to prevent overloads. Visualised on a centrally placed monitor with a React front end."
+        "description": "A platform for weddings and events with guest management, RSVPs, photos and a projector slideshow, plus a React Native app with QR-code login for guests. More than 400 automated tests (Pest, Vitest), E2E tests with Playwright, CI on GitHub Actions, three-stage deployment."
       }
     }
   },
